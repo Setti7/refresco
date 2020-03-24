@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/core/models/gallon.dart';
-import 'package:flutter_base/core/viewModels/buy_view.dart';
+import 'package:flutter_base/core/viewModels/buy_view_model.dart';
 import 'package:flutter_base/ui/theme.dart';
 import 'package:flutter_base/ui/widgets/gallon_card.dart';
 import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class BuyView extends StatefulWidget {
   @override
@@ -74,7 +75,7 @@ class _BuyViewState extends State<BuyView> with SingleTickerProviderStateMixin {
 
   Widget _buildGallonSelector() {
     return TabBar(
-      onTap: (index) => viewModel.getGallons(
+      onTap: (index) => viewModel.setGallonType(
         index == 0 ? GallonType.l20 : GallonType.l10,
       ),
       controller: tabController,
@@ -96,17 +97,22 @@ class _BuyViewState extends State<BuyView> with SingleTickerProviderStateMixin {
         ),
       );
     } else if (viewModel.status == ViewStatus.completed) {
+      if (viewModel.gallons.isEmpty) return _buildEmpty();
       return Expanded(
-        child: ListView.builder(
-          itemCount: viewModel.gallons.length,
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: index == 0
-                  ? const EdgeInsets.only(top: 24.0)
-                  : EdgeInsets.zero,
-              child: GallonCard(viewModel.gallons[index]),
-            );
-          },
+        child: SmartRefresher(
+          controller: viewModel.refreshController,
+          onRefresh: () => viewModel.onRefresh(GallonType.l20),
+          child: ListView.builder(
+            itemCount: viewModel.gallons.length,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: index == 0
+                    ? const EdgeInsets.only(top: 24.0)
+                    : EdgeInsets.zero,
+                child: GallonCard(viewModel.gallons[index]),
+              );
+            },
+          ),
         ),
       );
     } else {
@@ -126,5 +132,21 @@ class _BuyViewState extends State<BuyView> with SingleTickerProviderStateMixin {
         ),
       );
     }
+  }
+
+  Widget _buildEmpty() {
+    return Expanded(
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text(
+              "Não há nenhuma loja na sua área :(",
+              style: Theme.of(context).textTheme.headline6,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

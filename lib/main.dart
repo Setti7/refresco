@@ -4,7 +4,7 @@ import 'package:flutter_base/ui/views/buy_view.dart';
 import 'package:provider/provider.dart';
 
 import 'core/services/auth_service.dart';
-import 'core/viewModels/buy_view.dart';
+import 'core/viewModels/buy_view_model.dart';
 import 'ui/theme.dart';
 
 class MyApp extends StatelessWidget {

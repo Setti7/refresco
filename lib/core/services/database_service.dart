@@ -4,8 +4,8 @@ import 'package:flutter_base/core/models/gallon.dart';
 class DatabaseService {
   Map<GallonType, List<Gallon>> _gallons = {};
 
-  Future<List<Gallon>> getGallons(GallonType gallonType) async {
-    if (_gallons[gallonType].isNotEmpty) return _gallons[gallonType];
+  Future<List<Gallon>> getGallons(GallonType gallonType, {bool force = false}) async {
+    if (_gallons[gallonType]?.isNotEmpty == true && !force) return _gallons[gallonType];
 
     QuerySnapshot snapshot = await Firestore.instance
         .collection('gallons')

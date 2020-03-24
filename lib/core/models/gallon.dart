@@ -22,6 +22,7 @@ class Gallon {
   });
 
   int get priceDecimals => (price.remainder(1) * 100).round();
+
   int get priceIntegers => price.truncate();
 
   factory Gallon.fromJson(Map<String, dynamic> json) => _$GallonFromJson(json);
