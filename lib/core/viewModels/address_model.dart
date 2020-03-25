@@ -1,32 +1,39 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_base/core/enums/enums.dart';
+import 'package:flutter_base/core/models/user_address.dart';
 import 'package:flutter_base/core/services/location_service.dart';
-import 'package:flutter_base/core/services/service_locator.dart';
 import 'package:flutter_base/core/viewModels/base_model.dart';
-import 'package:geocoder/geocoder.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:flutter_base/locator.dart';
 
-// TODO: convert to fixed states
 class AddressModel extends BaseModel {
-  final LocationService _locationService = locator<LocationService>();
+  LocationService locationService = locator<LocationService>();
 
-  BehaviorSubject<List<Address>> _addressesSubject =
-      BehaviorSubject<List<Address>>();
+  UserAddress selectedAddress;
+  UserAddress userAddress;
+  int streetNumber;
 
-  Observable<List<Address>> get addressesObservable => _addressesSubject.stream;
+  // Controllers
+  TextEditingController numberController = TextEditingController();
+  TextEditingController complementController = TextEditingController();
+  TextEditingController pointOfReferenceController = TextEditingController();
 
-  void updateQuery(String query) async {
-    if (query == '' || query == null) {
-      _addressesSubject.add(null);
-      return;
-    }
-
-    List<Address> addresses =
-        await _locationService.findAddressesFromQuery(query);
-    _addressesSubject.add(addresses);
+  void updateSelectedAddress(UserAddress address) {
+    selectedAddress = address;
+    setState(ViewState.idle);
   }
 
-  @override
-  void dispose() {
-    _addressesSubject.close();
-    super.dispose();
+  void saveNewAddress() {
+    // TODO: save address to user
+    userAddress = UserAddress.copy(
+      selectedAddress,
+      number: numberController.text == ''
+          ? null
+          : int.tryParse(numberController.text),
+      complement:
+          complementController.text == '' ? null : complementController.text,
+      pointOfReference: pointOfReferenceController.text == ''
+          ? null
+          : pointOfReferenceController.text,
+    );
   }
 }

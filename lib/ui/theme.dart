@@ -52,13 +52,15 @@ class AppThemes {
     bodyText2: TextStyle(color: AppColors.accent),
   );
 
+  static final boldPlainHeadline6 = TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.w500,
+    color: Colors.black45,
+  );
+
   static final storeCardTheme = ThemeData(
     textTheme: TextTheme(
-      headline6: TextStyle(
-        fontSize: 18,
-        fontWeight: FontWeight.w500,
-        color: Colors.black45,
-      ),
+      headline6: boldPlainHeadline6,
       headline5: TextStyle(
         fontSize: 24,
         fontWeight: FontWeight.bold,
@@ -73,15 +75,12 @@ class AppShapes {
   static final double cardButtonHeight = 36.0;
   static final double labelFontSize = 20.0;
   static final BorderRadius cardBorderRadius = BorderRadius.circular(8);
-  static final BorderRadius inputBorderRadius = BorderRadius.circular(0);
+  static final BorderRadius inputBorderRadius = BorderRadius.circular(8);
   static final BorderRadius bottomSheetBorderRadius =
       BorderRadius.vertical(top: Radius.circular(16));
   static final ShapeBorder bottomSheetShape =
       RoundedRectangleBorder(borderRadius: bottomSheetBorderRadius);
-
-  static final int pdfImageWidth = 900;
-  static final int pdfImageHeight = 900;
-  static final int jpgImageQuality = 80;
+  static final double iconSize = 30;
 }
 
 class AppAnimations {

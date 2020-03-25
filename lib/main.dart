@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base/core/services/service_locator.dart';
+import 'package:flutter_base/locator.dart';
 import 'package:flutter_base/ui/views/buy_view.dart';
 
 import 'ui/theme.dart';

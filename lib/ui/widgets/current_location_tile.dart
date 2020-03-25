@@ -1,31 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/core/enums/enums.dart';
+import 'package:flutter_base/core/models/user_address.dart';
 import 'package:flutter_base/core/viewModels/current_location_tile.dart';
 import 'package:flutter_base/ui/theme.dart';
 import 'package:flutter_base/ui/views/base_view.dart';
 
 class CurrentLocationTile extends StatelessWidget {
+  final void Function(BuildContext, UserAddress) closeCallback;
+  final BuildContext searchContext;
+
   const CurrentLocationTile({
     Key key,
+    @required this.closeCallback,
+    @required this.searchContext,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BaseView<CurrentLocationTileModel>(
       onModelReady: (model) {
+        model.closeCallback = closeCallback;
+        model.searchContext = searchContext;
         model.getCurrentAddress();
       },
       builder: (context, model, child) {
         return Ink(
           color: Colors.white,
           child: ListTile(
-            onTap: () => print("clic"),
+            onTap: model.selectAddress,
             title: Text(model.state == ViewState.busy
                 ? 'Procurando por sua localização'
                 : 'Localização atual'),
             subtitle: Text(model.state == ViewState.busy
                 ? "Isso pode demorar um pouco"
-                : model.address),
+                : model.currentAddress.simpleAddress),
             leading: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -37,7 +45,11 @@ class CurrentLocationTile extends StatelessWidget {
                           valueColor: AlwaysStoppedAnimation(AppColors.primary),
                         ),
                       )
-                    : Icon(Icons.gps_fixed, color: AppColors.primary, size: 30),
+                    : Icon(
+                        Icons.gps_fixed,
+                        color: AppColors.primary,
+                        size: AppShapes.iconSize,
+                      ),
               ],
             ),
           ),

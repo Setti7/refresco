@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/core/enums/enums.dart';
 import 'package:flutter_base/core/models/gallon.dart';
+import 'package:flutter_base/core/models/user_address.dart';
 import 'package:flutter_base/core/viewModels/buy_model.dart';
 import 'package:flutter_base/ui/theme.dart';
 import 'package:flutter_base/ui/widgets/gallon_card.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import 'location_search_delegate.dart';
+import 'address_view.dart';
 import 'base_view.dart';
 
 class BuyView extends StatefulWidget {
@@ -40,7 +41,7 @@ class _BuyViewState extends State<BuyView> with SingleTickerProviderStateMixin {
               color: Colors.white,
               child: Column(
                 children: <Widget>[
-                  _buildAddress(model),
+                  _buildAddress(),
                   Divider(),
                   _buildGallonSelector(model),
                 ],
@@ -53,16 +54,24 @@ class _BuyViewState extends State<BuyView> with SingleTickerProviderStateMixin {
     );
   }
 
-  Widget _buildAddress(BuyModel model) {
+  Widget _buildAddress() {
     return ListTile(
-      onTap: () {
-        showSearch(
-          context: context,
-          delegate: LocationSearchDelegate(),
+      onTap: () async {
+        UserAddress newAddress = await Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (_) => AddressView(),
+          ),
         );
       },
-      title: Text("Rua Ilha Caiçaras 421"),
-      subtitle: Text("San Conrado - Sousas"),
+      title: Text(
+        'Endereço',
+        style: Theme.of(context).textTheme.headline6,
+      ),
+      subtitle: Text(
+        'Escolha um endereço para entrega.',
+        style: Theme.of(context).textTheme.subtitle1,
+        overflow: TextOverflow.ellipsis,
+      ),
       trailing: Icon(
         Icons.location_on,
         color: AppColors.accent,

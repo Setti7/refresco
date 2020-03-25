@@ -1,36 +1,41 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
+import 'package:flutter_base/core/models/user_address.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:location/location.dart';
 
 class LocationService {
   Location location = Location();
-  Address currentAddress;
+  UserAddress currentAddress;
 
-  Future<Coordinates> getCurrentCoordinates() async {
-    LocationData locationData = await location.getLocation();
-    return Coordinates(locationData.latitude, locationData.longitude);
-  }
-
-  Future<Address> getCurrentAddress() async {
+  Future<UserAddress> getCurrentAddress() async {
     if (currentAddress != null) return currentAddress;
 
-    Coordinates coordinates = await getCurrentCoordinates();
-    List<Address> addresses = await findAddressesFromCoordinates(coordinates);
+    LocationData locationData = await location.getLocation();
+    Coordinates coordinates =
+        Coordinates(locationData.latitude, locationData.longitude);
+    List<UserAddress> addresses =
+        await findAddressesFromCoordinates(coordinates);
 
     currentAddress = addresses.first;
     return currentAddress;
   }
 
-  Future<List<Address>> findAddressesFromCoordinates(
+  Future<List<UserAddress>> findAddressesFromCoordinates(
       Coordinates coordinates) async {
-    return await Geocoder.local
+    List<Address> addresses = await Geocoder.local
         .findAddressesFromCoordinates(coordinates)
         .timeout(Duration(seconds: 2));
+
+    List<UserAddress> userAddresses = addresses
+        .map((Address address) => UserAddress.fromGeolocoderAddress(address))
+        .toList();
+
+    return userAddresses;
   }
 
-  Future<List<Address>> findAddressesFromQuery(String query) async {
+  Future<List<UserAddress>> findAddressesFromQuery(String query) async {
     List<Address> addresses;
 
     try {
@@ -41,6 +46,18 @@ class LocationService {
       addresses = [];
     }
 
-    return addresses;
+    addresses = _filterValidAddresses(addresses);
+
+    List<UserAddress> userAddresses = addresses
+        .map((Address address) => UserAddress.fromGeolocoderAddress(address))
+        .toList();
+
+    return userAddresses;
+  }
+
+  List<Address> _filterValidAddresses(List<Address> addresses) {
+    return addresses
+        .where((Address address) => address.thoroughfare != null)
+        .toList();
   }
 }

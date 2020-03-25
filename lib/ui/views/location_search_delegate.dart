@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_base/core/services/service_locator.dart';
-import 'package:flutter_base/core/viewModels/address_model.dart';
+import 'package:flutter_base/core/models/user_address.dart';
+import 'package:flutter_base/core/viewModels/location_search_model.dart';
+import 'package:flutter_base/locator.dart';
 import 'package:flutter_base/ui/theme.dart';
 import 'package:flutter_base/ui/widgets/current_location_tile.dart';
-import 'package:geocoder/geocoder.dart';
 
-class LocationSearchDelegate extends SearchDelegate {
-  AddressModel model = locator<AddressModel>();
+class LocationSearchDelegate extends SearchDelegate<UserAddress> {
+  LocationSearchModel model = locator<LocationSearchModel>();
 
   @override
   String get searchFieldLabel => 'Buscar endereço';
@@ -40,20 +40,26 @@ class LocationSearchDelegate extends SearchDelegate {
     if (query.length < 3) {
       return Column(
         children: <Widget>[
-          CurrentLocationTile(),
+          CurrentLocationTile(
+            closeCallback: close,
+            searchContext: context,
+          ),
         ],
       );
     }
 
     model.updateQuery(query);
 
-    return StreamBuilder<List<Address>>(
+    return StreamBuilder<List<UserAddress>>(
       stream: model.addressesObservable,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Column(
             children: <Widget>[
-              CurrentLocationTile(),
+              CurrentLocationTile(
+                closeCallback: close,
+                searchContext: context,
+              ),
               Spacer(),
               Center(child: CircularProgressIndicator()),
               Spacer(),
@@ -61,16 +67,17 @@ class LocationSearchDelegate extends SearchDelegate {
           );
         }
 
-        var results = snapshot.data
-            .where((Address address) => address.thoroughfare != null)
-            .toList();
+        var results = snapshot.data;
 
         if (results.length == 0) {
           return Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                CurrentLocationTile(),
+                CurrentLocationTile(
+                  closeCallback: close,
+                  searchContext: context,
+                ),
                 Spacer(),
                 Text(
                   "Endereço não encontrado",
@@ -91,27 +98,24 @@ class LocationSearchDelegate extends SearchDelegate {
             },
             itemCount: results.length + 1,
             itemBuilder: (context, index) {
-              if (index == 0) return CurrentLocationTile();
-
-              var result = results[index - 1];
-              String streetName = result.thoroughfare;
-              String streetNumber = result.subThoroughfare;
-              String tileTitle;
-
-              if (streetNumber != null) {
-                streetNumber = ', $streetNumber';
-              } else {
-                streetNumber = '';
+              if (index == 0) {
+                return CurrentLocationTile(
+                  closeCallback: close,
+                  searchContext: context,
+                );
               }
-              tileTitle = "$streetName$streetNumber";
+
+              UserAddress result = results[index - 1];
 
               return Ink(
                 color: Colors.white,
                 child: ListTile(
-                  onTap: () {},
-                  title: Text(tileTitle),
-                  subtitle:
-                      Text(result.addressLine, overflow: TextOverflow.ellipsis),
+                  onTap: () => close(context, result),
+                  title: Text(result.simpleAddress),
+                  subtitle: Text(
+                    result.completeAddress,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               );
             },
@@ -125,7 +129,10 @@ class LocationSearchDelegate extends SearchDelegate {
   Widget buildSuggestions(BuildContext context) {
     return ListView(
       children: <Widget>[
-        CurrentLocationTile(),
+        CurrentLocationTile(
+          closeCallback: close,
+          searchContext: context,
+        ),
       ],
     );
   }

@@ -5,13 +5,13 @@ import 'package:flutter_base/core/enums/enums.dart';
 import 'package:flutter_base/core/models/gallon.dart';
 import 'package:flutter_base/core/services/auth_service.dart';
 import 'package:flutter_base/core/services/database_service.dart';
-import 'package:flutter_base/core/services/service_locator.dart';
+import 'package:flutter_base/locator.dart';
 import 'package:flutter_base/core/viewModels/base_model.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class BuyModel extends BaseModel {
-  final AuthService authService = locator<AuthService>();
-  final DatabaseService dbService = locator<DatabaseService>();
+  AuthService authService = locator<AuthService>();
+  DatabaseService dbService = locator<DatabaseService>();
 
   List<Gallon> gallons = [];
   TabController tabController;
