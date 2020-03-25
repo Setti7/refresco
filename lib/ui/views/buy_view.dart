@@ -4,11 +4,9 @@ import 'package:flutter_base/core/models/gallon.dart';
 import 'package:flutter_base/core/viewModels/buy_model.dart';
 import 'package:flutter_base/ui/theme.dart';
 import 'package:flutter_base/ui/widgets/gallon_card.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
-import 'package:place_picker/place_picker.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import 'location_search_delegate.dart';
 import 'base_view.dart';
 
 class BuyView extends StatefulWidget {
@@ -38,7 +36,7 @@ class _BuyViewState extends State<BuyView> with SingleTickerProviderStateMixin {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Container(
+            Ink(
               color: Colors.white,
               child: Column(
                 children: <Widget>[
@@ -57,20 +55,17 @@ class _BuyViewState extends State<BuyView> with SingleTickerProviderStateMixin {
 
   Widget _buildAddress(BuyModel model) {
     return ListTile(
-      onTap: () async {},
+      onTap: () {
+        showSearch(
+          context: context,
+          delegate: LocationSearchDelegate(),
+        );
+      },
       title: Text("Rua Ilha Caiçaras 421"),
       subtitle: Text("San Conrado - Sousas"),
-      trailing: Column(
-        children: <Widget>[
-          IconButton(
-            tooltip: 'Alterar',
-            icon: Icon(
-              Icons.location_on,
-              color: AppColors.accent,
-            ),
-            onPressed: () {},
-          ),
-        ],
+      trailing: Icon(
+        Icons.location_on,
+        color: AppColors.accent,
       ),
     );
   }
