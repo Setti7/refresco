@@ -6,7 +6,7 @@ part of 'store.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Store _$StoreFromJson(Map<String, dynamic> json) {
+Store _$StoreFromJson(Map json) {
   return Store(
     name: json['name'] as String,
     id: json['id'] as String,
@@ -15,8 +15,8 @@ Store _$StoreFromJson(Map<String, dynamic> json) {
     minDeliveryTime: json['minDeliveryTime'] as int,
     maxDeliveryTime: json['maxDeliveryTime'] as int,
     phone: json['phone'] as int,
-    operatingTime:
-        OperatingTime.fromJson(json['operatingTime'] as Map<String, dynamic>),
+    operatingTime: OperatingTime.fromJson(
+        Map<String, dynamic>.from(json['operatingTime'] as Map)),
   );
 }
 

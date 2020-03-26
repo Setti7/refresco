@@ -16,6 +16,7 @@ class UserAddress {
   final double latitude;
   final double longitude;
   final String completeAddress;
+  final String postalCode;
 
   const UserAddress({
     this.streetName,
@@ -29,6 +30,7 @@ class UserAddress {
     this.latitude,
     this.longitude,
     this.completeAddress,
+    this.postalCode,
   });
 
   factory UserAddress.copy(
@@ -44,6 +46,7 @@ class UserAddress {
     double latitude,
     double longitude,
     String completeAddress,
+    String postalCode,
   }) {
     return UserAddress(
       streetName: streetName ?? address?.streetName,
@@ -57,6 +60,7 @@ class UserAddress {
       latitude: latitude ?? address?.latitude,
       longitude: longitude ?? address?.longitude,
       completeAddress: completeAddress ?? address?.completeAddress,
+      postalCode: postalCode ?? address?.postalCode,
     );
   }
 
@@ -70,10 +74,18 @@ class UserAddress {
       latitude: address.coordinates.latitude,
       longitude: address.coordinates.longitude,
       completeAddress: address.addressLine,
+      postalCode: address.postalCode,
     );
   }
 
-  String get districtAndCity => "$district - $city";
+  String get districtAndCity {
+    if (district == null)
+      return city == null ? state : city;
+    else
+      return "$district - $city";
+  }
+
+  String get streetAndNumber => "$streetName, $number";
 
   String get simpleAddress {
     String _numberOrCity;

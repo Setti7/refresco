@@ -18,6 +18,17 @@ class User {
     this.userAddress,
   });
 
+  bool get isAnonymous => id == null;
+
+  factory User.newAddress(User user, UserAddress newAddress) {
+    return User(
+      id: user.id,
+      fullName: user.fullName,
+      email: user.email,
+      userAddress: newAddress,
+    );
+  }
+
   factory User.fromFirebase(FirebaseUser user) {
     return User(
       id: user.uid,
@@ -25,8 +36,6 @@ class User {
       email: user.email,
     );
   }
-
-  bool get isAnonymous => id == null;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 

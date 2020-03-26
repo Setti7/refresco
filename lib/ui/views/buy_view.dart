@@ -71,24 +71,28 @@ class _BuyViewState extends State<BuyView> with SingleTickerProviderStateMixin {
   }
 
   Widget _buildAddress() {
-    return ListTile(
-      onTap: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (_) => AddressView()));
+    return Consumer<User>(
+      builder: (context, user, child) {
+        return ListTile(
+          onTap: () {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (_) => AddressView()));
+          },
+          title: Text(
+            user.userAddress == null ? 'Endereço' : user.userAddress.streetAndNumber,
+            style: Theme.of(context).textTheme.headline6,
+          ),
+          subtitle: Text(
+            user.userAddress == null ? 'Escolha um endereço para entrega.' : user.userAddress.districtAndCity,
+            style: Theme.of(context).textTheme.subtitle1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          trailing: Icon(
+            Icons.location_on,
+            color: AppColors.accent,
+          ),
+        );
       },
-      title: Text(
-        'Endereço',
-        style: Theme.of(context).textTheme.headline6,
-      ),
-      subtitle: Text(
-        'Escolha um endereço para entrega.',
-        style: Theme.of(context).textTheme.subtitle1,
-        overflow: TextOverflow.ellipsis,
-      ),
-      trailing: Icon(
-        Icons.location_on,
-        color: AppColors.accent,
-      ),
     );
   }
 

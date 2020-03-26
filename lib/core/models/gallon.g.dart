@@ -6,13 +6,13 @@ part of 'gallon.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Gallon _$GallonFromJson(Map<String, dynamic> json) {
+Gallon _$GallonFromJson(Map json) {
   return Gallon(
     id: json['id'] as String,
     type: _$enumDecode(_$GallonTypeEnumMap, json['type']),
     price: (json['price'] as num).toDouble(),
     company: json['company'] as String,
-    store: Store.fromJson(json['store'] as Map<String, dynamic>),
+    store: Store.fromJson(Map<String, dynamic>.from(json['store'] as Map)),
   );
 }
 

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_base/core/models/user.dart';
 import 'package:flutter_base/core/models/user_address.dart';
 import 'package:flutter_base/core/viewModels/address_model.dart';
 import 'package:flutter_base/ui/theme.dart';
 import 'package:flutter_base/ui/views/base_view.dart';
 import 'package:flutter_base/ui/views/location_search_delegate.dart';
+import 'package:provider/provider.dart';
 
 class AddressView extends StatelessWidget {
   @override
@@ -38,63 +40,78 @@ class AddressView extends StatelessWidget {
   }
 
   Widget _buildAddressTile(BuildContext context, AddressModel model) {
-    return InkWell(
-      borderRadius: AppShapes.inputBorderRadius,
-      onTap: () async {
-        UserAddress address = await showSearch(
-          context: context,
-          delegate: LocationSearchDelegate(),
-        );
+    return Consumer<User>(
+      builder: (context, user, child) {
+        String headline;
+        String subtitle;
 
-        if (address != null) {
-          model.updateSelectedAddress(address);
+        if (model.selectedAddress == null) {
+          headline = user.userAddress?.streetName ?? 'Endereço';
+          subtitle = user.userAddress?.districtAndCity ?? 'Escolha um endereço.';
+        } else {
+          headline = model.selectedAddress.streetName ?? 'Endereço';
+          subtitle =
+              model.selectedAddress.districtAndCity ?? 'Escolha um endereço.';
         }
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: AppColors.primary.withOpacity(0.07),
+
+        return InkWell(
           borderRadius: AppShapes.inputBorderRadius,
-        ),
-        child: Row(
-          children: <Widget>[
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24),
-              child: Icon(
-                Icons.location_on,
-                color: AppColors.primary,
-                size: AppShapes.iconSize,
-              ),
+          onTap: () async {
+            UserAddress address = await showSearch(
+              context: context,
+              delegate: LocationSearchDelegate(),
+            );
+
+            if (address != null) {
+              model.updateSelectedAddress(address);
+            }
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              color: AppColors.primary.withOpacity(0.07),
+              borderRadius: AppShapes.inputBorderRadius,
             ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    model.selectedAddress?.streetName ?? 'Endereço',
-                    style: Theme.of(context).textTheme.headline6,
+            child: Row(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 24),
+                  child: Icon(
+                    Icons.location_on,
+                    color: AppColors.primary,
+                    size: AppShapes.iconSize,
                   ),
-                  SizedBox(height: 4),
-                  Text(
-                    model.selectedAddress?.districtAndCity ??
-                        'Escolha um endereço.',
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.subtitle1,
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        headline,
+                        style: Theme.of(context).textTheme.headline6,
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        subtitle,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.subtitle1,
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Icon(
+                    Icons.chevron_right,
+                    color: AppColors.primary,
+                    size: AppShapes.iconSize,
+                  ),
+                ),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Icon(
-                Icons.chevron_right,
-                color: AppColors.primary,
-                size: AppShapes.iconSize,
-              ),
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 

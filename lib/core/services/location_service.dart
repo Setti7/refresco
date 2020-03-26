@@ -1,11 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
+import 'package:flutter_base/core/models/user.dart';
 import 'package:flutter_base/core/models/user_address.dart';
+import 'package:flutter_base/core/services/auth_service.dart';
+import 'package:flutter_base/locator.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:location/location.dart';
 
 class LocationService {
+  AuthService authService = locator<AuthService>();
+
   Location location = Location();
   UserAddress currentAddress;
 
@@ -14,9 +19,9 @@ class LocationService {
 
     LocationData locationData = await location.getLocation();
     Coordinates coordinates =
-        Coordinates(locationData.latitude, locationData.longitude);
+    Coordinates(locationData.latitude, locationData.longitude);
     List<UserAddress> addresses =
-        await findAddressesFromCoordinates(coordinates);
+    await findAddressesFromCoordinates(coordinates);
 
     currentAddress = addresses.first;
     return currentAddress;
@@ -53,6 +58,22 @@ class LocationService {
         .toList();
 
     return userAddresses;
+  }
+
+  void updateUserAddress(UserAddress selectedAddress,
+      {int number, String complement, String pointOfReference}) {
+    User user = authService.getUser();
+
+    UserAddress newAddress = UserAddress.copy(
+      selectedAddress,
+      number: number,
+      complement: complement,
+      pointOfReference: pointOfReference,
+    );
+
+    user = User.newAddress(user, newAddress);
+
+    authService.updateUser(user, force: true);
   }
 
   List<Address> _filterValidAddresses(List<Address> addresses) {

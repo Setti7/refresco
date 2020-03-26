@@ -9,8 +9,6 @@ class AddressModel extends BaseModel {
   LocationService locationService = locator<LocationService>();
 
   UserAddress selectedAddress;
-  UserAddress userAddress;
-  int streetNumber;
 
   // Controllers
   TextEditingController numberController = TextEditingController();
@@ -23,10 +21,7 @@ class AddressModel extends BaseModel {
   }
 
   void saveNewAddress() {
-    /// TODO: save address to user
-    /// LocationService should have an "updateUserLocation" or something that
-    /// saves the new UserLocation to the user profile in the authService
-    userAddress = UserAddress.copy(
+    locationService.updateUserAddress(
       selectedAddress,
       number: numberController.text == ''
           ? null

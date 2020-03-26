@@ -6,14 +6,18 @@ part of 'operating_time.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-OperatingTime _$OperatingTimeFromJson(Map<String, dynamic> json) {
+OperatingTime _$OperatingTimeFromJson(Map json) {
   return OperatingTime(
     opening: json['opening'] == null
         ? null
-        : Time.fromJson(json['opening'] as Map<String, dynamic>),
+        : Time.fromJson((json['opening'] as Map)?.map(
+            (k, e) => MapEntry(k as String, e),
+          )),
     closing: json['closing'] == null
         ? null
-        : Time.fromJson(json['closing'] as Map<String, dynamic>),
+        : Time.fromJson((json['closing'] as Map)?.map(
+            (k, e) => MapEntry(k as String, e),
+          )),
   );
 }
 

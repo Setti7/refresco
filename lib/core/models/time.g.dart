@@ -6,7 +6,7 @@ part of 'time.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Time _$TimeFromJson(Map<String, dynamic> json) {
+Time _$TimeFromJson(Map json) {
   return Time(
     json['hour'] as int,
     json['minute'] as int,

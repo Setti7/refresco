@@ -6,7 +6,7 @@ part of 'user_address.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-UserAddress _$UserAddressFromJson(Map<String, dynamic> json) {
+UserAddress _$UserAddressFromJson(Map json) {
   return UserAddress(
     streetName: json['streetName'] as String,
     number: json['number'] as int,
@@ -19,6 +19,7 @@ UserAddress _$UserAddressFromJson(Map<String, dynamic> json) {
     latitude: (json['latitude'] as num)?.toDouble(),
     longitude: (json['longitude'] as num)?.toDouble(),
     completeAddress: json['completeAddress'] as String,
+    postalCode: json['postalCode'] as String,
   );
 }
 
@@ -35,4 +36,5 @@ Map<String, dynamic> _$UserAddressToJson(UserAddress instance) =>
       'latitude': instance.latitude,
       'longitude': instance.longitude,
       'completeAddress': instance.completeAddress,
+      'postalCode': instance.postalCode,
     };

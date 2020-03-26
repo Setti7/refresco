@@ -17,16 +17,18 @@ class AuthService {
   Observable<User> get user => _userSubject.stream;
 
   AuthService() {
-    getSavedUser().then((value) {
+    loadUser().then((value) {
       user.listen((User user) {
         userBox.put('user', user.toJson());
+        print('User saved!');
         print(user.toJson());
       });
     });
   }
 
-  // Startup functions
-  Future<void> getSavedUser() async {
+  /// Startup function to load the [User] saved to disk.
+  /// Should only be run at startup time.
+  Future<void> loadUser() async {
     Directory dir = await getApplicationDocumentsDirectory();
     Hive.init(dir.path + '/hive');
 
@@ -44,27 +46,59 @@ class AuthService {
     print(_userSubject.value.toJson());
   }
 
-  // Functions
+  /// Login with email and password.
   Future<bool> loginWithEmail(
       {@required String email, @required String password}) async {
-    AuthResult authResult = await FirebaseAuth.instance
-        .signInWithEmailAndPassword(email: email, password: password);
-    _userSubject.add(User.fromFirebase(authResult.user));
+    AuthResult authResult =
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+
+    updateUser(User.fromFirebase(authResult.user));
     return true;
   }
 
+  /// Create user with email and password.
   Future<bool> createUserWithEmailAndPassword(
       {@required String email, @required String password}) async {
-    AuthResult authResult = await FirebaseAuth.instance
-        .createUserWithEmailAndPassword(email: email, password: password);
-    _userSubject.add(User.fromFirebase(authResult.user));
+    AuthResult authResult =
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+
+    updateUser(User.fromFirebase(authResult.user));
     return true;
   }
 
-  Future<void> loginWithGoogle() async {}
+  /// Updates the user.
+  /// If [force]] is set to true, the passed [newUser] will completely overwrite
+  /// the current user. Otherwise, the [newUser] will be merged with the current
+  /// user, using the current user's [userAddress].
+  void updateUser(User newUser, {bool force = false}) {
+    if (force) {
+      _userSubject.add(newUser);
+      return;
+    }
 
+    if (_userSubject.value.userAddress == null) {
+      _userSubject.add(newUser);
+    } else {
+      User oldUser = _userSubject.value;
+      _userSubject.add(User.newAddress(newUser, oldUser.userAddress));
+    }
+  }
+
+  /// Get the current user.
+  /// WARNING: just use this value before updating the user, as it can change
+  /// while other operations are running.
+  User getUser() => _userSubject.value;
+
+  /// Sign user out, while maintaining the saved address.
   void logout() {
+    User oldUser = _userSubject.value;
     FirebaseAuth.instance.signOut();
-    _userSubject.add(User());
+    _userSubject.add(User.newAddress(User(), oldUser.userAddress));
   }
 }
