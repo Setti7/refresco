@@ -19,12 +19,12 @@ class LoginView extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text("refresco",
+                    Text('refresco',
                         style: TextStyle(
                             fontSize: 56,
                             color: AppColors.primary,
                             fontWeight: FontWeight.w300)),
-                    Text("Delivery de água",
+                    Text('Delivery de água',
                         style: AppThemes.boldPlainHeadline6),
                     SizedBox(height: 56),
                     Container(
@@ -86,7 +86,7 @@ class LoginView extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text("Criar conta",
+                          Text('Criar conta',
                               style: AppThemes.boldPlainHeadline6),
                           Switch(
                             onChanged: (value) => model.changeAction(value),
@@ -106,10 +106,11 @@ class LoginView extends StatelessWidget {
                         SizedBox(height: 8),
                         RaisedButton(
                           onPressed: model.state == ViewState.busy ? () {} : () {
-                            if (model.signIn)
+                            if (model.signIn) {
                               model.loginWithEmail(context);
-                            else
+                            } else {
                               model.createUser(context);
+                            }
                           },
                           child: model.state == ViewState.idle
                               ? Text(model.signIn ? 'ENTRAR' : 'CRIAR CONTA')

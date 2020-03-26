@@ -68,10 +68,10 @@ class GallonCard extends StatelessWidget {
                               children: [
                                 TextSpan(
                                     text:
-                                        "${gallon.store.minDeliveryTime}-${gallon.store.maxDeliveryTime}",
+                                        '${gallon.store.minDeliveryTime}-${gallon.store.maxDeliveryTime}',
                                     style:
                                         Theme.of(context).textTheme.headline5),
-                                TextSpan(text: "min"),
+                                TextSpan(text: 'min'),
                               ],
                             ),
                           ),
@@ -89,7 +89,7 @@ class GallonCard extends StatelessWidget {
                             text: TextSpan(
                               style: Theme.of(context).textTheme.bodyText2,
                               children: [
-                                TextSpan(text: "R\$"),
+                                TextSpan(text: 'R\$'),
                                 TextSpan(
                                     text: gallon.priceIntegers.toString(),
                                     style:

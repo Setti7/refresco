@@ -79,13 +79,14 @@ class UserAddress {
   }
 
   String get districtAndCity {
-    if (district == null)
-      return city == null ? state : city;
-    else
-      return "$district - $city";
+    if (district == null) {
+      return city ?? state;
+    } else {
+      return '$district - $city';
+    }
   }
 
-  String get streetAndNumber => "$streetName, $number";
+  String get streetAndNumber => '$streetName, $number';
 
   String get simpleAddress {
     String _numberOrCity;
@@ -93,7 +94,7 @@ class UserAddress {
     _numberOrCity =
         number != null ? ', $number' : city != null ? ' - $city' : '';
 
-    return "$streetName$_numberOrCity";
+    return '$streetName$_numberOrCity';
   }
 
   factory UserAddress.fromJson(Map<String, dynamic> json) =>

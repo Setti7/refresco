@@ -18,7 +18,7 @@ class CurrentLocationTileModel extends BaseModel {
       setState(ViewState.idle);
     } else {
       setState(ViewState.busy);
-      UserAddress address = await locationService.getCurrentAddress();
+      var address = await locationService.getCurrentAddress();
       currentAddress = address;
       setState(ViewState.idle);
     }

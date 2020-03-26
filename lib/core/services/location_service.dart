@@ -17,11 +17,11 @@ class LocationService {
   Future<UserAddress> getCurrentAddress() async {
     if (currentAddress != null) return currentAddress;
 
-    LocationData locationData = await location.getLocation();
-    Coordinates coordinates =
-    Coordinates(locationData.latitude, locationData.longitude);
-    List<UserAddress> addresses =
-    await findAddressesFromCoordinates(coordinates);
+    var locationData = await location.getLocation();
+    var coordinates =
+        Coordinates(locationData.latitude, locationData.longitude);
+    var addresses =
+        await findAddressesFromCoordinates(coordinates);
 
     currentAddress = addresses.first;
     return currentAddress;
@@ -29,11 +29,11 @@ class LocationService {
 
   Future<List<UserAddress>> findAddressesFromCoordinates(
       Coordinates coordinates) async {
-    List<Address> addresses = await Geocoder.local
+    var addresses = await Geocoder.local
         .findAddressesFromCoordinates(coordinates)
         .timeout(Duration(seconds: 2));
 
-    List<UserAddress> userAddresses = addresses
+    var userAddresses = addresses
         .map((Address address) => UserAddress.fromGeolocoderAddress(address))
         .toList();
 
@@ -53,7 +53,7 @@ class LocationService {
 
     addresses = _filterValidAddresses(addresses);
 
-    List<UserAddress> userAddresses = addresses
+    var userAddresses = addresses
         .map((Address address) => UserAddress.fromGeolocoderAddress(address))
         .toList();
 
@@ -62,9 +62,9 @@ class LocationService {
 
   void updateUserAddress(UserAddress selectedAddress,
       {int number, String complement, String pointOfReference}) {
-    User user = authService.getUser();
+    var user = authService.getUser();
 
-    UserAddress newAddress = UserAddress.copy(
+    var newAddress = UserAddress.copy(
       selectedAddress,
       number: number,
       complement: complement,

@@ -7,7 +7,7 @@ import 'package:rxdart/rxdart.dart';
 class LocationSearchModel extends BaseModel {
   final LocationService _locationService = locator<LocationService>();
 
-  BehaviorSubject<List<UserAddress>> _addressesSubject =
+  final BehaviorSubject<List<UserAddress>> _addressesSubject =
       BehaviorSubject<List<UserAddress>>();
 
   Observable<List<UserAddress>> get addressesObservable =>
@@ -19,7 +19,7 @@ class LocationSearchModel extends BaseModel {
       return;
     }
 
-    List<UserAddress> addresses =
+    var addresses =
         await _locationService.findAddressesFromQuery(query);
     _addressesSubject.add(addresses);
   }

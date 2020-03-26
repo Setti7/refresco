@@ -98,23 +98,24 @@ class LoginModel extends BaseModel {
   }
 
   String _getErrorMessage(String code) {
-    if (code == 'ERROR_INVALID_EMAIL')
-      return "Email inválido";
-    else if (code == 'ERROR_WRONG_PASSWORD')
+    if (code == 'ERROR_INVALID_EMAIL') {
+      return 'Email inválido';
+    } else if (code == 'ERROR_WRONG_PASSWORD') {
       return 'Senha inválida';
-    else if (code == 'ERROR_USER_NOT_FOUND')
+    } else if (code == 'ERROR_USER_NOT_FOUND') {
       return 'Esse email não está registrado';
-    else if (code == 'ERROR_USER_DISABLED')
+    } else if (code == 'ERROR_USER_DISABLED') {
       return 'Essa conta foi desativada';
-    else if (code == 'ERROR_TOO_MANY_REQUESTS')
+    } else if (code == 'ERROR_TOO_MANY_REQUESTS') {
       return 'Nossos servidores estão sobrecarregados, tente novamente mais tarde';
-    else if (code == 'ERROR_OPERATION_NOT_ALLOWED')
+    } else if (code == 'ERROR_OPERATION_NOT_ALLOWED') {
       return 'Um erro inesperado aconteceu';
-    else if (code == 'ERROR_WEAK_PASSWORD')
+    } else if (code == 'ERROR_WEAK_PASSWORD') {
       return 'Essa senha não é forte o suficiente';
-    else if (code == 'ERROR_EMAIL_ALREADY_IN_USE')
+    } else if (code == 'ERROR_EMAIL_ALREADY_IN_USE') {
       return 'Esse email já está em uso';
-    else
-      return "Um erro inesperado aconteceu";
+    } else {
+      return 'Um erro inesperado aconteceu';
+    }
   }
 }

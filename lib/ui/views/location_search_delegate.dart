@@ -69,7 +69,7 @@ class LocationSearchDelegate extends SearchDelegate<UserAddress> {
 
         var results = snapshot.data;
 
-        if (results.length == 0) {
+        if (results.isEmpty) {
           return Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -80,12 +80,12 @@ class LocationSearchDelegate extends SearchDelegate<UserAddress> {
                 ),
                 Spacer(),
                 Text(
-                  "Endereço não encontrado",
+                  'Endereço não encontrado',
                   style: Theme.of(context).textTheme.headline6,
                 ),
                 SizedBox(height: 8),
                 Text(
-                  "Confira se o endreço digitado está correto.",
+                  'Confira se o endreço digitado está correto.',
                 ),
                 Spacer(),
               ],
@@ -105,7 +105,7 @@ class LocationSearchDelegate extends SearchDelegate<UserAddress> {
                 );
               }
 
-              UserAddress result = results[index - 1];
+              var result = results[index - 1];
 
               return Ink(
                 color: Colors.white,

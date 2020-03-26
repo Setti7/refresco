@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,7 +10,7 @@ class AuthService {
   Box userBox;
 
   // Subjects
-  BehaviorSubject<User> _userSubject = BehaviorSubject<User>.seeded(User());
+  final BehaviorSubject<User> _userSubject = BehaviorSubject<User>.seeded(User());
 
   // Observables
   Observable<User> get user => _userSubject.stream;
@@ -29,27 +28,27 @@ class AuthService {
   /// Startup function to load the [User] saved to disk.
   /// Should only be run at startup time.
   Future<void> loadUser() async {
-    Directory dir = await getApplicationDocumentsDirectory();
+    var dir = await getApplicationDocumentsDirectory();
     Hive.init(dir.path + '/hive');
 
     userBox = await Hive.openBox('userBox');
 
-    Map<String, dynamic> userJson = Map.from(userBox.get('user') ?? {});
+    var userJson = Map<String, dynamic>.from(userBox.get('user') ?? {});
     if (userJson.isEmpty) {
       _userSubject.add(User());
     } else {
-      User _user = User.fromJson(userJson);
+      var _user = User.fromJson(userJson);
       print(_user.toJson());
       _userSubject.add(_user);
     }
-    print("USER LOADED!");
+    print('USER LOADED!');
     print(_userSubject.value.toJson());
   }
 
   /// Login with email and password.
   Future<bool> loginWithEmail(
       {@required String email, @required String password}) async {
-    AuthResult authResult =
+    var authResult =
         await FirebaseAuth.instance.signInWithEmailAndPassword(
       email: email,
       password: password,
@@ -62,7 +61,7 @@ class AuthService {
   /// Create user with email and password.
   Future<bool> createUserWithEmailAndPassword(
       {@required String email, @required String password}) async {
-    AuthResult authResult =
+    var authResult =
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
       email: email,
       password: password,
@@ -85,7 +84,7 @@ class AuthService {
     if (_userSubject.value.userAddress == null) {
       _userSubject.add(newUser);
     } else {
-      User oldUser = _userSubject.value;
+      var oldUser = _userSubject.value;
       _userSubject.add(User.newAddress(newUser, oldUser.userAddress));
     }
   }
@@ -97,7 +96,7 @@ class AuthService {
 
   /// Sign user out, while maintaining the saved address.
   void logout() {
-    User oldUser = _userSubject.value;
+    var oldUser = _userSubject.value;
     FirebaseAuth.instance.signOut();
     _userSubject.add(User.newAddress(User(), oldUser.userAddress));
   }

@@ -32,7 +32,7 @@ class CurrentLocationTile extends StatelessWidget {
                 ? 'Procurando por sua localização'
                 : 'Localização atual'),
             subtitle: Text(model.state == ViewState.busy
-                ? "Isso pode demorar um pouco"
+                ? 'Isso pode demorar um pouco'
                 : model.currentAddress.simpleAddress),
             leading: Column(
               mainAxisAlignment: MainAxisAlignment.center,

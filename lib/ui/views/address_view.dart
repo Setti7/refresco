@@ -13,7 +13,7 @@ class AddressView extends StatelessWidget {
     return BaseView<AddressModel>(
       builder: (context, model, child) {
         return Scaffold(
-          appBar: AppBar(title: Text("Endereço de entrega")),
+          appBar: AppBar(title: Text('Endereço de entrega')),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
             child: ListView(
@@ -57,7 +57,7 @@ class AddressView extends StatelessWidget {
         return InkWell(
           borderRadius: AppShapes.inputBorderRadius,
           onTap: () async {
-            UserAddress address = await showSearch(
+            var address = await showSearch<UserAddress>(
               context: context,
               delegate: LocationSearchDelegate(),
             );
@@ -126,7 +126,7 @@ class AddressView extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(left: 8),
                 child: Text(
-                  "Número",
+                  'Número',
                   style: AppThemes.boldPlainHeadline6,
                 ),
               ),
@@ -147,7 +147,7 @@ class AddressView extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(left: 8),
                 child: Text(
-                  "Apto / Bloco / Casa etc.",
+                  'Apto / Bloco / Casa etc.',
                   style: AppThemes.boldPlainHeadline6,
                 ),
               ),
@@ -170,7 +170,7 @@ class AddressView extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(left: 8),
           child: Text(
-            "Ponto de referência",
+            'Ponto de referência',
             style: AppThemes.boldPlainHeadline6,
           ),
         ),

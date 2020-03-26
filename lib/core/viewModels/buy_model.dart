@@ -33,8 +33,8 @@ class BuyModel extends BaseModel {
     try {
       gallons = await dbService.getGallons(gallonType, force: force);
     } on TimeoutException {
-      errorTitle = "Erro de conexão :(";
-      errorMessage = "Verifique que você está conectado com a internet.";
+      errorTitle = 'Erro de conexão :(';
+      errorMessage = 'Verifique que você está conectado com a internet.';
     }
 
     setState(ViewState.idle);

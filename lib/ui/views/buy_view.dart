@@ -118,11 +118,11 @@ class _BuyViewState extends State<BuyView> with SingleTickerProviderStateMixin {
     } else {
       Widget child;
 
-      if (model.errorTitle != null)
+      if (model.errorTitle != null) {
         child = _buildError(model);
-      else if (model.gallons.isEmpty)
+      } else if (model.gallons.isEmpty) {
         child = _buildEmpty();
-      else
+      } else {
         child = ListView.builder(
           itemCount: model.gallons.length,
           itemBuilder: (context, index) {
@@ -134,6 +134,7 @@ class _BuyViewState extends State<BuyView> with SingleTickerProviderStateMixin {
             );
           },
         );
+      }
 
       return Expanded(
         child: SmartRefresher(
@@ -175,7 +176,7 @@ class _BuyViewState extends State<BuyView> with SingleTickerProviderStateMixin {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Text(
-            "Não há nenhuma loja na sua área :(",
+            'Não há nenhuma loja na sua área :(',
             style: Theme.of(context).textTheme.headline6,
           ),
         ],
