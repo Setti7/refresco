@@ -16,8 +16,9 @@ UserAddress _$UserAddressFromJson(Map json) {
     complement: json['complement'] as String,
     country: json['country'] as String,
     pointOfReference: json['pointOfReference'] as String,
-    latitude: (json['latitude'] as num)?.toDouble(),
-    longitude: (json['longitude'] as num)?.toDouble(),
+    coordinate: json['coordinate'] == null
+        ? null
+        : Coordinate.fromJson(json['coordinate']),
     completeAddress: json['completeAddress'] as String,
     postalCode: json['postalCode'] as String,
   );
@@ -33,8 +34,7 @@ Map<String, dynamic> _$UserAddressToJson(UserAddress instance) =>
       'complement': instance.complement,
       'country': instance.country,
       'pointOfReference': instance.pointOfReference,
-      'latitude': instance.latitude,
-      'longitude': instance.longitude,
+      'coordinate': instance.coordinate?.toJson(),
       'completeAddress': instance.completeAddress,
       'postalCode': instance.postalCode,
     };

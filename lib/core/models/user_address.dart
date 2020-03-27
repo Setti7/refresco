@@ -1,3 +1,4 @@
+import 'package:flutter_base/core/models/coordinate.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -13,8 +14,7 @@ class UserAddress {
   final String complement;
   final String country;
   final String pointOfReference;
-  final double latitude;
-  final double longitude;
+  final Coordinate coordinate;
   final String completeAddress;
   final String postalCode;
 
@@ -27,8 +27,7 @@ class UserAddress {
     this.complement,
     this.country,
     this.pointOfReference,
-    this.latitude,
-    this.longitude,
+    this.coordinate,
     this.completeAddress,
     this.postalCode,
   });
@@ -43,8 +42,7 @@ class UserAddress {
     String complement,
     String country,
     String pointOfReference,
-    double latitude,
-    double longitude,
+    Coordinate coordinate,
     String completeAddress,
     String postalCode,
   }) {
@@ -57,22 +55,23 @@ class UserAddress {
       complement: complement ?? address?.complement,
       country: country ?? address?.country,
       pointOfReference: pointOfReference ?? address?.pointOfReference,
-      latitude: latitude ?? address?.latitude,
-      longitude: longitude ?? address?.longitude,
+      coordinate: coordinate ?? address?.coordinate,
       completeAddress: completeAddress ?? address?.completeAddress,
       postalCode: postalCode ?? address?.postalCode,
     );
   }
 
-  factory UserAddress.fromGeolocoderAddress(Address address) {
+  factory UserAddress.fromGeocoderAddress(Address address) {
     return UserAddress(
       streetName: address.thoroughfare,
       city: address.subAdminArea,
       state: address.adminArea,
       district: address.subLocality,
       country: address.countryName,
-      latitude: address.coordinates.latitude,
-      longitude: address.coordinates.longitude,
+      coordinate: Coordinate(
+        address.coordinates.latitude,
+        address.coordinates.longitude,
+      ),
       completeAddress: address.addressLine,
       postalCode: address.postalCode,
     );

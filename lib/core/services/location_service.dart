@@ -34,7 +34,7 @@ class LocationService {
         .timeout(Duration(seconds: 2));
 
     var userAddresses = addresses
-        .map((Address address) => UserAddress.fromGeolocoderAddress(address))
+        .map((Address address) => UserAddress.fromGeocoderAddress(address))
         .toList();
 
     return userAddresses;
@@ -54,7 +54,7 @@ class LocationService {
     addresses = _filterValidAddresses(addresses);
 
     var userAddresses = addresses
-        .map((Address address) => UserAddress.fromGeolocoderAddress(address))
+        .map((Address address) => UserAddress.fromGeocoderAddress(address))
         .toList();
 
     return userAddresses;

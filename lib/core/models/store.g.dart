@@ -11,12 +11,18 @@ Store _$StoreFromJson(Map json) {
     name: json['name'] as String,
     id: json['id'] as String,
     description: json['description'] as String,
-    rating: (json['rating'] as num).toDouble(),
+    rating: (json['rating'] as num)?.toDouble(),
     minDeliveryTime: json['minDeliveryTime'] as int,
     maxDeliveryTime: json['maxDeliveryTime'] as int,
     phone: json['phone'] as int,
-    operatingTime: OperatingTime.fromJson(
-        Map<String, dynamic>.from(json['operatingTime'] as Map)),
+    operatingTime: json['operatingTime'] == null
+        ? null
+        : OperatingTime.fromJson((json['operatingTime'] as Map)?.map(
+            (k, e) => MapEntry(k as String, e),
+          )),
+    coordinate: json['coordinate'] == null
+        ? null
+        : Coordinate.fromJson(json['coordinate']),
   );
 }
 
@@ -28,5 +34,6 @@ Map<String, dynamic> _$StoreToJson(Store instance) => <String, dynamic>{
       'minDeliveryTime': instance.minDeliveryTime,
       'maxDeliveryTime': instance.maxDeliveryTime,
       'phone': instance.phone,
-      'operatingTime': instance.operatingTime.toJson(),
+      'operatingTime': instance.operatingTime?.toJson(),
+      'coordinate': instance.coordinate?.toJson(),
     };

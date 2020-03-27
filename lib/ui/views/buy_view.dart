@@ -28,45 +28,52 @@ class _BuyViewState extends State<BuyView> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return BaseView<BuyModel>(
-      onModelReady: (model) {
-        model.tabController = tabController;
-      },
-      builder: (context, model, child) => Scaffold(
-        appBar: AppBar(
-          title: Text('Escolha uma revenda'),
-          actions: <Widget>[
-            Consumer<User>(
-              builder: (context, user, child) {
-                return IconButton(
-                  icon: Icon(
-                      user.isAnonymous ? Icons.vpn_key : Icons.exit_to_app),
-                  onPressed: user.isAnonymous
-                      ? () => Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (_) => LoginView()))
-                      : model.logout,
-                );
-              },
-            )
-          ],
-        ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Ink(
-              color: Colors.white,
-              child: Column(
-                children: <Widget>[
-                  _buildAddress(),
-                  Divider(),
-                  _buildGallonSelector(model),
-                ],
-              ),
+    return Consumer<User>(
+      builder: (context, user, child) {
+        return BaseView<BuyModel>(
+          onModelReady: (model) {
+            model.tabController = tabController;
+            model.getGallons(
+              userAddress: user.userAddress,
+            );
+          },
+          builder: (context, model, child) => Scaffold(
+            appBar: AppBar(
+              title: Text('Escolha uma revenda'),
+              actions: <Widget>[
+                Consumer<User>(
+                  builder: (context, user, child) {
+                    return IconButton(
+                      icon: Icon(
+                          user.isAnonymous ? Icons.vpn_key : Icons.exit_to_app),
+                      onPressed: user.isAnonymous
+                          ? () => Navigator.of(context).push(
+                              MaterialPageRoute(builder: (_) => LoginView()))
+                          : model.logout,
+                    );
+                  },
+                )
+              ],
             ),
-            _buildGallonsList(model),
-          ],
-        ),
-      ),
+            body: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Ink(
+                  color: Colors.white,
+                  child: Column(
+                    children: <Widget>[
+                      _buildAddress(),
+                      Divider(),
+                      _buildGallonSelector(model, user),
+                    ],
+                  ),
+                ),
+                _buildGallonsList(model, user),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -79,11 +86,15 @@ class _BuyViewState extends State<BuyView> with SingleTickerProviderStateMixin {
                 .push(MaterialPageRoute(builder: (_) => AddressView()));
           },
           title: Text(
-            user.userAddress == null ? 'Endereço' : user.userAddress.streetAndNumber,
+            user.userAddress == null
+                ? 'Endereço'
+                : user.userAddress.streetAndNumber,
             style: Theme.of(context).textTheme.headline6,
           ),
           subtitle: Text(
-            user.userAddress == null ? 'Escolha um endereço para entrega.' : user.userAddress.districtAndCity,
+            user.userAddress == null
+                ? 'Escolha um endereço para entrega.'
+                : user.userAddress.districtAndCity,
             style: Theme.of(context).textTheme.subtitle1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -96,11 +107,13 @@ class _BuyViewState extends State<BuyView> with SingleTickerProviderStateMixin {
     );
   }
 
-  Widget _buildGallonSelector(BuyModel model) {
+  Widget _buildGallonSelector(BuyModel model, User user) {
     return TabBar(
-      onTap: (index) => model.setGallonType(
-        index == 0 ? GallonType.l20 : GallonType.l10,
-      ),
+      onTap: (index) {
+        var gallonType = index == 0 ? GallonType.l20 : GallonType.l10;
+        model.setGallonType(gallonType);
+        model.getGallons(userAddress: user.userAddress);
+      },
       controller: tabController,
       indicatorColor: AppColors.primary,
       labelColor: AppColors.primary,
@@ -112,7 +125,7 @@ class _BuyViewState extends State<BuyView> with SingleTickerProviderStateMixin {
     );
   }
 
-  Widget _buildGallonsList(BuyModel model) {
+  Widget _buildGallonsList(BuyModel model, User user) {
     if (model.state == ViewState.busy) {
       return _buildLoading();
     } else {
@@ -139,7 +152,7 @@ class _BuyViewState extends State<BuyView> with SingleTickerProviderStateMixin {
       return Expanded(
         child: SmartRefresher(
           controller: model.refreshController,
-          onRefresh: () => model.onRefresh(model.gallonType),
+          onRefresh: () => model.onRefresh(userAddress: user.userAddress),
           child: child,
         ),
       );
