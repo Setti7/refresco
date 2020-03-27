@@ -5,7 +5,8 @@ part 'gallon.g.dart';
 
 enum GallonType { l20, l10 }
 
-@JsonSerializable(nullable: false, explicitToJson: true)
+// TODO: set nullable to true when done migrating
+@JsonSerializable(explicitToJson: true)
 class Gallon {
   final String id;
   final GallonType type;

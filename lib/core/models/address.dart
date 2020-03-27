@@ -1,5 +1,4 @@
 import 'package:flutter_base/core/models/coordinate.dart';
-import 'package:flutter_base/utils/logger.dart';
 import 'package:geocoder/geocoder.dart' as geocoder;
 import 'package:json_annotation/json_annotation.dart';
 

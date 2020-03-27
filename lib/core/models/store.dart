@@ -1,5 +1,4 @@
 import 'package:flutter_base/core/models/address.dart';
-import 'package:flutter_base/core/models/coordinate.dart';
 import 'package:flutter_base/core/models/operating_time.dart';
 import 'package:json_annotation/json_annotation.dart';
 
