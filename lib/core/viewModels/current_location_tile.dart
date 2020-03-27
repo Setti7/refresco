@@ -1,15 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_base/core/enums/enums.dart';
-import 'package:flutter_base/core/models/user_address.dart';
+import 'package:flutter_base/core/models/address.dart';
 import 'package:flutter_base/core/services/location_service.dart';
 import 'package:flutter_base/locator.dart';
 import 'package:flutter_base/core/viewModels/base_model.dart';
 
 class CurrentLocationTileModel extends BaseModel {
   LocationService locationService = locator<LocationService>();
-  UserAddress currentAddress;
+  Address currentAddress;
 
-  void Function(BuildContext, UserAddress) closeCallback;
+  void Function(BuildContext, Address) closeCallback;
   BuildContext searchContext;
 
   void getCurrentAddress() async {

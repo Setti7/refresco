@@ -1,4 +1,4 @@
-import 'package:flutter_base/core/models/user_address.dart';
+import 'package:flutter_base/core/models/address.dart';
 import 'package:flutter_base/core/services/location_service.dart';
 import 'package:flutter_base/core/viewModels/base_model.dart';
 import 'package:flutter_base/locator.dart';
@@ -7,10 +7,10 @@ import 'package:rxdart/rxdart.dart';
 class LocationSearchModel extends BaseModel {
   final LocationService _locationService = locator<LocationService>();
 
-  final BehaviorSubject<List<UserAddress>> _addressesSubject =
-      BehaviorSubject<List<UserAddress>>();
+  final BehaviorSubject<List<Address>> _addressesSubject =
+      BehaviorSubject<List<Address>>();
 
-  Observable<List<UserAddress>> get addressesObservable =>
+  Observable<List<Address>> get addressesObservable =>
       _addressesSubject.stream;
 
   void updateQuery(String query) async {

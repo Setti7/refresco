@@ -1,3 +1,4 @@
+import 'package:flutter_base/core/models/address.dart';
 import 'package:flutter_base/core/models/coordinate.dart';
 import 'package:flutter_base/core/models/operating_time.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -14,7 +15,7 @@ class Store {
   final int maxDeliveryTime;
   final int phone;
   final OperatingTime operatingTime;
-  final Coordinate coordinate;
+  final Address address;
 
   const Store({
     this.name,
@@ -25,7 +26,7 @@ class Store {
     this.maxDeliveryTime,
     this.phone,
     this.operatingTime,
-    this.coordinate,
+    this.address,
   });
 
   factory Store.fromJson(Map<String, dynamic> json) => _$StoreFromJson(json);

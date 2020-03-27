@@ -20,9 +20,11 @@ Store _$StoreFromJson(Map json) {
         : OperatingTime.fromJson((json['operatingTime'] as Map)?.map(
             (k, e) => MapEntry(k as String, e),
           )),
-    coordinate: json['coordinate'] == null
+    address: json['address'] == null
         ? null
-        : Coordinate.fromJson(json['coordinate']),
+        : Address.fromJson((json['address'] as Map)?.map(
+            (k, e) => MapEntry(k as String, e),
+          )),
   );
 }
 
@@ -35,5 +37,5 @@ Map<String, dynamic> _$StoreToJson(Store instance) => <String, dynamic>{
       'maxDeliveryTime': instance.maxDeliveryTime,
       'phone': instance.phone,
       'operatingTime': instance.operatingTime?.toJson(),
-      'coordinate': instance.coordinate?.toJson(),
+      'address': instance.address?.toJson(),
     };

@@ -1,70 +1,69 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
+import 'package:flutter_base/core/models/address.dart';
 import 'package:flutter_base/core/models/user.dart';
-import 'package:flutter_base/core/models/user_address.dart';
 import 'package:flutter_base/core/services/auth_service.dart';
 import 'package:flutter_base/locator.dart';
-import 'package:geocoder/geocoder.dart';
+import 'package:geocoder/geocoder.dart' as geo;
 import 'package:location/location.dart';
 
 class LocationService {
   AuthService authService = locator<AuthService>();
 
   Location location = Location();
-  UserAddress currentAddress;
+  Address currentAddress;
 
-  Future<UserAddress> getCurrentAddress() async {
+  Future<Address> getCurrentAddress() async {
     if (currentAddress != null) return currentAddress;
 
     var locationData = await location.getLocation();
     var coordinates =
-        Coordinates(locationData.latitude, locationData.longitude);
-    var addresses =
-        await findAddressesFromCoordinates(coordinates);
+        geo.Coordinates(locationData.latitude, locationData.longitude);
+    var addresses = await findAddressesFromCoordinates(coordinates);
 
     currentAddress = addresses.first;
     return currentAddress;
   }
 
-  Future<List<UserAddress>> findAddressesFromCoordinates(
-      Coordinates coordinates) async {
-    var addresses = await Geocoder.local
+  Future<List<Address>> findAddressesFromCoordinates(
+      geo.Coordinates coordinates) async {
+    var _addresses = await geo.Geocoder.local
         .findAddressesFromCoordinates(coordinates)
         .timeout(Duration(seconds: 2));
 
-    var userAddresses = addresses
-        .map((Address address) => UserAddress.fromGeocoderAddress(address))
+    var addresses = _addresses
+        .map((address) => Address.fromGeocoderAddress(address))
         .toList();
 
-    return userAddresses;
+    return addresses;
   }
 
-  Future<List<UserAddress>> findAddressesFromQuery(String query) async {
+  Future<List<Address>> findAddressesFromQuery(String query) async {
     List<Address> addresses;
 
     try {
-      addresses = await Geocoder.local
+      var _addresses = await geo.Geocoder.local
           .findAddressesFromQuery(query)
           .timeout(Duration(seconds: 2));
+
+      _addresses = _filterValidAddresses(_addresses);
+
+      addresses = _addresses
+          .map((address) => Address.fromGeocoderAddress(address))
+          .toList();
     } on PlatformException {
       addresses = [];
     }
 
-    addresses = _filterValidAddresses(addresses);
-
-    var userAddresses = addresses
-        .map((Address address) => UserAddress.fromGeocoderAddress(address))
-        .toList();
-
-    return userAddresses;
+    return addresses;
   }
 
-  void updateUserAddress(UserAddress selectedAddress,
+  void updateUserAddress(Address selectedAddress,
       {int number, String complement, String pointOfReference}) {
     var user = authService.getUser();
 
-    var newAddress = UserAddress.copy(
+    var newAddress = Address.copy(
       selectedAddress,
       number: number,
       complement: complement,
@@ -76,9 +75,10 @@ class LocationService {
     authService.updateUser(user, force: true);
   }
 
-  List<Address> _filterValidAddresses(List<Address> addresses) {
+  List<geo.Address> _filterValidAddresses(List<geo.Address> addresses) {
     return addresses
-        .where((Address address) => address.thoroughfare != null)
+        .where((geo.Address address) =>
+            address.thoroughfare != null && address.subAdminArea != null)
         .toList();
   }
 }

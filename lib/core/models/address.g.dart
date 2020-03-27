@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_address.dart';
+part of 'address.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-UserAddress _$UserAddressFromJson(Map json) {
-  return UserAddress(
+Address _$AddressFromJson(Map json) {
+  return Address(
     streetName: json['streetName'] as String,
     number: json['number'] as int,
     city: json['city'] as String,
@@ -19,13 +19,11 @@ UserAddress _$UserAddressFromJson(Map json) {
     coordinate: json['coordinate'] == null
         ? null
         : Coordinate.fromJson(json['coordinate']),
-    completeAddress: json['completeAddress'] as String,
     postalCode: json['postalCode'] as String,
   );
 }
 
-Map<String, dynamic> _$UserAddressToJson(UserAddress instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$AddressToJson(Address instance) => <String, dynamic>{
       'streetName': instance.streetName,
       'number': instance.number,
       'city': instance.city,
@@ -35,6 +33,5 @@ Map<String, dynamic> _$UserAddressToJson(UserAddress instance) =>
       'country': instance.country,
       'pointOfReference': instance.pointOfReference,
       'coordinate': instance.coordinate?.toJson(),
-      'completeAddress': instance.completeAddress,
       'postalCode': instance.postalCode,
     };

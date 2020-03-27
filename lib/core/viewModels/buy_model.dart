@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/core/enums/enums.dart';
 import 'package:flutter_base/core/models/gallon.dart';
-import 'package:flutter_base/core/models/user_address.dart';
+import 'package:flutter_base/core/models/address.dart';
 import 'package:flutter_base/core/services/auth_service.dart';
 import 'package:flutter_base/core/services/database_service.dart';
 import 'package:flutter_base/core/viewModels/base_model.dart';
@@ -22,7 +22,7 @@ class BuyModel extends BaseModel {
   String errorTitle;
 
   Future<void> getGallons({
-    @required UserAddress userAddress,
+    @required Address address,
     bool force = false,
   }) async {
     if (!force) setState(ViewState.busy);
@@ -32,7 +32,7 @@ class BuyModel extends BaseModel {
 
     try {
       gallons = await dbService.getGallons(
-        userAddress: userAddress,
+        address: address,
         gallonType: gallonType,
         force: force,
       );
@@ -45,10 +45,10 @@ class BuyModel extends BaseModel {
   }
 
   Future<void> onRefresh({
-    @required UserAddress userAddress,
+    @required Address address,
   }) async {
     await getGallons(
-      userAddress: userAddress,
+      address: address,
       force: true,
     );
 

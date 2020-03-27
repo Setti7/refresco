@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_base/core/models/gallon.dart';
-import 'package:flutter_base/core/models/user_address.dart';
+import 'package:flutter_base/core/models/address.dart';
 
 class DatabaseService {
   final Map<GallonType, List<Gallon>> _gallons = {};
 
   Future<List<Gallon>> getGallons({
     @required GallonType gallonType,
-    @required UserAddress userAddress,
+    @required Address address,
     bool force = false,
   }) async {
     if (_gallons[gallonType]?.isNotEmpty == true && !force) {

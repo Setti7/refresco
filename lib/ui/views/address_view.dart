@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/core/models/user.dart';
-import 'package:flutter_base/core/models/user_address.dart';
+import 'package:flutter_base/core/models/address.dart';
 import 'package:flutter_base/core/viewModels/address_model.dart';
 import 'package:flutter_base/ui/theme.dart';
 import 'package:flutter_base/ui/views/base_view.dart';
@@ -46,8 +46,8 @@ class AddressView extends StatelessWidget {
         String subtitle;
 
         if (model.selectedAddress == null) {
-          headline = user.userAddress?.streetName ?? 'Endereço';
-          subtitle = user.userAddress?.districtAndCity ?? 'Escolha um endereço.';
+          headline = user.address?.streetName ?? 'Endereço';
+          subtitle = user.address?.districtAndCity ?? 'Escolha um endereço.';
         } else {
           headline = model.selectedAddress.streetName ?? 'Endereço';
           subtitle =
@@ -57,7 +57,7 @@ class AddressView extends StatelessWidget {
         return InkWell(
           borderRadius: AppShapes.inputBorderRadius,
           onTap: () async {
-            var address = await showSearch<UserAddress>(
+            var address = await showSearch<Address>(
               context: context,
               delegate: LocationSearchDelegate(),
             );

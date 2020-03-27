@@ -1,21 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_base/core/enums/enums.dart';
-import 'package:flutter_base/core/models/user_address.dart';
+import 'package:flutter_base/core/models/address.dart';
 import 'package:flutter_base/core/services/location_service.dart';
 import 'package:flutter_base/core/viewModels/base_model.dart';
 import 'package:flutter_base/locator.dart';
 
+/// TODO:
+/// Make number field required
 class AddressModel extends BaseModel {
   LocationService locationService = locator<LocationService>();
 
-  UserAddress selectedAddress;
+  Address selectedAddress;
 
   // Controllers
   TextEditingController numberController = TextEditingController();
   TextEditingController complementController = TextEditingController();
   TextEditingController pointOfReferenceController = TextEditingController();
 
-  void updateSelectedAddress(UserAddress address) {
+  void updateSelectedAddress(Address address) {
     selectedAddress = address;
     setState(ViewState.idle);
   }

@@ -11,9 +11,9 @@ User _$UserFromJson(Map json) {
     id: json['id'] as String,
     fullName: json['fullName'] as String,
     email: json['email'] as String,
-    userAddress: json['userAddress'] == null
+    address: json['address'] == null
         ? null
-        : UserAddress.fromJson((json['userAddress'] as Map)?.map(
+        : Address.fromJson((json['address'] as Map)?.map(
             (k, e) => MapEntry(k as String, e),
           )),
   );
@@ -23,5 +23,5 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'id': instance.id,
       'fullName': instance.fullName,
       'email': instance.email,
-      'userAddress': instance.userAddress?.toJson(),
+      'address': instance.address?.toJson(),
     };

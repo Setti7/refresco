@@ -36,13 +36,11 @@ class AuthService {
     userBox = await Hive.openBox('userBox');
 
     var userJson = Map<String, dynamic>.from(userBox.get('user') ?? {});
-    if (userJson.isEmpty) {
-      _userSubject.add(User());
-    } else {
+    if (userJson.isNotEmpty) {
       var _user = User.fromJson(userJson);
       _userSubject.add(_user);
+      logger.d('user loaded');
     }
-    logger.d('user loaded');
   }
 
   /// Login with email and password.
@@ -72,18 +70,18 @@ class AuthService {
   /// Updates the user.
   /// If [force]] is set to true, the passed [newUser] will completely overwrite
   /// the current user. Otherwise, the [newUser] will be merged with the current
-  /// user, using the current user's [userAddress].
+  /// user, using the current user's [address].
   void updateUser(User newUser, {bool force = false}) {
     if (force) {
       _userSubject.add(newUser);
       return;
     }
 
-    if (_userSubject.value.userAddress == null) {
+    if (_userSubject.value.address == null) {
       _userSubject.add(newUser);
     } else {
       var oldUser = _userSubject.value;
-      _userSubject.add(User.newAddress(newUser, oldUser.userAddress));
+      _userSubject.add(User.newAddress(newUser, oldUser.address));
     }
   }
 
@@ -96,6 +94,6 @@ class AuthService {
   void logout() {
     var oldUser = _userSubject.value;
     FirebaseAuth.instance.signOut();
-    _userSubject.add(User.newAddress(User(), oldUser.userAddress));
+    _userSubject.add(User.newAddress(User(), oldUser.address));
   }
 }

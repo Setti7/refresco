@@ -1,11 +1,12 @@
 import 'package:flutter_base/core/models/coordinate.dart';
-import 'package:geocoder/geocoder.dart';
+import 'package:flutter_base/utils/logger.dart';
+import 'package:geocoder/geocoder.dart' as geocoder;
 import 'package:json_annotation/json_annotation.dart';
 
-part 'user_address.g.dart';
+part 'address.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class UserAddress {
+class Address {
   final String streetName;
   final int number;
   final String city;
@@ -15,10 +16,9 @@ class UserAddress {
   final String country;
   final String pointOfReference;
   final Coordinate coordinate;
-  final String completeAddress;
   final String postalCode;
 
-  const UserAddress({
+  const Address({
     this.streetName,
     this.number,
     this.city,
@@ -28,12 +28,11 @@ class UserAddress {
     this.country,
     this.pointOfReference,
     this.coordinate,
-    this.completeAddress,
     this.postalCode,
   });
 
-  factory UserAddress.copy(
-    UserAddress address, {
+  factory Address.copy(
+    Address address, {
     String streetName,
     int number,
     String city,
@@ -43,10 +42,9 @@ class UserAddress {
     String country,
     String pointOfReference,
     Coordinate coordinate,
-    String completeAddress,
     String postalCode,
   }) {
-    return UserAddress(
+    return Address(
       streetName: streetName ?? address?.streetName,
       number: number ?? address?.number,
       city: city ?? address?.city,
@@ -56,13 +54,12 @@ class UserAddress {
       country: country ?? address?.country,
       pointOfReference: pointOfReference ?? address?.pointOfReference,
       coordinate: coordinate ?? address?.coordinate,
-      completeAddress: completeAddress ?? address?.completeAddress,
       postalCode: postalCode ?? address?.postalCode,
     );
   }
 
-  factory UserAddress.fromGeocoderAddress(Address address) {
-    return UserAddress(
+  factory Address.fromGeocoderAddress(geocoder.Address address) {
+    return Address(
       streetName: address.thoroughfare,
       city: address.subAdminArea,
       state: address.adminArea,
@@ -72,14 +69,13 @@ class UserAddress {
         address.coordinates.latitude,
         address.coordinates.longitude,
       ),
-      completeAddress: address.addressLine,
       postalCode: address.postalCode,
     );
   }
 
   String get districtAndCity {
     if (district == null) {
-      return city ?? state;
+      return city;
     } else {
       return '$district - $city';
     }
@@ -88,16 +84,14 @@ class UserAddress {
   String get streetAndNumber => '$streetName, $number';
 
   String get simpleAddress {
-    String _numberOrCity;
-
-    _numberOrCity =
+    var _numberOrCity =
         number != null ? ', $number' : city != null ? ' - $city' : '';
 
     return '$streetName$_numberOrCity';
   }
 
-  factory UserAddress.fromJson(Map<String, dynamic> json) =>
-      _$UserAddressFromJson(json);
+  factory Address.fromJson(Map<String, dynamic> json) =>
+      _$AddressFromJson(json);
 
-  Map<String, dynamic> toJson() => _$UserAddressToJson(this);
+  Map<String, dynamic> toJson() => _$AddressToJson(this);
 }

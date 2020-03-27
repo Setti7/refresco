@@ -8,8 +8,9 @@ part 'coordinate.g.dart';
 // TODO: missing geohash
 @JsonSerializable(nullable: false)
 class Coordinate {
-  const Coordinate(this.latitude, this.longitude);
+  const Coordinate(this.latitude, this.longitude, [this.geoHash]);
 
+  final String geoHash;
   final double latitude;
   final double longitude;
 

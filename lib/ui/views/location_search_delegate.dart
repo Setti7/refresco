@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_base/core/models/user_address.dart';
+import 'package:flutter_base/core/models/address.dart';
 import 'package:flutter_base/core/viewModels/location_search_model.dart';
 import 'package:flutter_base/locator.dart';
 import 'package:flutter_base/ui/theme.dart';
 import 'package:flutter_base/ui/widgets/current_location_tile.dart';
 
-class LocationSearchDelegate extends SearchDelegate<UserAddress> {
+class LocationSearchDelegate extends SearchDelegate<Address> {
   LocationSearchModel model = locator<LocationSearchModel>();
 
   @override
@@ -50,7 +50,7 @@ class LocationSearchDelegate extends SearchDelegate<UserAddress> {
 
     model.updateQuery(query);
 
-    return StreamBuilder<List<UserAddress>>(
+    return StreamBuilder<List<Address>>(
       stream: model.addressesObservable,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
@@ -113,7 +113,7 @@ class LocationSearchDelegate extends SearchDelegate<UserAddress> {
                   onTap: () => close(context, result),
                   title: Text(result.simpleAddress),
                   subtitle: Text(
-                    result.completeAddress,
+                    result.districtAndCity,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),

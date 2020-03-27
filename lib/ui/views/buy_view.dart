@@ -34,7 +34,7 @@ class _BuyViewState extends State<BuyView> with SingleTickerProviderStateMixin {
           onModelReady: (model) {
             model.tabController = tabController;
             model.getGallons(
-              userAddress: user.userAddress,
+              address: user.address,
             );
           },
           builder: (context, model, child) => Scaffold(
@@ -86,15 +86,15 @@ class _BuyViewState extends State<BuyView> with SingleTickerProviderStateMixin {
                 .push(MaterialPageRoute(builder: (_) => AddressView()));
           },
           title: Text(
-            user.userAddress == null
+            user.address == null
                 ? 'Endereço'
-                : user.userAddress.streetAndNumber,
+                : user.address.streetAndNumber,
             style: Theme.of(context).textTheme.headline6,
           ),
           subtitle: Text(
-            user.userAddress == null
+            user.address == null
                 ? 'Escolha um endereço para entrega.'
-                : user.userAddress.districtAndCity,
+                : user.address.districtAndCity,
             style: Theme.of(context).textTheme.subtitle1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -112,7 +112,7 @@ class _BuyViewState extends State<BuyView> with SingleTickerProviderStateMixin {
       onTap: (index) {
         var gallonType = index == 0 ? GallonType.l20 : GallonType.l10;
         model.setGallonType(gallonType);
-        model.getGallons(userAddress: user.userAddress);
+        model.getGallons(address: user.address);
       },
       controller: tabController,
       indicatorColor: AppColors.primary,
@@ -152,7 +152,7 @@ class _BuyViewState extends State<BuyView> with SingleTickerProviderStateMixin {
       return Expanded(
         child: SmartRefresher(
           controller: model.refreshController,
-          onRefresh: () => model.onRefresh(userAddress: user.userAddress),
+          onRefresh: () => model.onRefresh(address: user.address),
           child: child,
         ),
       );

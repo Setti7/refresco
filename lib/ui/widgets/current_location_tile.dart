@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/core/enums/enums.dart';
-import 'package:flutter_base/core/models/user_address.dart';
+import 'package:flutter_base/core/models/address.dart';
 import 'package:flutter_base/core/viewModels/current_location_tile.dart';
 import 'package:flutter_base/ui/theme.dart';
 import 'package:flutter_base/ui/views/base_view.dart';
 
 class CurrentLocationTile extends StatelessWidget {
-  final void Function(BuildContext, UserAddress) closeCallback;
+  final void Function(BuildContext, Address) closeCallback;
   final BuildContext searchContext;
 
   const CurrentLocationTile({
