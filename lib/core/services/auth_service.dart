@@ -1,16 +1,19 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_base/core/models/user.dart';
+import 'package:flutter_base/utils/logger.dart';
 import 'package:hive/hive.dart';
+import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/rxdart.dart';
 
 class AuthService {
   Box userBox;
+  Logger logger = getLogger('AuthService');
 
   // Subjects
-  final BehaviorSubject<User> _userSubject = BehaviorSubject<User>.seeded(User());
+  final BehaviorSubject<User> _userSubject =
+      BehaviorSubject<User>.seeded(User());
 
   // Observables
   Observable<User> get user => _userSubject.stream;
@@ -19,8 +22,7 @@ class AuthService {
     loadUser().then((value) {
       user.listen((User user) {
         userBox.put('user', user.toJson());
-        print('User saved!');
-        print(user.toJson());
+        logger.d('user saved');
       });
     });
   }
@@ -38,18 +40,15 @@ class AuthService {
       _userSubject.add(User());
     } else {
       var _user = User.fromJson(userJson);
-      print(_user.toJson());
       _userSubject.add(_user);
     }
-    print('USER LOADED!');
-    print(_userSubject.value.toJson());
+    logger.d('user loaded');
   }
 
   /// Login with email and password.
   Future<bool> loginWithEmail(
       {@required String email, @required String password}) async {
-    var authResult =
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
+    var authResult = await FirebaseAuth.instance.signInWithEmailAndPassword(
       email: email,
       password: password,
     );
@@ -61,8 +60,7 @@ class AuthService {
   /// Create user with email and password.
   Future<bool> createUserWithEmailAndPassword(
       {@required String email, @required String password}) async {
-    var authResult =
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+    var authResult = await FirebaseAuth.instance.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
