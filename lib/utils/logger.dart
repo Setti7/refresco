@@ -11,6 +11,6 @@ class SimpleLogPrinter extends LogPrinter {
   @override
   List<String> log(LogEvent event) {
     var level = event.level.toString().split('.').last.toLowerCase();
-    return [('[$className - $level] ${event.message.toString().toUpperCase()}')];
+    return [('[$className - $level] ${event.message.toString()}')];
   }
 }

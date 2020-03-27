@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/core/models/gallon.dart';
+import 'package:flutter_base/core/models/store.dart';
 import 'package:flutter_base/ui/theme.dart';
 
-class GallonCard extends StatelessWidget {
-  final Gallon gallon;
+class StoreCard extends StatelessWidget {
+  final Store store;
+  final GallonType gallonType;
 
-  const GallonCard(
-    this.gallon, {
+  const StoreCard({
+    @required this.store,
+    @required this.gallonType,
     Key key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var lowestPriceGallon = store.lowestPrice(gallonType);
+
     return Theme(
       data: AppThemes.storeCardTheme,
       child: Builder(
@@ -25,7 +30,7 @@ class GallonCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(gallon.store.name,
+                  Text(store.name,
                       style: Theme.of(context).textTheme.headline6),
                   Divider(),
                   SizedBox(height: 16.0),
@@ -42,7 +47,7 @@ class GallonCard extends StatelessWidget {
                           SizedBox(height: 8),
                           Row(
                             children: <Widget>[
-                              Text(gallon.store.rating.toString(),
+                              Text(store.rating.toString(),
                                   style: Theme.of(context).textTheme.headline5),
                               SizedBox(width: 2),
                               Icon(
@@ -68,7 +73,7 @@ class GallonCard extends StatelessWidget {
                               children: [
                                 TextSpan(
                                     text:
-                                        '${gallon.store.minDeliveryTime}-${gallon.store.maxDeliveryTime}',
+                                        '${store.minDeliveryTime}-${store.maxDeliveryTime}',
                                     style:
                                         Theme.of(context).textTheme.headline5),
                                 TextSpan(text: 'min'),
@@ -77,6 +82,7 @@ class GallonCard extends StatelessWidget {
                           ),
                         ],
                       ),
+                      // TODO: remove this
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
@@ -89,13 +95,15 @@ class GallonCard extends StatelessWidget {
                             text: TextSpan(
                               style: Theme.of(context).textTheme.bodyText2,
                               children: [
-                                TextSpan(text: 'R\$'),
+                                TextSpan(text: 'desde R\$'),
                                 TextSpan(
-                                    text: gallon.priceIntegers.toString(),
+                                    text:
+                                        '${lowestPriceGallon.priceIntegers.toString()}',
                                     style:
                                         Theme.of(context).textTheme.headline5),
                                 TextSpan(
-                                    text: ",${gallon.priceDecimals.toString().padRight(2, '0')}"),
+                                    text:
+                                        ",${lowestPriceGallon.priceDecimals.toString().padRight(2, '0')}"),
                               ],
                             ),
                           ),

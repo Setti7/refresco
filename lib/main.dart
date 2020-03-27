@@ -3,11 +3,13 @@ import 'package:flutter_base/core/models/user.dart';
 import 'package:flutter_base/core/services/auth_service.dart';
 import 'package:flutter_base/locator.dart';
 import 'package:flutter_base/ui/views/buy_view.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 import 'ui/theme.dart';
 
 void main() {
+  Logger.level = Level.debug;
   setupLocator();
   runApp(MyApp());
 }

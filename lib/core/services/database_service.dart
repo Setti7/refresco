@@ -1,32 +1,42 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_base/core/models/gallon.dart';
 import 'package:flutter_base/core/models/address.dart';
+import 'package:flutter_base/core/models/gallon.dart';
+import 'package:flutter_base/core/models/store.dart';
+import 'package:flutter_base/utils/logger.dart';
+import 'package:logger/logger.dart';
 
 class DatabaseService {
-  final Map<GallonType, List<Gallon>> _gallons = {};
+  Logger logger = getLogger('DatabaseService');
 
-  Future<List<Gallon>> getGallons({
+  List<Store> _storesCache = [];
+
+  Future<List<Store>> getStores({
     @required GallonType gallonType,
     @required Address address,
     bool force = false,
   }) async {
-    if (_gallons[gallonType]?.isNotEmpty == true && !force) {
-      return _gallons[gallonType];
+    if (address == null) {
+      logger.w('failed to get stores: address is null');
+      throw NullThrownError();
     }
 
+    /// TODO:
+    ///  create cache service with attention to when parameters of the query change
+//    if (_storesCache?.isNotEmpty == true && !force) {
+//      return _storesCache;
+//    }
+
     var snapshot = await Firestore.instance
-        .collection('gallons')
-        .where('type', isEqualTo: gallonType == GallonType.l20 ? 'l20' : 'l10')
+        .collection('stores')
+        .where('address.city', isEqualTo: address.city)
         .getDocuments()
         .timeout(Duration(seconds: 5));
 
-    var gallons = snapshot.documents.map((DocumentSnapshot doc) {
-      return Gallon.fromJson(doc.data);
+    _storesCache = snapshot.documents.map((doc) {
+      return Store.fromJson(doc.data);
     }).toList();
 
-    _gallons[gallonType] = gallons;
-
-    return _gallons[gallonType];
+    return _storesCache;
   }
 }

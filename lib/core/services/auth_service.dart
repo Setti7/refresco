@@ -20,9 +20,8 @@ class AuthService {
 
   AuthService() {
     loadUser().then((value) {
-      user.listen((User user) {
+      user.listen((user) {
         userBox.put('user', user.toJson());
-        logger.d('user saved');
       });
     });
   }

@@ -12,8 +12,8 @@ GetIt locator = GetIt.instance;
 
 void setupLocator() {
   // Services
-  locator.registerLazySingleton<DatabaseService>(() => DatabaseService());
   locator.registerLazySingleton<AuthService>(() => AuthService());
+  locator.registerLazySingleton<DatabaseService>(() => DatabaseService());
   locator.registerLazySingleton<LocationService>(() => LocationService());
 
   // Factories

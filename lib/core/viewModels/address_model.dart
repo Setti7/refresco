@@ -7,6 +7,7 @@ import 'package:flutter_base/locator.dart';
 
 /// TODO:
 /// Make number field required
+/// When changing only the number and not the saved address it crashes
 class AddressModel extends BaseModel {
   LocationService locationService = locator<LocationService>();
 
