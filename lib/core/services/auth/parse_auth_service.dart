@@ -1,17 +1,16 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_base/core/models/service_response.dart';
 import 'package:flutter_base/core/models/user.dart';
-import 'package:flutter_base/core/services/auth_service.dart';
+import 'package:flutter_base/core/services/auth/auth_service.dart';
+import 'package:flutter_base/core/services/service_response.dart';
 import 'package:flutter_base/utils/logger.dart';
+import 'package:flutter_parse/flutter_parse.dart';
 import 'package:hive/hive.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/rxdart.dart';
 
-class FirebaseAuthService implements AuthService {
-  FirebaseAuthService() {
+class ParseAuthService implements AuthService {
+  ParseAuthService() {
     loadUser().then((value) {
       user.listen((user) {
         _userBox.put('user', user.toJson());
@@ -20,13 +19,12 @@ class FirebaseAuthService implements AuthService {
   }
 
   Box _userBox;
-  Logger _logger = getLogger('FirebaseAuthService');
+  final Logger _logger = getLogger('ParseAuthService');
 
   // Subjects
   final BehaviorSubject<User> _userSubject =
       BehaviorSubject<User>.seeded(User());
 
-  // Observables
   @override
   Observable<User> get user => _userSubject.stream;
 
@@ -48,37 +46,32 @@ class FirebaseAuthService implements AuthService {
   @override
   Future<ServiceResponse> loginWithEmail(
       {@required String email, @required String password}) async {
-    AuthResult authResult;
-
     try {
-      authResult = await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      updateUser(User.fromFirebase(authResult.user));
-    } on PlatformException catch (e) {
-      return ServiceResponse(firebaseException: e);
+      var _user = await ParseUser.signIn(username: email, password: password);
+      updateUser(User.fromParse(_user));
+    } on ParseException catch (e) {
+      return ServiceResponse(success: false, parseException: e);
     }
 
-    return ServiceResponse();
+    return ServiceResponse(success: true);
   }
 
   @override
   Future<ServiceResponse> createUserWithEmailAndPassword(
       {@required String email, @required String password}) async {
-    AuthResult authResult;
+    var _user = ParseUser()
+      ..set('username', email)
+      ..set('password', password)
+      ..set('email', email);
 
     try {
-      authResult = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      updateUser(User.fromFirebase(authResult.user));
-    } on PlatformException catch (e) {
-      return ServiceResponse(firebaseException: e);
+      _user = await _user.signUp();
+      updateUser(User.fromParse(_user));
+    } on ParseException catch (e) {
+      return ServiceResponse(success: false, parseException: e);
     }
 
-    return ServiceResponse();
+    return ServiceResponse(success: true);
   }
 
   @override
@@ -100,9 +93,9 @@ class FirebaseAuthService implements AuthService {
   User getUser() => _userSubject.value;
 
   @override
-  void logout() {
+  void logout() async {
     var oldUser = _userSubject.value;
-    FirebaseAuth.instance.signOut();
+    await ParseUser.signOut();
     _userSubject.add(User.newAddress(User(), oldUser.address));
   }
 }

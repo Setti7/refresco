@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'time.dart';
+part of '../time.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

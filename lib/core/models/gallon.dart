@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'gallon.g.dart';
+part 'generated/gallon.g.dart';
 
 enum GallonType { l20, l10 }
 

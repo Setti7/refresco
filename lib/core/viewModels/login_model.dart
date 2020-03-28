@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_base/core/enums/enums.dart';
-import 'package:flutter_base/core/models/service_response.dart';
-import 'package:flutter_base/core/services/auth_service.dart';
+import 'package:flutter_base/core/services/service_response.dart';
+import 'package:flutter_base/core/services/auth/auth_service.dart';
 import 'package:flutter_base/core/viewModels/base_model.dart';
 import 'package:flutter_base/locator.dart';
 
@@ -33,7 +33,7 @@ class LoginModel extends BaseModel {
       password: passwordController.text,
     );
 
-    if (!response.hasError) {
+    if (response.success) {
       Navigator.pop(context);
     } else {
       errorMessage = response.errorMessage;
@@ -51,7 +51,7 @@ class LoginModel extends BaseModel {
       password: passwordController.text,
     );
 
-    if (!response.hasError) {
+    if (response.success) {
       Navigator.pop(context);
     } else {
       errorMessage = response.errorMessage;

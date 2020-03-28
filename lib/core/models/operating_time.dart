@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 import 'time.dart';
 
-part 'operating_time.g.dart';
+part 'generated/operating_time.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class OperatingTime {

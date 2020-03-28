@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'gallon.dart';
+part of '../gallon.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

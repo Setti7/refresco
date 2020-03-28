@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:flutter_base/core/models/address.dart';
 import 'package:flutter_base/core/models/user.dart';
-import 'package:flutter_base/core/services/auth_service.dart';
+import 'package:flutter_base/core/services/auth/auth_service.dart';
 import 'package:flutter_base/locator.dart';
 import 'package:geocoder/geocoder.dart' as geo;
 import 'package:location/location.dart';

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'operating_time.dart';
+part of '../operating_time.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

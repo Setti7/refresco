@@ -1,6 +1,7 @@
+import 'package:flutter_parse/flutter_parse.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'coordinate.g.dart';
+part 'generated/coordinate.g.dart';
 
 @JsonSerializable(nullable: false)
 class Coordinate {
@@ -10,6 +11,10 @@ class Coordinate {
   final double longitude;
 
   factory Coordinate.fromJson(dynamic json) => _$CoordinateFromJson(json);
+
+  factory Coordinate.fromParse(ParseGeoPoint geoPoint) {
+    return Coordinate(geoPoint.latitude, geoPoint.longitude);
+  }
 
   Map<String, dynamic> toJson() => _$CoordinateToJson(this);
 }

@@ -3,7 +3,7 @@ import 'package:flutter_base/core/models/address.dart';
 import 'package:flutter_parse/flutter_parse.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'user.g.dart';
+part 'generated/user.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class User {
