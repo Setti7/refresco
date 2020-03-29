@@ -65,7 +65,7 @@ class _BuyViewState extends State<BuyView> with SingleTickerProviderStateMixin {
                       ],
                     ),
                   ),
-                  _buildGallonsList(model, user),
+                  _buildStoresList(model, user),
                 ],
               ),
             );
@@ -117,7 +117,7 @@ class _BuyViewState extends State<BuyView> with SingleTickerProviderStateMixin {
     );
   }
 
-  Widget _buildGallonsList(BuyModel model, User user) {
+  Widget _buildStoresList(BuyModel model, User user) {
     if (model.state == ViewState.busy) {
       return _buildLoading();
     } else {
@@ -156,7 +156,7 @@ class _BuyViewState extends State<BuyView> with SingleTickerProviderStateMixin {
     }
   }
 
-  Expanded _buildLoading() {
+  Widget _buildLoading() {
     return Expanded(
       child: Center(
         child: CircularProgressIndicator(),

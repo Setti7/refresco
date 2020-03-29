@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_base/core/models/address.dart';
+import 'package:flutter_base/core/models/coordinate.dart';
 import 'package:flutter_base/core/models/user.dart';
 import 'package:flutter_base/core/services/auth/auth_service.dart';
 import 'package:flutter_base/locator.dart';
 import 'package:geocoder/geocoder.dart' as geo;
+import 'package:great_circle_distance2/great_circle_distance2.dart';
 import 'package:location/location.dart';
 
 class LocationService {
@@ -80,5 +82,15 @@ class LocationService {
         .where((geo.Address address) =>
             address.thoroughfare != null && address.subAdminArea != null)
         .toList();
+  }
+
+  double getDistanceBetweenCoordinates(
+      Coordinate coordinate1, Coordinate coordinate2) {
+    return GreatCircleDistance.fromDegrees(
+      latitude1: coordinate1.latitude,
+      longitude1: coordinate1.longitude,
+      latitude2: coordinate2.latitude,
+      longitude2: coordinate2.longitude,
+    ).haversineDistance();
   }
 }

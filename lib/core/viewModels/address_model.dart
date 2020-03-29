@@ -23,9 +23,14 @@ class AddressModel extends BaseModel {
     setState(ViewState.idle);
   }
 
-  void saveNewAddress() {
+  //TODO: handle error better
+  void saveNewAddress(Address userAddress) {
+    if (userAddress == null && selectedAddress == null) {
+      throw NullThrownError();
+    }
+
     locationService.updateUserAddress(
-      selectedAddress,
+      selectedAddress ?? userAddress,
       number: numberController.text == ''
           ? null
           : int.tryParse(numberController.text),

@@ -1,5 +1,5 @@
-import 'dart:math';
-
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_base/core/models/address.dart';
 import 'package:flutter_base/core/models/gallon.dart';
 import 'package:flutter_base/core/models/operating_time.dart';
@@ -34,31 +34,16 @@ class Store {
     this.gallons,
   });
 
-  // TODO: remove this from the store card
-  Gallon lowestPrice(GallonType gallonType) {
-    if (gallons.isEmpty) {
-      return Gallon(type: GallonType.l20, price: 100.0, company: 'Bonafont');
-    }
-
-    var lowestPrice = gallons
-        .where((g) => g.type == gallonType)
-        .map((g) => g.price)
-        .reduce(min);
-
-    return gallons.firstWhere((g) => g.price == lowestPrice);
-  }
-
   factory Store.fromJson(Map<String, dynamic> json) => _$StoreFromJson(json);
 
   factory Store.fromParse(ParseObject store) {
     // TODO finish
     return Store(
+      id: store.objectId,
       name: store.get<String>('name'),
-      id: store.get<String>('id'),
       description: store.get<String>('description'),
-      rating: store.get<num>('rating').toDouble(),
+      rating: store.get<num>('rating')?.toDouble(),
       phone: store.get<int>('phone'),
-      gallons: [],
       maxDeliveryTime: 15,
       minDeliveryTime: 10,
       address: Address.fromParse(
@@ -68,4 +53,18 @@ class Store {
   }
 
   Map<String, dynamic> toJson() => _$StoreToJson(this);
+
+  IconData getStarIcon() {
+    if (rating == null) {
+      return Icons.new_releases;
+    }
+
+    if (rating >= 4.0) {
+      return Icons.star;
+    } else if (rating >= 3.0) {
+      return Icons.star_half;
+    } else {
+      return Icons.star_border;
+    }
+  }
 }

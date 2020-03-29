@@ -8,6 +8,7 @@ import 'package:flutter_base/core/viewModels/buy_model.dart';
 import 'package:flutter_base/core/viewModels/current_location_tile.dart';
 import 'package:flutter_base/core/viewModels/location_search_model.dart';
 import 'package:flutter_base/core/viewModels/login_model.dart';
+import 'package:flutter_base/core/viewModels/store_model.dart';
 import 'package:get_it/get_it.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 
@@ -18,6 +19,8 @@ void setupLocator() {
   Parse().initialize(
     '9UBUIZ0VeTdGe6YfwEg7KBbL8LSoM8ONAMQyLKzw',
     'http://192.168.15.13:1337/parse',
+    autoSendSessionId: true,
+    debug: true
   );
 
   // Services
@@ -32,4 +35,5 @@ void setupLocator() {
   locator.registerFactory<AddressModel>(() => AddressModel());
   locator.registerFactory<LoginModel>(() => LoginModel());
   locator.registerFactory<BuyModel>(() => BuyModel());
+  locator.registerFactory<StoreModel>(() => StoreModel());
 }

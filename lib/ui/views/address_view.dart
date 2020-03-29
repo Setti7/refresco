@@ -24,13 +24,15 @@ class AddressView extends StatelessWidget {
                 SizedBox(height: 24),
                 _buildReferencePointField(model),
                 SizedBox(height: 48),
-                RaisedButton(
-                  onPressed: () {
-                    model.saveNewAddress();
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('SALVAR'),
-                ),
+                Consumer<User>(builder: (context, user, child) {
+                  return RaisedButton(
+                    onPressed: () {
+                      model.saveNewAddress(user.address);
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('SALVAR'),
+                  );
+                }),
               ],
             ),
           ),

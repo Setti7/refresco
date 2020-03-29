@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_base/core/models/address.dart';
 import 'package:flutter_base/core/models/gallon.dart';
+import 'package:flutter_base/core/models/store.dart';
 import 'package:flutter_base/core/services/service_response.dart';
 
 abstract class DatabaseService {
@@ -15,4 +16,7 @@ abstract class DatabaseService {
     @required GallonType gallonType,
     @required Address address,
   });
+
+  /// Get all gallons of a store.
+  Future<ServiceResponse> getGallons(Store store);
 }

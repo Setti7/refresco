@@ -48,4 +48,10 @@ class FirebaseDatabaseService implements DatabaseService {
           success: false, message: 'O servidor demorou muito para responder.');
     }
   }
+
+  @override
+  Future<ServiceResponse> getGallons(Store store) {
+    // TODO: implement getGallons
+    throw UnimplementedError();
+  }
 }

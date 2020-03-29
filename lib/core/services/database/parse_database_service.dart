@@ -53,4 +53,27 @@ class ParseDatabaseService implements DatabaseService {
       return ServiceResponse.fromParseError(response.error, results: stores);
     }
   }
+
+  @override
+  Future<ServiceResponse> getGallons(Store store) async {
+    var query = QueryBuilder(ParseObject('Gallon'))
+      ..whereRelatedTo('gallons', 'Store', store.id);
+
+    var response = await query.query();
+
+    var gallons = <Gallon>[];
+
+    if (response.success) {
+      if (response.results != null) {
+        gallons = response.results.map((store) {
+          return Gallon.fromParse(store);
+        }).toList();
+      }
+      return ServiceResponse(success: true, results: gallons);
+    } else if (response.error.code == 1) {
+      return ServiceResponse(success: true, results: gallons);
+    } else {
+      return ServiceResponse.fromParseError(response.error, results: gallons);
+    }
+  }
 }
