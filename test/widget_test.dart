@@ -1,6 +1,5 @@
 import 'package:flutter_base/core/models/address.dart';
 import 'package:flutter_base/core/models/coordinate.dart';
-import 'package:flutter_base/core/models/gallon.dart';
 import 'package:flutter_base/core/services/database/parse_database_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -23,17 +22,12 @@ void main() {
         () async {
       var dbService = ParseDatabaseService();
 
-      var response = await dbService.getStores(
-        gallonType: GallonType.l20,
-        address: null,
-      );
+      var response = await dbService.getStores(null);
       expect(response.success, false);
       expect(response.message, null);
     });
 
-    test(
-        'getStores with error should return empty list',
-        () async {
+    test('getStores with error should return empty list', () async {
       var dbService = ParseDatabaseService();
       var mockQuery = MockQueryBuilder();
 
@@ -50,11 +44,8 @@ void main() {
         (_) async => Future.value(mockResponse),
       );
 
-
-      var response = await dbService.getStores(
-        gallonType: GallonType.l20,
-        address: Address(coordinate: Coordinate(-22.013252, -47.91365)),
-      );
+      var response = await dbService
+          .getStores(Address(coordinate: Coordinate(-22.013252, -47.91365)));
 
       expect(response.results.isEmpty, true);
       expect(response.message, 'Erro inesperado');

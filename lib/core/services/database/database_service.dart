@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_base/core/models/address.dart';
 import 'package:flutter_base/core/models/gallon.dart';
 import 'package:flutter_base/core/models/store.dart';
@@ -12,11 +11,8 @@ abstract class DatabaseService {
   ///
   /// If there are no stores near the user, return an empty [List], otherwise
   /// the list is populated with [Store] objects.
-  Future<ServiceResponse> getStores({
-    @required GallonType gallonType,
-    @required Address address,
-  });
+  Future<ServiceResponse> getStores(Address address);
 
   /// Get all gallons of a store.
-  Future<ServiceResponse> getGallons(Store store);
+  Future<ServiceResponse> getGallons(Store store, GallonType gallonType);
 }

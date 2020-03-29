@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_base/core/models/address.dart';
 import 'package:flutter_base/core/models/gallon.dart';
 import 'package:flutter_base/core/models/store.dart';
@@ -12,10 +11,7 @@ class ParseDatabaseService implements DatabaseService {
   final Logger _logger = getLogger('ParseDatabaseService');
 
   @override
-  Future<ServiceResponse> getStores({
-    @required GallonType gallonType,
-    @required Address address,
-  }) async {
+  Future<ServiceResponse> getStores(Address address) async {
     if (address == null) {
       _logger.w('failed to get stores: address is null');
       return ServiceResponse(success: false);
@@ -55,9 +51,13 @@ class ParseDatabaseService implements DatabaseService {
   }
 
   @override
-  Future<ServiceResponse> getGallons(Store store) async {
+  Future<ServiceResponse> getGallons(Store store, GallonType gallonType) async {
     var query = QueryBuilder(ParseObject('Gallon'))
-      ..whereRelatedTo('gallons', 'Store', store.id);
+      ..whereRelatedTo('gallons', 'Store', store.id)
+      ..whereEqualTo(
+        'type',
+        gallonType == GallonType.l20 ? 'l20' : 'l10',
+      );
 
     var response = await query.query();
 

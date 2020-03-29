@@ -8,21 +8,36 @@ import 'package:flutter_base/ui/theme.dart';
 import 'package:flutter_base/ui/views/base_view.dart';
 import 'package:provider/provider.dart';
 
-class StoreView extends StatelessWidget {
+class StoreView extends StatefulWidget {
   final Store store;
 
   const StoreView(this.store);
 
   @override
+  _StoreViewState createState() => _StoreViewState();
+}
+
+class _StoreViewState extends State<StoreView>
+    with SingleTickerProviderStateMixin {
+  TabController tabController;
+
+  @override
+  void initState() {
+    tabController = TabController(length: 2, vsync: this);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BaseView<StoreModel>(
       onModelReady: (model) {
-        model.getGallons(store);
+        model.tabController = tabController;
+        model.getGallons(widget.store);
       },
       builder: (context, model, child) {
         return Scaffold(
           appBar: AppBar(
-            title: Text(store.name),
+            title: Text(widget.store.name),
           ),
           body: ListView(
             children: <Widget>[
@@ -43,45 +58,55 @@ class StoreView extends StatelessWidget {
       builder: (context, user, child) {
         return Container(
           color: Colors.white,
-          padding: EdgeInsets.all(16),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Expanded(
-                    child: Text(
-                      store.name,
-                      style: Theme.of(context).textTheme.headline5,
-                      overflow: TextOverflow.ellipsis,
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Expanded(
+                          child: Text(
+                            widget.store.name,
+                            style: Theme.of(context).textTheme.headline5,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Text(widget.store.rating == null
+                                ? 'Novo!'
+                                : widget.store.rating.toStringAsFixed(1)),
+                            Icon(widget.store.getStarIcon(),
+                                color: Colors.yellow, size: 20),
+                          ],
+                        )
+                      ],
                     ),
-                  ),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Text(store.rating == null
-                          ? 'Novo!'
-                          : store.rating.toStringAsFixed(1)),
-                      Icon(store.getStarIcon(), color: Colors.yellow, size: 20),
-                    ],
-                  )
-                ],
+                    SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          'Entrega em ${widget.store.minDeliveryTime}-${widget.store.maxDeliveryTime} min',
+                          style: Theme.of(context).textTheme.caption,
+                        ),
+                        Text(
+                          model.getFormattedDistanceFromUser(
+                              user.address, widget.store.address),
+                          style: Theme.of(context).textTheme.caption,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-              SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    'Entrega em ${store.minDeliveryTime}-${store.maxDeliveryTime} min',
-                    style: Theme.of(context).textTheme.caption,
-                  ),
-                  Text(
-                    model.getFormattedDistanceFromUser(user.address, store.address),
-                    style: Theme.of(context).textTheme.caption,
-                  ),
-                ],
-              ),
+              Divider(),
+              _buildTabBar(model),
             ],
           ),
         );
@@ -96,13 +121,13 @@ class StoreView extends StatelessWidget {
   }
 
   Widget _buildItems(BuildContext context, StoreModel model) {
-    var children = <Widget>[];
+    var gallonCards = <Widget>[];
 
-    children = model.gallons.map<Widget>((g) {
-      String priceDecimal =
+    gallonCards = model.gallons.map<Widget>((g) {
+      var priceDecimal =
           ((g.price % 1) * 10).truncate().toString().padRight(2, '0');
-      String priceInteger = g.price.truncate().toString();
-      String type = g.type == GallonType.l20 ? '20L' : '10L';
+      var priceInteger = g.price.truncate().toString();
+      var type = g.type == GallonType.l20 ? '20L' : '10L';
 
       return Card(
         child: Padding(
@@ -110,7 +135,7 @@ class StoreView extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text("${g.company} - $type",
+              Text('${g.company} - $type',
                   textAlign: TextAlign.left,
                   style: AppThemes.boldPlainHeadline6),
               RichText(
@@ -132,14 +157,14 @@ class StoreView extends StatelessWidget {
       );
     }).toList();
 
-    if (children.isEmpty) {
+    if (gallonCards.isEmpty) {
       return _buildEmpty(context);
     }
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
-        children: children,
+        children: gallonCards,
       ),
     );
   }
@@ -153,6 +178,24 @@ class StoreView extends StatelessWidget {
           Text('Houve um erro inesperado.')
         ],
       ),
+    );
+  }
+
+  Widget _buildTabBar(StoreModel model) {
+    return TabBar(
+      onTap: (index) {
+        var gallonType = index == 0 ? GallonType.l20 : GallonType.l10;
+        model.setGallonType(gallonType);
+        model.getGallons(widget.store);
+      },
+      controller: model.tabController,
+      indicatorColor: AppColors.primary,
+      labelColor: AppColors.primary,
+      unselectedLabelColor: Colors.black38,
+      tabs: [
+        Tab(text: '20 litros'),
+        Tab(text: '10 litros'),
+      ],
     );
   }
 }

@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_base/core/models/address.dart';
 import 'package:flutter_base/core/models/gallon.dart';
@@ -18,10 +17,7 @@ class FirebaseDatabaseService implements DatabaseService {
   /// stores by the same city as the user. This is bad, and should be fixed in
   /// the future with the GeoFlutterFire package.
   @override
-  Future<ServiceResponse> getStores({
-    @required GallonType gallonType,
-    @required Address address,
-  }) async {
+  Future<ServiceResponse> getStores(Address address) async {
     if (address == null) {
       _logger.w('failed to get stores: address is null');
       return ServiceResponse(success: false);
@@ -50,7 +46,7 @@ class FirebaseDatabaseService implements DatabaseService {
   }
 
   @override
-  Future<ServiceResponse> getGallons(Store store) {
+  Future<ServiceResponse> getGallons(Store store, GallonType gallonType) {
     // TODO: implement getGallons
     throw UnimplementedError();
   }

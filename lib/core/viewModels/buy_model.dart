@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/core/enums/enums.dart';
 import 'package:flutter_base/core/models/address.dart';
-import 'package:flutter_base/core/models/gallon.dart';
 import 'package:flutter_base/core/models/store.dart';
 import 'package:flutter_base/core/services/auth/auth_service.dart';
 import 'package:flutter_base/core/services/database/database_service.dart';
@@ -21,9 +20,7 @@ class BuyModel extends BaseModel {
   DatabaseService dbService = locator<DatabaseService>();
 
   List<Store> stores = [];
-  TabController tabController;
   RefreshController refreshController = RefreshController();
-  GallonType gallonType = GallonType.l20;
   String errorMessage;
   String errorTitle;
 
@@ -34,7 +31,6 @@ class BuyModel extends BaseModel {
     });
   }
 
-  // TODO: when chaging addresses, the store list does not update
   Future<void> getStores({
     @required Address address,
     bool force = false,
@@ -44,10 +40,7 @@ class BuyModel extends BaseModel {
     errorTitle = null;
     errorMessage = null;
 
-    var response = await dbService.getStores(
-      address: address,
-      gallonType: gallonType,
-    );
+    var response = await dbService.getStores(address);
 
     if (response.success) {
       stores = response.results;
@@ -69,8 +62,6 @@ class BuyModel extends BaseModel {
 
     refreshController.refreshCompleted();
   }
-
-  void setGallonType(GallonType newGallonType) => gallonType = newGallonType;
 
   void logout() => authService.logout();
 }

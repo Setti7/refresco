@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_base/core/enums/enums.dart';
 import 'package:flutter_base/core/models/address.dart';
 import 'package:flutter_base/core/models/gallon.dart';
@@ -16,9 +17,13 @@ class StoreModel extends BaseModel {
   DatabaseService dbService = locator<DatabaseService>();
   LocationService locationService = locator<LocationService>();
 
+  // Controllers
+  TabController tabController;
+
   String errorTitle;
   String errorMessage;
   List<Gallon> gallons = [];
+  GallonType gallonType = GallonType.l20;
 
   Future<void> getGallons(Store store) async {
     setState(ViewState.busy);
@@ -26,7 +31,7 @@ class StoreModel extends BaseModel {
     errorTitle = null;
     errorMessage = null;
 
-    var response = await dbService.getGallons(store);
+    var response = await dbService.getGallons(store, gallonType);
 
     if (response.success) {
       gallons = response.results;
@@ -38,17 +43,19 @@ class StoreModel extends BaseModel {
     setState(ViewState.idle);
   }
 
+  void setGallonType(GallonType newGallonType) => gallonType = newGallonType;
+
   String getFormattedDistanceFromUser(
       Address userAddress, Address storeAddress) {
-    double mDistance = locationService.getDistanceBetweenCoordinates(
+    var mDistance = locationService.getDistanceBetweenCoordinates(
       userAddress.coordinate,
       storeAddress.coordinate,
     );
 
     if (mDistance > 1000) {
-      return "${(mDistance / 1000).toStringAsFixed(1)} km";
+      return '${(mDistance / 1000).toStringAsFixed(1)} km';
     } else {
-      return "${mDistance.truncate()} m";
+      return '${mDistance.truncate()} m';
     }
   }
 }
