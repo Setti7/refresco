@@ -129,17 +129,19 @@ class _BuyViewState extends State<BuyView> with SingleTickerProviderStateMixin {
         child = _buildEmpty();
       } else {
         child = ListView.builder(
-          itemCount: model.stores.length,
+          itemCount: model.stores.length + 1,
           itemBuilder: (context, index) {
-            return Padding(
-              padding: index == 0
-                  ? const EdgeInsets.only(top: 24.0)
-                  : EdgeInsets.zero,
-              child: StoreCard(
-                store: model.stores[index],
-                gallonType: model.gallonType,
-              ),
-            );
+            if (index == 0) {
+              return Padding(
+                padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 32, bottom: 8),
+                child: Text(
+                  'As mais próximas:',
+                  style: AppThemes.boldPlainHeadline6,
+                ),
+              );
+            }
+
+            return StoreCard(store: model.stores[index - 1]);
           },
         );
       }

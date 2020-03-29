@@ -60,7 +60,6 @@ class AppThemes {
 
   static final storeCardTheme = ThemeData(
     textTheme: TextTheme(
-      headline6: boldPlainHeadline6,
       headline5: TextStyle(
         fontSize: 24,
         fontWeight: FontWeight.bold,

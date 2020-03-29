@@ -56,7 +56,7 @@ class Store {
       name: store.get<String>('name'),
       id: store.get<String>('id'),
       description: store.get<String>('description'),
-      rating: store.get<double>('rating'),
+      rating: store.get<num>('rating').toDouble(),
       phone: store.get<int>('phone'),
       gallons: [],
       maxDeliveryTime: 15,

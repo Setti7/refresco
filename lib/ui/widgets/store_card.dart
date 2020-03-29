@@ -1,21 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base/core/models/gallon.dart';
 import 'package:flutter_base/core/models/store.dart';
 import 'package:flutter_base/ui/theme.dart';
 
 class StoreCard extends StatelessWidget {
   final Store store;
-  final GallonType gallonType;
 
   const StoreCard({
     @required this.store,
-    @required this.gallonType,
     Key key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var lowestPriceGallon = store.lowestPrice(gallonType);
+    var ratingIcon;
+
+    if (store.rating >= 4.0) {
+      ratingIcon = Icons.star;
+    } else if (store.rating >= 3.0) {
+      ratingIcon = Icons.star_half;
+    } else {
+      ratingIcon = Icons.star_border;
+    }
 
     return Theme(
       data: AppThemes.storeCardTheme,
@@ -30,12 +35,11 @@ class StoreCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(store.name,
-                      style: Theme.of(context).textTheme.headline6),
+                  Text(store.name, style: Theme.of(context).textTheme.headline6),
                   Divider(),
                   SizedBox(height: 16.0),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,14 +51,13 @@ class StoreCard extends StatelessWidget {
                           SizedBox(height: 8),
                           Row(
                             children: <Widget>[
-                              Text(store.rating.toString(),
+                              Text(
+                                  store.rating == null
+                                      ? 'Novo!'
+                                      : store.rating.toString(),
                                   style: Theme.of(context).textTheme.headline5),
                               SizedBox(width: 2),
-                              Icon(
-                                Icons.star,
-                                color: Colors.yellow,
-                                size: 20,
-                              )
+                              Icon(ratingIcon, color: Colors.yellow, size: 20)
                             ],
                           ),
                         ],
@@ -77,33 +80,6 @@ class StoreCard extends StatelessWidget {
                                     style:
                                         Theme.of(context).textTheme.headline5),
                                 TextSpan(text: 'min'),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      // TODO: remove this
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            'Preço',
-                            style: Theme.of(context).textTheme.caption,
-                          ),
-                          SizedBox(height: 6),
-                          RichText(
-                            text: TextSpan(
-                              style: Theme.of(context).textTheme.bodyText2,
-                              children: [
-                                TextSpan(text: 'desde R\$'),
-                                TextSpan(
-                                    text:
-                                        '${lowestPriceGallon.priceIntegers.toString()}',
-                                    style:
-                                        Theme.of(context).textTheme.headline5),
-                                TextSpan(
-                                    text:
-                                        ",${lowestPriceGallon.priceDecimals.toString().padRight(2, '0')}"),
                               ],
                             ),
                           ),
