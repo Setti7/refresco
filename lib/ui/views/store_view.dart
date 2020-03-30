@@ -6,6 +6,8 @@ import 'package:flutter_base/core/models/user.dart';
 import 'package:flutter_base/core/viewModels/store_model.dart';
 import 'package:flutter_base/ui/theme.dart';
 import 'package:flutter_base/ui/views/base_view.dart';
+import 'package:flutter_base/ui/widgets/cart_sheet.dart';
+import 'package:flutter_base/ui/widgets/gallon_card.dart';
 import 'package:provider/provider.dart';
 
 class StoreView extends StatefulWidget {
@@ -39,13 +41,18 @@ class _StoreViewState extends State<StoreView>
           appBar: AppBar(
             title: Text(widget.store.name),
           ),
-          body: ListView(
+          body: Stack(
             children: <Widget>[
-              _buildStoreHeader(context, model),
-              SizedBox(height: 32),
-              model.state == ViewState.busy
-                  ? _buildLoading(context)
-                  : _buildItems(context, model),
+              ListView(
+                children: <Widget>[
+                  _buildStoreHeader(context, model),
+                  SizedBox(height: 32),
+                  model.state == ViewState.busy
+                      ? _buildLoading(context)
+                      : _buildItems(context, model),
+                ],
+              ),
+              CartSheet()
             ],
           ),
         );
@@ -124,37 +131,7 @@ class _StoreViewState extends State<StoreView>
     var gallonCards = <Widget>[];
 
     gallonCards = model.gallons.map<Widget>((g) {
-      var priceDecimal =
-          ((g.price % 1) * 10).truncate().toString().padRight(2, '0');
-      var priceInteger = g.price.truncate().toString();
-      var type = g.type == GallonType.l20 ? '20L' : '10L';
-
-      return Card(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text('${g.company} - $type',
-                  textAlign: TextAlign.left,
-                  style: AppThemes.boldPlainHeadline6),
-              RichText(
-                text: TextSpan(
-                  style: Theme.of(context).textTheme.bodyText2,
-                  children: [
-                    TextSpan(text: 'R\$'),
-                    TextSpan(
-                      text: '$priceInteger',
-                      style: Theme.of(context).textTheme.headline5,
-                    ),
-                    TextSpan(text: ',$priceDecimal'),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
+      return GallonCard(g);
     }).toList();
 
     if (gallonCards.isEmpty) {

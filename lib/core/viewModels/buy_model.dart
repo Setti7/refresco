@@ -19,8 +19,10 @@ class BuyModel extends BaseModel {
   AuthService authService = locator<AuthService>();
   DatabaseService dbService = locator<DatabaseService>();
 
-  List<Store> stores = [];
+  // Controllers
   RefreshController refreshController = RefreshController();
+
+  List<Store> stores = [];
   String errorMessage;
   String errorTitle;
 

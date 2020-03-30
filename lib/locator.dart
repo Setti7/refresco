@@ -5,6 +5,7 @@ import 'package:flutter_base/core/services/database/parse_database_service.dart'
 import 'package:flutter_base/core/services/location/location_service.dart';
 import 'package:flutter_base/core/viewModels/address_model.dart';
 import 'package:flutter_base/core/viewModels/buy_model.dart';
+import 'package:flutter_base/core/viewModels/cart_sheet_model.dart';
 import 'package:flutter_base/core/viewModels/current_location_tile.dart';
 import 'package:flutter_base/core/viewModels/location_search_model.dart';
 import 'package:flutter_base/core/viewModels/login_model.dart';
@@ -36,4 +37,5 @@ void setupLocator() {
   locator.registerFactory<LoginModel>(() => LoginModel());
   locator.registerFactory<BuyModel>(() => BuyModel());
   locator.registerFactory<StoreModel>(() => StoreModel());
+  locator.registerFactory<CartSheetModel>(() => CartSheetModel());
 }
