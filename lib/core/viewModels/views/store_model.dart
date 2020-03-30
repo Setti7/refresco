@@ -9,6 +9,7 @@ import 'package:flutter_base/core/viewModels/base_model.dart';
 import 'package:flutter_base/locator.dart';
 import 'package:flutter_base/utils/logger.dart';
 import 'package:logger/logger.dart';
+import 'package:parse_server_sdk/parse_server_sdk.dart';
 
 class StoreModel extends BaseModel {
   Logger logger = getLogger('StoreModel');
@@ -30,7 +31,7 @@ class StoreModel extends BaseModel {
 
     errorTitle = null;
     errorMessage = null;
-
+    
     var response = await dbService.getGallons(store, gallonType);
 
     if (response.success) {

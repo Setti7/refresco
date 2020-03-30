@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/core/enums/enums.dart';
 import 'package:flutter_base/core/models/address.dart';
-import 'package:flutter_base/core/viewModels/current_location_tile.dart';
+import 'package:flutter_base/core/viewModels/widgets/current_location_tile.dart';
 import 'package:flutter_base/ui/theme.dart';
 import 'package:flutter_base/ui/views/base_view.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/core/enums/enums.dart';
 import 'package:flutter_base/core/models/user.dart';
-import 'package:flutter_base/core/viewModels/buy_model.dart';
+import 'package:flutter_base/core/viewModels/views/buy_model.dart';
 import 'package:flutter_base/ui/theme.dart';
 import 'package:flutter_base/ui/widgets/store_card.dart';
 import 'package:provider/provider.dart';

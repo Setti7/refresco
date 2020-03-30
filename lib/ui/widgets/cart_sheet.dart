@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_base/core/viewModels/cart_sheet_model.dart';
+import 'package:flutter_base/core/viewModels/widgets/cart_sheet_model.dart';
 import 'package:flutter_base/ui/theme.dart';
 import 'package:flutter_base/ui/views/base_view.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';

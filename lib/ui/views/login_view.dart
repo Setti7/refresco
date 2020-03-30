@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/core/enums/enums.dart';
-import 'package:flutter_base/core/viewModels/login_model.dart';
+import 'package:flutter_base/core/viewModels/views/login_model.dart';
 import 'package:flutter_base/ui/theme.dart';
 import 'package:flutter_base/ui/views/base_view.dart';
 

@@ -3,13 +3,13 @@ import 'package:flutter_base/core/services/auth/firebase_auth_service.dart';
 import 'package:flutter_base/core/services/database/database_service.dart';
 import 'package:flutter_base/core/services/database/parse_database_service.dart';
 import 'package:flutter_base/core/services/location/location_service.dart';
-import 'package:flutter_base/core/viewModels/address_model.dart';
-import 'package:flutter_base/core/viewModels/buy_model.dart';
-import 'package:flutter_base/core/viewModels/cart_sheet_model.dart';
-import 'package:flutter_base/core/viewModels/current_location_tile.dart';
-import 'package:flutter_base/core/viewModels/location_search_model.dart';
-import 'package:flutter_base/core/viewModels/login_model.dart';
-import 'package:flutter_base/core/viewModels/store_model.dart';
+import 'package:flutter_base/core/viewModels/views/address_model.dart';
+import 'package:flutter_base/core/viewModels/views/buy_model.dart';
+import 'package:flutter_base/core/viewModels/views/location_search_model.dart';
+import 'package:flutter_base/core/viewModels/views/login_model.dart';
+import 'package:flutter_base/core/viewModels/views/store_model.dart';
+import 'package:flutter_base/core/viewModels/widgets/cart_sheet_model.dart';
+import 'package:flutter_base/core/viewModels/widgets/current_location_tile.dart';
 import 'package:get_it/get_it.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 
@@ -21,7 +21,6 @@ void setupLocator() {
     '9UBUIZ0VeTdGe6YfwEg7KBbL8LSoM8ONAMQyLKzw',
     'http://192.168.15.13:1337/parse',
     autoSendSessionId: true,
-    debug: true
   );
 
   // Services
@@ -29,13 +28,15 @@ void setupLocator() {
   locator.registerLazySingleton<DatabaseService>(() => ParseDatabaseService());
   locator.registerLazySingleton<LocationService>(() => LocationService());
 
-  // Factories
+  // View model factories
   locator.registerFactory<LocationSearchModel>(() => LocationSearchModel());
-  locator.registerFactory<CurrentLocationTileModel>(
-      () => CurrentLocationTileModel());
   locator.registerFactory<AddressModel>(() => AddressModel());
   locator.registerFactory<LoginModel>(() => LoginModel());
   locator.registerFactory<BuyModel>(() => BuyModel());
   locator.registerFactory<StoreModel>(() => StoreModel());
+
+  // Widgets model factories
   locator.registerFactory<CartSheetModel>(() => CartSheetModel());
+  locator.registerFactory<CurrentLocationTileModel>(
+      () => CurrentLocationTileModel());
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/core/models/address.dart';
-import 'package:flutter_base/core/viewModels/location_search_model.dart';
+import 'package:flutter_base/core/viewModels/views/location_search_model.dart';
 import 'package:flutter_base/locator.dart';
 import 'package:flutter_base/ui/theme.dart';
 import 'package:flutter_base/ui/widgets/current_location_tile.dart';

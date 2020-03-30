@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/core/models/user.dart';
 import 'package:flutter_base/core/models/address.dart';
-import 'package:flutter_base/core/viewModels/address_model.dart';
+import 'package:flutter_base/core/viewModels/views/address_model.dart';
 import 'package:flutter_base/ui/theme.dart';
 import 'package:flutter_base/ui/views/base_view.dart';
 import 'package:flutter_base/ui/views/location_search_delegate.dart';
