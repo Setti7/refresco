@@ -1,12 +1,14 @@
-import 'package:refresco/core/models/coordinate.dart';
 import 'package:geocoder/geocoder.dart' as geocoder;
 import 'package:json_annotation/json_annotation.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
+import 'package:random_string/random_string.dart';
+import 'package:refresco/core/models/coordinate.dart';
 
 part 'generated/address.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Address {
+  final String id;
   final String streetName;
   final int number;
   final String city;
@@ -19,6 +21,7 @@ class Address {
   final String postalCode;
 
   const Address({
+    this.id,
     this.streetName,
     this.number,
     this.city,
@@ -33,6 +36,7 @@ class Address {
 
   factory Address.copy(
     Address address, {
+    String id,
     String streetName,
     int number,
     String city,
@@ -45,6 +49,7 @@ class Address {
     String postalCode,
   }) {
     return Address(
+      id: id ?? address?.id,
       streetName: streetName ?? address?.streetName,
       number: number ?? address?.number,
       city: city ?? address?.city,
@@ -75,6 +80,7 @@ class Address {
 
   factory Address.fromParse(ParseObject address) {
     return Address(
+      id: address.objectId,
       streetName: address.get<String>('streetName'),
       number: address.get<int>('number'),
       city: address.get<String>('city'),
@@ -83,9 +89,23 @@ class Address {
       complement: address.get<String>('complement'),
       country: address.get<String>('country'),
       pointOfReference: address.get<String>('pointOfReference'),
-      coordinate: Coordinate.fromParse(address.get<ParseGeoPoint>('coordinate')),
+      coordinate:
+          Coordinate.fromParse(address.get<ParseGeoPoint>('coordinate')),
       postalCode: address.get<String>('postalCode'),
     );
+  }
+
+  static ParseObject toParse(Address address) {
+    return ParseObject('Store')
+      ..objectId = address.id ?? randomAlphaNumeric(10)
+      ..set('coordinate', Coordinate.toParse(address.coordinate))
+      ..set('streetName', address.streetName)
+      ..set('number', address.number)
+      ..set('city', address.city)
+      ..set('state', address.state)
+      ..set('district', address.district)
+      ..set('country', address.country)
+      ..set('postalCode', address.postalCode);
   }
 
   String get districtAndCity {

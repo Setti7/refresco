@@ -1,14 +1,20 @@
+import 'package:logger/logger.dart';
+import 'package:parse_server_sdk/parse_server_sdk.dart';
 import 'package:refresco/core/models/address.dart';
 import 'package:refresco/core/models/gallon.dart';
 import 'package:refresco/core/models/store.dart';
+import 'package:refresco/core/services/api/parse_api.dart';
 import 'package:refresco/core/services/database/database_service.dart';
 import 'package:refresco/core/services/service_response.dart';
 import 'package:refresco/utils/logger.dart';
-import 'package:logger/logger.dart';
-import 'package:parse_server_sdk/parse_server_sdk.dart';
 
 class ParseDatabaseService implements DatabaseService {
   final Logger _logger = getLogger('ParseDatabaseService');
+  ParseApi api = ParseApi();
+
+  ParseDatabaseService({this.api}) {
+    api ??= ParseApi();
+  }
 
   @override
   Future<ServiceResponse> getStores(Address address) async {
@@ -32,7 +38,7 @@ class ParseDatabaseService implements DatabaseService {
       ..whereMatchesQuery('address', addressQuery)
       ..includeObject(['address']);
 
-    var response = await storeQuery.query();
+    var response = await api.query(storeQuery);
 
     var stores = <Store>[];
 
@@ -59,7 +65,7 @@ class ParseDatabaseService implements DatabaseService {
         gallonType == GallonType.l20 ? 'l20' : 'l10',
       );
 
-    var response = await query.query();
+    var response = await api.query(query);
 
     var gallons = <Gallon>[];
 
@@ -69,8 +75,6 @@ class ParseDatabaseService implements DatabaseService {
           return Gallon.fromParse(store);
         }).toList();
       }
-      return ServiceResponse(success: true, results: gallons);
-    } else if (response.error.code == 1) {
       return ServiceResponse(success: true, results: gallons);
     } else {
       return ServiceResponse.fromParseError(response.error, results: gallons);

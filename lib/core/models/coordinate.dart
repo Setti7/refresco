@@ -16,5 +16,12 @@ class Coordinate {
     return Coordinate(geoPoint.latitude, geoPoint.longitude);
   }
 
+  static ParseGeoPoint toParse(Coordinate coordinate) {
+    return ParseGeoPoint(
+      latitude: coordinate.latitude,
+      longitude: coordinate.longitude,
+    );
+  }
+
   Map<String, dynamic> toJson() => _$CoordinateToJson(this);
 }
