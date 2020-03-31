@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base/core/enums/enums.dart';
-import 'package:flutter_base/core/models/address.dart';
-import 'package:flutter_base/core/viewModels/widgets/current_location_tile.dart';
-import 'package:flutter_base/ui/theme.dart';
-import 'package:flutter_base/ui/views/base_view.dart';
+import 'package:refresco/core/enums/enums.dart';
+import 'package:refresco/core/models/address.dart';
+import 'package:refresco/core/viewModels/widgets/current_location_tile.dart';
+import 'package:refresco/ui/theme.dart';
+import 'package:refresco/ui/views/base_view.dart';
 
 class CurrentLocationTile extends StatelessWidget {
   final void Function(BuildContext, Address) closeCallback;

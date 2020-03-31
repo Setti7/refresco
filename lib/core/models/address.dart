@@ -1,4 +1,4 @@
-import 'package:flutter_base/core/models/coordinate.dart';
+import 'package:refresco/core/models/coordinate.dart';
 import 'package:geocoder/geocoder.dart' as geocoder;
 import 'package:json_annotation/json_annotation.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base/core/enums/enums.dart';
-import 'package:flutter_base/core/models/user.dart';
-import 'package:flutter_base/core/viewModels/views/buy_model.dart';
-import 'package:flutter_base/ui/theme.dart';
-import 'package:flutter_base/ui/widgets/store_card.dart';
+import 'package:refresco/core/enums/enums.dart';
+import 'package:refresco/core/models/user.dart';
+import 'package:refresco/core/viewModels/views/buy_model.dart';
+import 'package:refresco/ui/theme.dart';
+import 'package:refresco/ui/widgets/store_card.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 

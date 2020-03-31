@@ -1,15 +1,15 @@
-import 'package:flutter_base/core/services/auth/auth_service.dart';
-import 'package:flutter_base/core/services/auth/firebase_auth_service.dart';
-import 'package:flutter_base/core/services/database/database_service.dart';
-import 'package:flutter_base/core/services/database/parse_database_service.dart';
-import 'package:flutter_base/core/services/location/location_service.dart';
-import 'package:flutter_base/core/viewModels/views/address_model.dart';
-import 'package:flutter_base/core/viewModels/views/buy_model.dart';
-import 'package:flutter_base/core/viewModels/views/location_search_model.dart';
-import 'package:flutter_base/core/viewModels/views/login_model.dart';
-import 'package:flutter_base/core/viewModels/views/store_model.dart';
-import 'package:flutter_base/core/viewModels/widgets/cart_sheet_model.dart';
-import 'package:flutter_base/core/viewModels/widgets/current_location_tile.dart';
+import 'package:refresco/core/services/auth/auth_service.dart';
+import 'package:refresco/core/services/auth/firebase_auth_service.dart';
+import 'package:refresco/core/services/database/database_service.dart';
+import 'package:refresco/core/services/database/parse_database_service.dart';
+import 'package:refresco/core/services/location/location_service.dart';
+import 'package:refresco/core/viewModels/views/address_model.dart';
+import 'package:refresco/core/viewModels/views/buy_model.dart';
+import 'package:refresco/core/viewModels/views/location_search_model.dart';
+import 'package:refresco/core/viewModels/views/login_model.dart';
+import 'package:refresco/core/viewModels/views/store_model.dart';
+import 'package:refresco/core/viewModels/widgets/cart_sheet_model.dart';
+import 'package:refresco/core/viewModels/widgets/current_location_tile.dart';
 import 'package:get_it/get_it.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 

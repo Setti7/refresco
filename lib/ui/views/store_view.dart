@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base/core/enums/enums.dart';
-import 'package:flutter_base/core/models/gallon.dart';
-import 'package:flutter_base/core/models/store.dart';
-import 'package:flutter_base/core/models/user.dart';
-import 'package:flutter_base/core/viewModels/views/store_model.dart';
-import 'package:flutter_base/ui/theme.dart';
-import 'package:flutter_base/ui/views/base_view.dart';
-import 'package:flutter_base/ui/widgets/cart_sheet.dart';
-import 'package:flutter_base/ui/widgets/gallon_card.dart';
+import 'package:refresco/core/enums/enums.dart';
+import 'package:refresco/core/models/gallon.dart';
+import 'package:refresco/core/models/store.dart';
+import 'package:refresco/core/models/user.dart';
+import 'package:refresco/core/viewModels/views/store_model.dart';
+import 'package:refresco/ui/theme.dart';
+import 'package:refresco/ui/views/base_view.dart';
+import 'package:refresco/ui/widgets/cart_sheet.dart';
+import 'package:refresco/ui/widgets/gallon_card.dart';
 import 'package:provider/provider.dart';
 
 class StoreView extends StatefulWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base/core/models/store.dart';
-import 'package:flutter_base/ui/theme.dart';
-import 'package:flutter_base/ui/views/store_view.dart';
+import 'package:refresco/core/models/store.dart';
+import 'package:refresco/ui/theme.dart';
+import 'package:refresco/ui/views/store_view.dart';
 
 class StoreCard extends StatelessWidget {
   final Store store;

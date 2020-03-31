@@ -1,14 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_base/core/enums/enums.dart';
-import 'package:flutter_base/core/models/address.dart';
-import 'package:flutter_base/core/models/store.dart';
-import 'package:flutter_base/core/services/auth/auth_service.dart';
-import 'package:flutter_base/core/services/database/database_service.dart';
-import 'package:flutter_base/core/viewModels/base_model.dart';
-import 'package:flutter_base/locator.dart';
-import 'package:flutter_base/utils/logger.dart';
+import 'package:refresco/core/enums/enums.dart';
+import 'package:refresco/core/models/address.dart';
+import 'package:refresco/core/models/store.dart';
+import 'package:refresco/core/services/auth/auth_service.dart';
+import 'package:refresco/core/services/database/database_service.dart';
+import 'package:refresco/core/viewModels/base_model.dart';
+import 'package:refresco/locator.dart';
+import 'package:refresco/utils/logger.dart';
 import 'package:logger/logger.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 

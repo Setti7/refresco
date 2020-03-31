@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base/locator.dart';
-import 'package:flutter_base/core/viewModels/base_model.dart';
+import 'package:refresco/locator.dart';
+import 'package:refresco/core/viewModels/base_model.dart';
 import 'package:provider/provider.dart';
 
 class BaseView<T extends BaseModel> extends StatefulWidget{

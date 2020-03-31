@@ -1,6 +1,6 @@
-import 'package:flutter_base/core/models/address.dart';
-import 'package:flutter_base/core/models/coordinate.dart';
-import 'package:flutter_base/core/services/database/parse_database_service.dart';
+import 'package:refresco/core/models/address.dart';
+import 'package:refresco/core/models/coordinate.dart';
+import 'package:refresco/core/services/database/parse_database_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';

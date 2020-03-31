@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_base/core/enums/enums.dart';
-import 'package:flutter_base/core/models/address.dart';
-import 'package:flutter_base/core/services/location/location_service.dart';
-import 'package:flutter_base/locator.dart';
-import 'package:flutter_base/core/viewModels/base_model.dart';
+import 'package:refresco/core/enums/enums.dart';
+import 'package:refresco/core/models/address.dart';
+import 'package:refresco/core/services/location/location_service.dart';
+import 'package:refresco/locator.dart';
+import 'package:refresco/core/viewModels/base_model.dart';
 
 class CurrentLocationTileModel extends BaseModel {
   LocationService locationService = locator<LocationService>();

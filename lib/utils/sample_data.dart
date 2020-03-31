@@ -1,9 +1,9 @@
-import 'package:flutter_base/core/models/address.dart';
-import 'package:flutter_base/core/models/coordinate.dart';
-import 'package:flutter_base/core/models/gallon.dart';
-import 'package:flutter_base/core/models/operating_time.dart';
-import 'package:flutter_base/core/models/store.dart';
-import 'package:flutter_base/core/models/time.dart';
+import 'package:refresco/core/models/address.dart';
+import 'package:refresco/core/models/coordinate.dart';
+import 'package:refresco/core/models/gallon.dart';
+import 'package:refresco/core/models/operating_time.dart';
+import 'package:refresco/core/models/store.dart';
+import 'package:refresco/core/models/time.dart';
 import 'package:random_string/random_string.dart';
 
 class SampleData {

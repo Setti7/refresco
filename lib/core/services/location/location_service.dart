@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-import 'package:flutter_base/core/models/address.dart';
-import 'package:flutter_base/core/models/coordinate.dart';
-import 'package:flutter_base/core/models/user.dart';
-import 'package:flutter_base/core/services/auth/auth_service.dart';
-import 'package:flutter_base/locator.dart';
+import 'package:refresco/core/models/address.dart';
+import 'package:refresco/core/models/coordinate.dart';
+import 'package:refresco/core/models/user.dart';
+import 'package:refresco/core/services/auth/auth_service.dart';
+import 'package:refresco/locator.dart';
 import 'package:geocoder/geocoder.dart' as geo;
 import 'package:great_circle_distance2/great_circle_distance2.dart';
 import 'package:location/location.dart';

@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_base/core/models/address.dart';
-import 'package:flutter_base/core/models/gallon.dart';
-import 'package:flutter_base/core/models/store.dart';
-import 'package:flutter_base/core/services/database/database_service.dart';
-import 'package:flutter_base/core/services/service_response.dart';
-import 'package:flutter_base/utils/logger.dart';
+import 'package:refresco/core/models/address.dart';
+import 'package:refresco/core/models/gallon.dart';
+import 'package:refresco/core/models/store.dart';
+import 'package:refresco/core/services/database/database_service.dart';
+import 'package:refresco/core/services/service_response.dart';
+import 'package:refresco/utils/logger.dart';
 import 'package:logger/logger.dart';
 
 class FirebaseDatabaseService implements DatabaseService {

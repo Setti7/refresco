@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_base/core/models/address.dart';
-import 'package:flutter_base/core/models/gallon.dart';
-import 'package:flutter_base/core/models/operating_time.dart';
+import 'package:refresco/core/models/address.dart';
+import 'package:refresco/core/models/gallon.dart';
+import 'package:refresco/core/models/operating_time.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 

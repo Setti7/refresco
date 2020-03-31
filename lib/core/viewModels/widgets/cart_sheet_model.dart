@@ -1,4 +1,4 @@
-import 'package:flutter_base/core/viewModels/base_model.dart';
+import 'package:refresco/core/viewModels/base_model.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
 
 class CartSheetModel extends BaseModel {

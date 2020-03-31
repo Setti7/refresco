@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base/core/enums/enums.dart';
+import 'package:refresco/core/enums/enums.dart';
 
 class BaseModel extends ChangeNotifier {
   ViewState _state = ViewState.idle;

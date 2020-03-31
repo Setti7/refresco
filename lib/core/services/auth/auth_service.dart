@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_base/core/services/service_response.dart';
-import 'package:flutter_base/core/models/user.dart';
+import 'package:flutter/material.dart';
+import 'package:refresco/core/services/service_response.dart';
+import 'package:refresco/core/models/user.dart';
 import 'package:rxdart/rxdart.dart';
 
 abstract class AuthService {

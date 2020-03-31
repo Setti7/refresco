@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base/core/models/user.dart';
-import 'package:flutter_base/core/services/auth/auth_service.dart';
-import 'package:flutter_base/locator.dart';
-import 'package:flutter_base/ui/views/buy_view.dart';
+import 'package:refresco/core/models/user.dart';
+import 'package:refresco/core/services/auth/auth_service.dart';
+import 'package:refresco/locator.dart';
+import 'package:refresco/ui/views/buy_view.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 

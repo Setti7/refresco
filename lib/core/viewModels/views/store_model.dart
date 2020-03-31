@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base/core/enums/enums.dart';
-import 'package:flutter_base/core/models/address.dart';
-import 'package:flutter_base/core/models/gallon.dart';
-import 'package:flutter_base/core/models/store.dart';
-import 'package:flutter_base/core/services/database/database_service.dart';
-import 'package:flutter_base/core/services/location/location_service.dart';
-import 'package:flutter_base/core/viewModels/base_model.dart';
-import 'package:flutter_base/locator.dart';
-import 'package:flutter_base/utils/logger.dart';
 import 'package:logger/logger.dart';
-import 'package:parse_server_sdk/parse_server_sdk.dart';
+import 'package:refresco/core/enums/enums.dart';
+import 'package:refresco/core/models/address.dart';
+import 'package:refresco/core/models/gallon.dart';
+import 'package:refresco/core/models/store.dart';
+import 'package:refresco/core/services/database/database_service.dart';
+import 'package:refresco/core/services/location/location_service.dart';
+import 'package:refresco/core/viewModels/base_model.dart';
+import 'package:refresco/locator.dart';
+import 'package:refresco/utils/logger.dart';
 
 class StoreModel extends BaseModel {
   Logger logger = getLogger('StoreModel');
@@ -31,7 +30,7 @@ class StoreModel extends BaseModel {
 
     errorTitle = null;
     errorMessage = null;
-    
+
     var response = await dbService.getGallons(store, gallonType);
 
     if (response.success) {

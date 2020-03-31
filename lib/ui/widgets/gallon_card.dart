@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base/core/models/gallon.dart';
-import 'package:flutter_base/ui/theme.dart';
+import 'package:refresco/core/models/gallon.dart';
+import 'package:refresco/ui/theme.dart';
 
 class GallonCard extends StatelessWidget {
   const GallonCard(this.gallon);
