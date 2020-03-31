@@ -1,26 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_base/core/services/database_service.dart';
+import 'package:flutter_base/ui/views/buy_view.dart';
+import 'package:provider/provider.dart';
 
-void main() {
-  runApp(MyApp());
-}
+import 'core/services/auth_service.dart';
+import 'core/viewModels/buy_view.dart';
+import 'ui/theme.dart';
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+  final AuthService authService = AuthService();
+  final DatabaseService dbService = DatabaseService();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Refresco',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: AppColors.primary,
+        scaffoldBackgroundColor: AppColors.scaffoldBackground,
+        accentColor: AppColors.accent,
+        buttonTheme: AppThemes.buttonTheme,
+        accentTextTheme: AppThemes.accentTextTheme,
+        inputDecorationTheme: AppThemes.inputDecorationTheme,
+        cardTheme: AppThemes.cardTheme,
+      ),
+      home: MultiProvider(
+        providers: [
+          Provider.value(value: authService),
+          Provider.value(value: dbService),
+          ChangeNotifierProvider(
+            create: (_) => BuyViewModel(
+              authService: authService,
+              dbService: dbService,
+            ),
+          ),
+        ],
+        child: BuyView(),
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
     );

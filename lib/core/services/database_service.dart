@@ -1,0 +1,23 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_base/core/models/gallon.dart';
+
+class DatabaseService {
+  Map<GallonType, List<Gallon>> _gallons = {};
+
+  Future<List<Gallon>> getGallons(GallonType gallonType) async {
+    if (_gallons[gallonType].isNotEmpty) return _gallons[gallonType];
+
+    QuerySnapshot snapshot = await Firestore.instance
+        .collection('gallons')
+        .where('type', isEqualTo: gallonType == GallonType.l20 ? 'l20' : 'l10')
+        .getDocuments();
+
+    List<Gallon> gallons = snapshot.documents.map((DocumentSnapshot doc) {
+      return Gallon.fromJson(doc.data);
+    }).toList();
+
+    _gallons[gallonType] = gallons;
+
+    return _gallons[gallonType];
+  }
+}
