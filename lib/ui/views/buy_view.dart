@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/core/enums/enums.dart';
 import 'package:flutter_base/core/models/gallon.dart';
-import 'package:flutter_base/core/models/user_address.dart';
+import 'package:flutter_base/core/models/user.dart';
 import 'package:flutter_base/core/viewModels/buy_model.dart';
 import 'package:flutter_base/ui/theme.dart';
 import 'package:flutter_base/ui/widgets/gallon_card.dart';
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'address_view.dart';
 import 'base_view.dart';
+import 'login_view.dart';
 
 class BuyView extends StatefulWidget {
   @override
@@ -33,6 +35,20 @@ class _BuyViewState extends State<BuyView> with SingleTickerProviderStateMixin {
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
           title: Text('Escolha uma revenda'),
+          actions: <Widget>[
+            Consumer<User>(
+              builder: (context, user, child) {
+                return IconButton(
+                  icon: Icon(
+                      user.isAnonymous ? Icons.vpn_key : Icons.exit_to_app),
+                  onPressed: user.isAnonymous
+                      ? () => Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (_) => LoginView()))
+                      : model.logout,
+                );
+              },
+            )
+          ],
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -56,12 +72,9 @@ class _BuyViewState extends State<BuyView> with SingleTickerProviderStateMixin {
 
   Widget _buildAddress() {
     return ListTile(
-      onTap: () async {
-        UserAddress newAddress = await Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (_) => AddressView(),
-          ),
-        );
+      onTap: () {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (_) => AddressView()));
       },
       title: Text(
         'Endereço',

@@ -16,8 +16,8 @@ UserAddress _$UserAddressFromJson(Map<String, dynamic> json) {
     complement: json['complement'] as String,
     country: json['country'] as String,
     pointOfReference: json['pointOfReference'] as String,
-    latitude: (json['latitude'] as num).toDouble(),
-    longitude: (json['longitude'] as num).toDouble(),
+    latitude: (json['latitude'] as num)?.toDouble(),
+    longitude: (json['longitude'] as num)?.toDouble(),
     completeAddress: json['completeAddress'] as String,
   );
 }

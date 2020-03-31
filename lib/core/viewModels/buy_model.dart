@@ -5,8 +5,8 @@ import 'package:flutter_base/core/enums/enums.dart';
 import 'package:flutter_base/core/models/gallon.dart';
 import 'package:flutter_base/core/services/auth_service.dart';
 import 'package:flutter_base/core/services/database_service.dart';
-import 'package:flutter_base/locator.dart';
 import 'package:flutter_base/core/viewModels/base_model.dart';
+import 'package:flutter_base/locator.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class BuyModel extends BaseModel {
@@ -49,4 +49,6 @@ class BuyModel extends BaseModel {
     gallonType = newGallonType;
     getGallons(gallonType);
   }
+
+  void logout() => authService.logout();
 }

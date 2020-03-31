@@ -23,7 +23,9 @@ class AddressModel extends BaseModel {
   }
 
   void saveNewAddress() {
-    // TODO: save address to user
+    /// TODO: save address to user
+    /// LocationService should have an "updateUserLocation" or something that
+    /// saves the new UserLocation to the user profile in the authService
     userAddress = UserAddress.copy(
       selectedAddress,
       number: numberController.text == ''

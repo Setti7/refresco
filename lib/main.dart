@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_base/core/models/user.dart';
+import 'package:flutter_base/core/services/auth_service.dart';
 import 'package:flutter_base/locator.dart';
 import 'package:flutter_base/ui/views/buy_view.dart';
+import 'package:provider/provider.dart';
 
 import 'ui/theme.dart';
 
@@ -12,18 +15,22 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Refresco',
-      theme: ThemeData(
-        primarySwatch: AppColors.primary,
-        scaffoldBackgroundColor: AppColors.scaffoldBackground,
-        accentColor: AppColors.accent,
-        buttonTheme: AppThemes.buttonTheme,
-        accentTextTheme: AppThemes.accentTextTheme,
-        inputDecorationTheme: AppThemes.inputDecorationTheme,
-        cardTheme: AppThemes.cardTheme,
+    return StreamProvider<User>(
+      create: (context) => locator<AuthService>().user,
+      initialData: User(),
+      child: MaterialApp(
+        title: 'Refresco',
+        theme: ThemeData(
+          primarySwatch: AppColors.primary,
+          scaffoldBackgroundColor: AppColors.scaffoldBackground,
+          accentColor: AppColors.accent,
+          buttonTheme: AppThemes.buttonTheme,
+          accentTextTheme: AppThemes.accentTextTheme,
+          inputDecorationTheme: AppThemes.inputDecorationTheme,
+          cardTheme: AppThemes.cardTheme,
+        ),
+        home: BuyView(),
       ),
-      home: BuyView(),
     );
   }
 }
