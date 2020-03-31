@@ -36,7 +36,7 @@ class LoginModel extends BaseModel {
     if (response.success) {
       Navigator.pop(context);
     } else {
-      errorMessage = response.errorMessage;
+      errorMessage = response.message;
     }
     setState(ViewState.idle);
   }
@@ -54,7 +54,7 @@ class LoginModel extends BaseModel {
     if (response.success) {
       Navigator.pop(context);
     } else {
-      errorMessage = response.errorMessage;
+      errorMessage = response.message;
     }
     setState(ViewState.idle);
   }

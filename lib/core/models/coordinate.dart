@@ -1,5 +1,5 @@
-import 'package:flutter_parse/flutter_parse.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:parse_server_sdk/parse_server_sdk.dart';
 
 part 'generated/coordinate.g.dart';
 

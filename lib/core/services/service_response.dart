@@ -1,37 +1,36 @@
-import 'package:flutter/services.dart';
-import 'package:flutter_parse/flutter_parse.dart';
-import 'package:meta/meta.dart';
+import 'package:parse_server_sdk/parse_server_sdk.dart';
 
 class ServiceResponse {
-  final bool success;
-  final ParseException parseException;
-  final PlatformException firebaseException;
-
   const ServiceResponse({
-    @required this.success,
-    this.parseException,
-    this.firebaseException,
-  }) : assert(parseException == null || firebaseException == null);
+    this.success,
+    this.results,
+    this.message,
+  });
 
-  String get errorCode {
-    if (parseException != null) {
-      return parseException.code.toString();
-    } else {
-      return firebaseException.code;
-    }
+  final bool success;
+  final String message;
+  final List results;
+
+  factory ServiceResponse.fromParseError(
+    ParseError parseError, {
+    List results,
+  }) {
+    return ServiceResponse(
+      success: false,
+      message: _getParseErrorMessage(parseError.code),
+      results: results
+    );
   }
 
-  String get errorMessage {
-    if (parseException != null) {
-      return _getParseErrorMessage(parseException.code);
-    } else if (firebaseException != null) {
-      return _getFirebaseErrorMessage(firebaseException.code);
-    } else {
-      return null;
-    }
+  factory ServiceResponse.fromFirebaseError(String code, {List results}) {
+    return ServiceResponse(
+      success: false,
+      message: _getFirebaseErrorMessage(code),
+      results: results
+    );
   }
 
-  String _getFirebaseErrorMessage(String code) {
+  static String _getFirebaseErrorMessage(String code) {
     if (code == 'ERROR_INVALID_EMAIL') {
       return 'Email inválido';
     } else if (code == 'ERROR_WRONG_PASSWORD') {
@@ -53,7 +52,7 @@ class ServiceResponse {
     }
   }
 
-  String _getParseErrorMessage(int code) {
+  static String _getParseErrorMessage(int code) {
     if (code == -1) {
       return 'Erro inesperado';
     } else if (code == 100) {

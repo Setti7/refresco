@@ -1,30 +1,64 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility that Flutter provides. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
-import 'package:flutter/material.dart';
+import 'package:flutter_base/core/models/address.dart';
+import 'package:flutter_base/core/models/coordinate.dart';
+import 'package:flutter_base/core/models/gallon.dart';
+import 'package:flutter_base/core/services/database/parse_database_service.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
+import 'package:parse_server_sdk/parse_server_sdk.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:refresco/main.dart';
+class MockQueryBuilder extends Mock implements QueryBuilder {}
+
+class MockClient extends Mock implements ParseHTTPClient {}
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp());
+  TestWidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences.setMockInitialValues(<String, String>{});
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+  group('ParseDatabaseService Test | ', () {
+    setUpAll(() {});
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    test(
+        'getStores with null address should return response with no message and success=false',
+        () async {
+      var dbService = ParseDatabaseService();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+      var response = await dbService.getStores(
+        gallonType: GallonType.l20,
+        address: null,
+      );
+      expect(response.success, false);
+      expect(response.message, null);
+    });
+
+    test(
+        'getStores with error should return empty list',
+        () async {
+      var dbService = ParseDatabaseService();
+      var mockQuery = MockQueryBuilder();
+
+      await Parse().initialize('appid', 'serverUrl');
+
+      var mockResponse = ParseResponse()
+        ..success = true
+        ..statusCode = 200
+        ..results = null
+        ..count = 0
+        ..error = ParseError();
+
+      when(mockQuery.query()).thenAnswer(
+        (_) async => Future.value(mockResponse),
+      );
+
+
+      var response = await dbService.getStores(
+        gallonType: GallonType.l20,
+        address: Address(coordinate: Coordinate(-22.013252, -47.91365)),
+      );
+
+      expect(response.results.isEmpty, true);
+      expect(response.message, 'Erro inesperado');
+      expect(response.success, false);
+    });
   });
 }

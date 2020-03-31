@@ -1,7 +1,7 @@
 import 'package:flutter_base/core/models/coordinate.dart';
-import 'package:flutter_parse/flutter_parse.dart';
 import 'package:geocoder/geocoder.dart' as geocoder;
 import 'package:json_annotation/json_annotation.dart';
+import 'package:parse_server_sdk/parse_server_sdk.dart';
 
 part 'generated/address.g.dart';
 
@@ -75,16 +75,16 @@ class Address {
 
   factory Address.fromParse(ParseObject address) {
     return Address(
-      streetName: address.getString('streetName'),
-      number: address.getNumber('number'),
-      city: address.getString('city'),
-      state: address.getString('state'),
-      district: address.getString('district'),
-      complement: address.getString('complement'),
-      country: address.getString('country'),
-      pointOfReference: address.getString('pointOfReference'),
-      coordinate: Coordinate.fromParse(address.getParseGeoPoint('coordinate')),
-      postalCode: address.getString('postalCode'),
+      streetName: address.get<String>('streetName'),
+      number: address.get<int>('number'),
+      city: address.get<String>('city'),
+      state: address.get<String>('state'),
+      district: address.get<String>('district'),
+      complement: address.get<String>('complement'),
+      country: address.get<String>('country'),
+      pointOfReference: address.get<String>('pointOfReference'),
+      coordinate: Coordinate.fromParse(address.get<ParseGeoPoint>('coordinate')),
+      postalCode: address.get<String>('postalCode'),
     );
   }
 

@@ -44,18 +44,16 @@ class BuyModel extends BaseModel {
     errorTitle = null;
     errorMessage = null;
 
-    try {
-      stores = await dbService.getStores(
-        address: address,
-        gallonType: gallonType,
-        force: force,
-      );
-    } on TimeoutException {
-      errorTitle = 'Erro de conexão :(';
-      errorMessage = 'Verifique que você está conectado com a internet.';
-    } on NullThrownError {
-      errorTitle = 'Escolha um endereço de entrega';
-      errorMessage = 'Pra gente encontrar as lojas mais pertinhas :)';
+    var response = await dbService.getStores(
+      address: address,
+      gallonType: gallonType,
+    );
+
+    if (response.success) {
+      stores = response.results;
+    } else {
+      errorTitle = 'Opa :(';
+      errorMessage = response.message;
     }
 
     setState(ViewState.idle);

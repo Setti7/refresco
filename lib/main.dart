@@ -10,6 +10,8 @@ import 'ui/theme.dart';
 
 void main() {
   Logger.level = Level.debug;
+  WidgetsFlutterBinding.ensureInitialized();
+
   setupLocator();
   runApp(MyApp());
 }

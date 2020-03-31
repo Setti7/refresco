@@ -3,9 +3,9 @@ import 'package:flutter_base/core/models/user.dart';
 import 'package:flutter_base/core/services/auth/auth_service.dart';
 import 'package:flutter_base/core/services/service_response.dart';
 import 'package:flutter_base/utils/logger.dart';
-import 'package:flutter_parse/flutter_parse.dart';
 import 'package:hive/hive.dart';
 import 'package:logger/logger.dart';
+import 'package:parse_server_sdk/parse_server_sdk.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -46,32 +46,25 @@ class ParseAuthService implements AuthService {
   @override
   Future<ServiceResponse> loginWithEmail(
       {@required String email, @required String password}) async {
-    try {
-      var _user = await ParseUser.signIn(username: email, password: password);
-      updateUser(User.fromParse(_user));
-    } on ParseException catch (e) {
-      return ServiceResponse(success: false, parseException: e);
+    var response = await ParseUser(email, password, email).login();
+    if (response.success) {
+      updateUser(User.fromParse(response.results.first));
+      return ServiceResponse(success: true);
+    } else {
+      return ServiceResponse.fromParseError(response.error);
     }
-
-    return ServiceResponse(success: true);
   }
 
   @override
   Future<ServiceResponse> createUserWithEmailAndPassword(
       {@required String email, @required String password}) async {
-    var _user = ParseUser()
-      ..set('username', email)
-      ..set('password', password)
-      ..set('email', email);
-
-    try {
-      _user = await _user.signUp();
-      updateUser(User.fromParse(_user));
-    } on ParseException catch (e) {
-      return ServiceResponse(success: false, parseException: e);
+    var response = await ParseUser.createUser(email, password, email).signUp();
+    if (response.success) {
+      updateUser(User.fromParse(response.results.first));
+      return ServiceResponse(success: true);
+    } else {
+      return ServiceResponse.fromParseError(response.error);
     }
-
-    return ServiceResponse(success: true);
   }
 
   @override
@@ -95,7 +88,10 @@ class ParseAuthService implements AuthService {
   @override
   void logout() async {
     var oldUser = _userSubject.value;
-    await ParseUser.signOut();
+
+    ParseUser _user = await ParseUser.currentUser();
+    await _user.logout(deleteLocalUserData: true);
+
     _userSubject.add(User.newAddress(User(), oldUser.address));
   }
 }

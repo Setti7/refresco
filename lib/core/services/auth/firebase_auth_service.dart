@@ -57,7 +57,7 @@ class FirebaseAuthService implements AuthService {
       );
       updateUser(User.fromFirebase(authResult.user));
     } on PlatformException catch (e) {
-      return ServiceResponse(success: false, firebaseException: e);
+      return ServiceResponse.fromFirebaseError(e.code);
     }
 
     return ServiceResponse(success: true);
@@ -75,7 +75,7 @@ class FirebaseAuthService implements AuthService {
       );
       updateUser(User.fromFirebase(authResult.user));
     } on PlatformException catch (e) {
-      return ServiceResponse(success: false, firebaseException: e);
+      return ServiceResponse.fromFirebaseError(e.code);
     }
 
     return ServiceResponse(success: true);

@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_base/core/models/address.dart';
-import 'package:flutter_parse/flutter_parse.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:parse_server_sdk/parse_server_sdk.dart';
 
 part 'generated/user.g.dart';
 
@@ -41,8 +41,8 @@ class User {
   factory User.fromParse(ParseUser user) {
     return User(
       id: user.objectId,
-      fullName: user.getString('name'),
-      email: user.email,
+      fullName: user.username,
+      email: user.emailAddress,
     );
   }
 

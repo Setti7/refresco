@@ -3,8 +3,8 @@ import 'dart:math';
 import 'package:flutter_base/core/models/address.dart';
 import 'package:flutter_base/core/models/gallon.dart';
 import 'package:flutter_base/core/models/operating_time.dart';
-import 'package:flutter_parse/flutter_parse.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:parse_server_sdk/parse_server_sdk.dart';
 
 part 'generated/store.g.dart';
 
@@ -53,16 +53,16 @@ class Store {
   factory Store.fromParse(ParseObject store) {
     // TODO finish
     return Store(
-      name: store.getString('name'),
-      id: store.getString('id'),
-      description: store.getString('description'),
-      rating: store.getDouble('rating'),
-      phone: store.getInteger('phone'),
+      name: store.get<String>('name'),
+      id: store.get<String>('id'),
+      description: store.get<String>('description'),
+      rating: store.get<double>('rating'),
+      phone: store.get<int>('phone'),
       gallons: [],
       maxDeliveryTime: 15,
       minDeliveryTime: 10,
       address: Address.fromParse(
-        store.getParseObject('address'),
+        store.get<ParseObject>('address'),
       ),
     );
   }
