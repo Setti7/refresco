@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_base/core/enums/enums.dart';
 import 'package:flutter_base/core/models/gallon.dart';
-import 'package:flutter_base/core/viewModels/buy_view_model.dart';
+import 'package:flutter_base/core/viewModels/buy_model.dart';
 import 'package:flutter_base/ui/theme.dart';
 import 'package:flutter_base/ui/widgets/gallon_card.dart';
-import 'package:provider/provider.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
+import 'package:place_picker/place_picker.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+
+import 'base_view.dart';
 
 class BuyView extends StatefulWidget {
   @override
@@ -13,7 +18,6 @@ class BuyView extends StatefulWidget {
 
 class _BuyViewState extends State<BuyView> with SingleTickerProviderStateMixin {
   TabController tabController;
-  BuyViewModel viewModel;
 
   @override
   void initState() {
@@ -22,40 +26,38 @@ class _BuyViewState extends State<BuyView> with SingleTickerProviderStateMixin {
   }
 
   @override
-  void didChangeDependencies() {
-    viewModel = Provider.of<BuyViewModel>(context);
-    viewModel.tabController = tabController;
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Escolha uma revenda'),
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            color: Colors.white,
-            child: Column(
-              children: <Widget>[
-                _buildAddress(),
-                Divider(),
-                _buildGallonSelector(),
-              ],
+    return BaseView<BuyModel>(
+      onModelReady: (model) {
+        model.tabController = tabController;
+      },
+      builder: (context, model, child) => Scaffold(
+        appBar: AppBar(
+          title: Text('Escolha uma revenda'),
+        ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              color: Colors.white,
+              child: Column(
+                children: <Widget>[
+                  _buildAddress(model),
+                  Divider(),
+                  _buildGallonSelector(model),
+                ],
+              ),
             ),
-          ),
-          _buildGallonsList(),
-        ],
+            _buildGallonsList(model),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildAddress() {
+  Widget _buildAddress(BuyModel model) {
     return ListTile(
-      onTap: () {},
+      onTap: () async {},
       title: Text("Rua Ilha Caiçaras 421"),
       subtitle: Text("San Conrado - Sousas"),
       trailing: Column(
@@ -73,9 +75,9 @@ class _BuyViewState extends State<BuyView> with SingleTickerProviderStateMixin {
     );
   }
 
-  Widget _buildGallonSelector() {
+  Widget _buildGallonSelector(BuyModel model) {
     return TabBar(
-      onTap: (index) => viewModel.setGallonType(
+      onTap: (index) => model.setGallonType(
         index == 0 ? GallonType.l20 : GallonType.l10,
       ),
       controller: tabController,
@@ -89,63 +91,73 @@ class _BuyViewState extends State<BuyView> with SingleTickerProviderStateMixin {
     );
   }
 
-  Widget _buildGallonsList() {
-    if (viewModel.status == ViewStatus.loading) {
-      return Expanded(
-        child: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
-    } else if (viewModel.status == ViewStatus.completed) {
-      if (viewModel.gallons.isEmpty) return _buildEmpty();
+  Widget _buildGallonsList(BuyModel model) {
+    if (model.state == ViewState.busy) {
+      return _buildLoading();
+    } else {
+      Widget child;
+
+      if (model.errorTitle != null)
+        child = _buildError(model);
+      else if (model.gallons.isEmpty)
+        child = _buildEmpty();
+      else
+        child = ListView.builder(
+          itemCount: model.gallons.length,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: index == 0
+                  ? const EdgeInsets.only(top: 24.0)
+                  : EdgeInsets.zero,
+              child: GallonCard(model.gallons[index]),
+            );
+          },
+        );
+
       return Expanded(
         child: SmartRefresher(
-          controller: viewModel.refreshController,
-          onRefresh: () => viewModel.onRefresh(GallonType.l20),
-          child: ListView.builder(
-            itemCount: viewModel.gallons.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: index == 0
-                    ? const EdgeInsets.only(top: 24.0)
-                    : EdgeInsets.zero,
-                child: GallonCard(viewModel.gallons[index]),
-              );
-            },
-          ),
-        ),
-      );
-    } else {
-      return Expanded(
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(
-                "Erro de conexão :(",
-                style: Theme.of(context).textTheme.headline6,
-              ),
-              SizedBox(height: 8),
-              Text("Verifique que você está conectado com a internet."),
-            ],
-          ),
+          controller: model.refreshController,
+          onRefresh: () => model.onRefresh(model.gallonType),
+          child: child,
         ),
       );
     }
   }
 
-  Widget _buildEmpty() {
+  Expanded _buildLoading() {
     return Expanded(
       child: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Text(
-              "Não há nenhuma loja na sua área :(",
-              style: Theme.of(context).textTheme.headline6,
-            ),
-          ],
-        ),
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+
+  Widget _buildError(BuyModel model) {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Text(
+            model.errorTitle,
+            style: Theme.of(context).textTheme.headline6,
+          ),
+          SizedBox(height: 8),
+          Text(model.errorMessage ?? 'Houve um erro inesperado.'),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEmpty() {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Text(
+            "Não há nenhuma loja na sua área :(",
+            style: Theme.of(context).textTheme.headline6,
+          ),
+        ],
       ),
     );
   }

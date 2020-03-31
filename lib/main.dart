@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base/core/services/database_service.dart';
+import 'package:flutter_base/core/services/service_locator.dart';
 import 'package:flutter_base/ui/views/buy_view.dart';
-import 'package:provider/provider.dart';
 
-import 'core/services/auth_service.dart';
-import 'core/viewModels/buy_view_model.dart';
 import 'ui/theme.dart';
 
-class MyApp extends StatelessWidget {
-  final AuthService authService = AuthService();
-  final DatabaseService dbService = DatabaseService();
+void main() {
+  setupLocator();
+  runApp(MyApp());
+}
 
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -24,20 +23,7 @@ class MyApp extends StatelessWidget {
         inputDecorationTheme: AppThemes.inputDecorationTheme,
         cardTheme: AppThemes.cardTheme,
       ),
-      home: MultiProvider(
-        providers: [
-          Provider.value(value: authService),
-          Provider.value(value: dbService),
-          ChangeNotifierProvider(
-            create: (_) => BuyViewModel(
-              authService: authService,
-              dbService: dbService,
-            ),
-          ),
-        ],
-        child: BuyView(),
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: BuyView(),
     );
   }
 }

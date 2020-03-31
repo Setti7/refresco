@@ -10,7 +10,7 @@ class DatabaseService {
     QuerySnapshot snapshot = await Firestore.instance
         .collection('gallons')
         .where('type', isEqualTo: gallonType == GallonType.l20 ? 'l20' : 'l10')
-        .getDocuments();
+        .getDocuments().timeout(Duration(seconds: 5));
 
     List<Gallon> gallons = snapshot.documents.map((DocumentSnapshot doc) {
       return Gallon.fromJson(doc.data);
