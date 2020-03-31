@@ -1,4 +1,4 @@
-# refresco
+# refresco ![Flutter CI](https://github.com/Setti7/refresco/workflows/Flutter%20CI/badge.svg)
 
 A new Flutter application.
 
