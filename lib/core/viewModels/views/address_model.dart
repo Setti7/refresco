@@ -11,34 +11,60 @@ import 'package:refresco/locator.dart';
 class AddressModel extends BaseModel {
   LocationService locationService = locator<LocationService>();
 
-  Address selectedAddress;
+  Address _userAddress;
+  String errorMessage;
+
+  set userAddress(Address userAddress) {
+    _userAddress = userAddress;
+
+    if (userAddress != null) {
+      numberController.text = _userAddress.number?.toString();
+      complementController.text = _userAddress.complement;
+      pointOfReferenceController.text = _userAddress.pointOfReference;
+    }
+  }
+
+  Address showAddress;
 
   // Controllers
   TextEditingController numberController = TextEditingController();
   TextEditingController complementController = TextEditingController();
   TextEditingController pointOfReferenceController = TextEditingController();
 
+  void evaluateWhichAddressToShow() {
+    if (_userAddress != null) {
+      showAddress = _userAddress;
+    }
+  }
+
   void updateSelectedAddress(Address address) {
-    selectedAddress = address;
+    showAddress = address;
+    numberController.clear();
+    complementController.clear();
+    pointOfReferenceController.clear();
     setState(ViewState.idle);
   }
 
-  //TODO: handle error better
-  void saveNewAddress(Address userAddress) {
-    if (userAddress == null && selectedAddress == null) {
-      throw NullThrownError();
+  bool saveNewAddress() {
+    if (showAddress == null) {
+      errorMessage = 'Selecione um endereço';
+    } else if (numberController.text == '') {
+      errorMessage = 'Por favor, insira o número';
+    } else {
+      errorMessage = null;
+      locationService.updateUserAddress(
+        showAddress,
+        number: int.tryParse(numberController.text),
+        complement:
+            complementController.text == '' ? null : complementController.text,
+        pointOfReference: pointOfReferenceController.text == ''
+            ? null
+            : pointOfReferenceController.text,
+      );
+      return true;
     }
 
-    locationService.updateUserAddress(
-      selectedAddress ?? userAddress,
-      number: numberController.text == ''
-          ? null
-          : int.tryParse(numberController.text),
-      complement:
-          complementController.text == '' ? null : complementController.text,
-      pointOfReference: pointOfReferenceController.text == ''
-          ? null
-          : pointOfReferenceController.text,
-    );
+    setState(ViewState.idle);
+    return false;
   }
 }
