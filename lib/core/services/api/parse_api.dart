@@ -4,4 +4,8 @@ class ParseApi {
   Future<ParseResponse> query(QueryBuilder queryBuilder) {
     return queryBuilder.query();
   }
+
+    Future<ParseResponse> login(ParseUser user) {
+    return user.login();
+  }
 }

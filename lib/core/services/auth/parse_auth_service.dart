@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:refresco/core/models/user.dart';
+import 'package:refresco/core/services/api/parse_api.dart';
 import 'package:refresco/core/services/auth/auth_service.dart';
 import 'package:refresco/core/services/service_response.dart';
 import 'package:refresco/utils/logger.dart';
@@ -10,7 +11,11 @@ import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ParseAuthService implements AuthService {
-  ParseAuthService() {
+  ParseApi api;
+
+  ParseAuthService({this.api}) {
+    api ??= ParseApi();
+
     loadUser().then((value) {
       user.listen((user) {
         _userBox.put('user', user.toJson());
@@ -46,7 +51,7 @@ class ParseAuthService implements AuthService {
   @override
   Future<ServiceResponse> loginWithEmail(
       {@required String email, @required String password}) async {
-    var response = await ParseUser(email, password, email).login();
+    var response = await api.login(ParseUser(email, password, email));
     if (response.success) {
       updateUser(User.fromParse(response.results.first));
       return ServiceResponse(success: true);

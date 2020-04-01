@@ -5,32 +5,27 @@ import 'package:refresco/core/models/address.dart';
 import 'package:refresco/core/models/coordinate.dart';
 import 'package:refresco/core/models/gallon.dart';
 import 'package:refresco/core/models/store.dart';
-import 'package:refresco/core/services/api/parse_api.dart';
 import 'package:refresco/core/services/database/parse_database_service.dart';
 import 'package:refresco/utils/sample_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class MockParseApi extends Mock implements ParseApi {}
+import 'parse_testing_utils.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   SharedPreferences.setMockInitialValues(<String, String>{});
+
   MockParseApi mockApi;
   ParseDatabaseService dbService;
 
+  setUp(() async {
+    await setupParseInstance();
+
+    mockApi = MockParseApi();
+    dbService = ParseDatabaseService(api: mockApi);
+  });
+
   group('ParseDatabaseService getStores ', () {
-    setUpAll(() {
-      Parse().initialize(
-        'appId',
-        'serverUrl',
-        autoSendSessionId: true,
-        debug: true,
-      );
-
-      mockApi = MockParseApi();
-      dbService = ParseDatabaseService(api: mockApi);
-    });
-
     /// ParseDatabaseService getStores with no address should return a failed
     /// ServiceResponse, with an empty list of results, but with no message to
     /// show in the screen.
@@ -97,18 +92,6 @@ void main() {
   });
 
   group('ParseDatabaseService getGallons ', () {
-    setUpAll(() {
-      Parse().initialize(
-        'appId',
-        'serverUrl',
-        autoSendSessionId: true,
-        debug: true,
-      );
-
-      mockApi = MockParseApi();
-      dbService = ParseDatabaseService(api: mockApi);
-    });
-
     /// ParseDatabaseService getGallons with any error should return a failed
     /// ServiceResponse with empty list results.
     test('getGallons with error', () async {
@@ -119,7 +102,6 @@ void main() {
         ..error = ParseError(
           code: -1,
           message: 'Error',
-          isTypeOfException: true,
         )
         ..results = null;
 
