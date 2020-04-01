@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 import 'package:refresco/core/services/auth/auth_service.dart';
 import 'package:refresco/core/services/auth/parse_auth_service.dart';
+import 'package:refresco/core/services/cart/cart_service.dart';
 import 'package:refresco/core/services/database/database_service.dart';
 import 'package:refresco/core/services/database/parse_database_service.dart';
 import 'package:refresco/core/services/location/location_service.dart';
@@ -28,6 +29,7 @@ void setupLocator() {
   locator.registerLazySingleton<AuthService>(() => ParseAuthService());
   locator.registerLazySingleton<DatabaseService>(() => ParseDatabaseService());
   locator.registerLazySingleton<LocationService>(() => LocationService());
+  locator.registerLazySingleton<CartService>(() => CartService());
 
   // View model factories
   locator.registerFactory<LocationSearchModel>(() => LocationSearchModel());

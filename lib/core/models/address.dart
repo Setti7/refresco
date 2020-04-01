@@ -79,6 +79,7 @@ class Address {
   }
 
   factory Address.fromParse(ParseObject address) {
+    if (address == null) return Address();
     return Address(
       id: address.objectId,
       streetName: address.get<String>('streetName'),

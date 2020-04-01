@@ -14,5 +14,8 @@ abstract class DatabaseService {
   Future<ServiceResponse> getStores(Address address);
 
   /// Get all gallons of a store.
+  ///
+  /// If the store does not have a product of a category, returns an empty
+  /// [List], otherwise the list is populated with [Gallon] objects.
   Future<ServiceResponse> getGallons(Store store, GallonType gallonType);
 }

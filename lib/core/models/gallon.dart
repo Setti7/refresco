@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 import 'package:random_string/random_string.dart';
+import 'package:refresco/core/models/store.dart';
 
 part 'generated/gallon.g.dart';
 
@@ -12,24 +13,28 @@ class Gallon {
   final GallonType type;
   final double price;
   final String company;
+  final Store store;
 
   const Gallon({
     this.id,
     this.type,
     this.price,
     this.company,
+    this.store,
   });
 
   int get priceDecimals => (price.remainder(1) * 100).round();
 
   int get priceIntegers => price.truncate();
 
-  factory Gallon.fromParse(ParseObject parseObject) {
+  factory Gallon.fromParse(ParseObject gallon) {
+    if (gallon == null) return null;
     return Gallon(
-      id: parseObject.objectId,
-      type: _gallonTypeFromString(parseObject.get<String>('type')),
-      price: parseObject.get<num>('price').toDouble(),
-      company: parseObject.get<String>('company'),
+      id: gallon.objectId,
+      type: _gallonTypeFromString(gallon.get<String>('type')),
+      price: gallon.get<num>('price').toDouble(),
+      company: gallon.get<String>('company'),
+      store: Store.fromParse(gallon.get<ParseObject>('store')),
     );
   }
 
@@ -38,7 +43,8 @@ class Gallon {
       ..objectId = gallon.id ?? randomAlphaNumeric(10)
       ..set('type', _gallonTypeToString(gallon.type))
       ..set('price', gallon.price)
-      ..set('company', gallon.company);
+      ..set('company', gallon.company)
+      ..set('store', Store.toParse(gallon.store));
   }
 
   factory Gallon.fromJson(Map<String, dynamic> json) => _$GallonFromJson(json);
