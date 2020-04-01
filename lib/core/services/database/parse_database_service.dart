@@ -49,8 +49,6 @@ class ParseDatabaseService implements DatabaseService {
         }).toList();
       }
       return ServiceResponse(success: true, results: stores);
-    } else if (response.error.code == 1) {
-      return ServiceResponse(success: true, results: stores);
     } else {
       return ServiceResponse.fromParseError(response.error, results: stores);
     }
@@ -59,7 +57,7 @@ class ParseDatabaseService implements DatabaseService {
   @override
   Future<ServiceResponse> getGallons(Store store, GallonType gallonType) async {
     var query = QueryBuilder(ParseObject('Gallon'))
-      ..whereRelatedTo('gallons', 'Store', store.id)
+      ..whereEqualTo('store', Store.toParse(store))
       ..whereEqualTo(
         'type',
         gallonType == GallonType.l20 ? 'l20' : 'l10',

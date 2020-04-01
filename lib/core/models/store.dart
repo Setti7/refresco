@@ -4,7 +4,6 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 import 'package:random_string/random_string.dart';
 import 'package:refresco/core/models/address.dart';
-import 'package:refresco/core/models/gallon.dart';
 import 'package:refresco/core/models/operating_time.dart';
 
 part 'generated/store.g.dart';
@@ -20,7 +19,6 @@ class Store {
   final int phone;
   final OperatingTime operatingTime;
   final Address address;
-  final List<Gallon> gallons;
 
   const Store({
     this.name,
@@ -32,36 +30,32 @@ class Store {
     this.phone,
     this.operatingTime,
     this.address,
-    this.gallons,
   });
 
   factory Store.fromJson(Map<String, dynamic> json) => _$StoreFromJson(json);
 
   factory Store.fromParse(ParseObject store) {
-    // TODO finish
+    if (store == null) return Store();
     return Store(
       id: store.objectId,
       name: store.get<String>('name'),
       description: store.get<String>('description'),
       rating: store.get<num>('rating')?.toDouble(),
-      phone: store.get<int>('phone'),
       maxDeliveryTime: 15,
       minDeliveryTime: 10,
+      phone: store.get<int>('phone'),
       address: Address.fromParse(store.get<ParseObject>('address')),
     );
   }
 
   static ParseObject toParse(Store store) {
-    // TODO: finish
     return ParseObject('Store')
       ..objectId = store.id ?? randomAlphaNumeric(10)
       ..set('name', store.name)
+      ..set('description', store.description)
       ..set('rating', store.rating)
-      ..set('address', Address.toParse(store.address))
-      ..addRelation(
-        'gallons',
-        store.gallons.map((g) => Gallon.toParse(g)).toList(),
-      );
+      ..set('phone', store.phone)
+      ..set('address', Address.toParse(store.address));
   }
 
   Map<String, dynamic> toJson() => _$StoreToJson(this);

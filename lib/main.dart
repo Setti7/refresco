@@ -6,6 +6,8 @@ import 'package:refresco/core/services/auth/auth_service.dart';
 import 'package:refresco/locator.dart';
 import 'package:refresco/ui/views/buy_view.dart';
 
+import 'core/models/cart.dart';
+import 'core/services/cart/cart_service.dart';
 import 'ui/theme.dart';
 
 void main() {
@@ -19,9 +21,16 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<User>(
-      create: (context) => locator<AuthService>().user,
-      initialData: User(),
+    return MultiProvider(
+      providers: [
+        StreamProvider<User>(
+            create: (context) => locator<AuthService>().user,
+            initialData: User()),
+        StreamProvider<Cart>(
+          create: (context) => locator<CartService>().cart,
+          initialData: Cart.empty(),
+        )
+      ],
       child: MaterialApp(
         title: 'Refresco',
         theme: ThemeData(

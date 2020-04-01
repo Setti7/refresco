@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:refresco/core/enums/enums.dart';
+import 'package:refresco/core/models/cart.dart';
 import 'package:refresco/core/models/gallon.dart';
 import 'package:refresco/core/models/store.dart';
 import 'package:refresco/core/models/user.dart';
@@ -8,7 +10,6 @@ import 'package:refresco/ui/theme.dart';
 import 'package:refresco/ui/views/base_view.dart';
 import 'package:refresco/ui/widgets/cart_sheet.dart';
 import 'package:refresco/ui/widgets/gallon_card.dart';
-import 'package:provider/provider.dart';
 
 class StoreView extends StatefulWidget {
   final Store store;
@@ -31,6 +32,7 @@ class _StoreViewState extends State<StoreView>
 
   @override
   Widget build(BuildContext context) {
+    // Providing the cart information for all children of this store
     return BaseView<StoreModel>(
       onModelReady: (model) {
         model.tabController = tabController;
@@ -52,7 +54,11 @@ class _StoreViewState extends State<StoreView>
                       : _buildItems(context, model),
                 ],
               ),
-              CartSheet()
+              Consumer<Cart>(
+                builder: (context, cart, child) {
+                  return CartSheet(cart);
+                },
+              )
             ],
           ),
         );
@@ -150,9 +156,9 @@ class _StoreViewState extends State<StoreView>
     return Center(
       child: Column(
         children: <Widget>[
-          Text('Opa :(', style: Theme.of(context).textTheme.headline5),
+          Text('Vazio...', style: Theme.of(context).textTheme.headline5),
           SizedBox(height: 8),
-          Text('Houve um erro inesperado.')
+          Text('Essa loja não possui produtos dessa categoria.')
         ],
       ),
     );

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:refresco/core/enums/enums.dart';
+import 'package:refresco/core/models/cart.dart';
 import 'package:refresco/core/models/user.dart';
 import 'package:refresco/core/viewModels/views/buy_model.dart';
 import 'package:refresco/ui/theme.dart';
+import 'package:refresco/ui/widgets/cart_sheet.dart';
 import 'package:refresco/ui/widgets/store_card.dart';
-import 'package:provider/provider.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'address_view.dart';
 import 'base_view.dart';
@@ -32,18 +34,29 @@ class BuyView extends StatelessWidget {
                   ),
                 ],
               ),
-              body: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+              body: Stack(
                 children: <Widget>[
-                  Ink(
-                    color: Colors.white,
-                    child: Column(
-                      children: <Widget>[
-                        _buildAddress(context, user),
-                      ],
-                    ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Ink(
+                        color: Colors.white,
+                        child: Column(
+                          children: <Widget>[
+                            _buildAddress(context, user),
+                          ],
+                        ),
+                      ),
+                      _buildStoresList(context, model, user),
+                    ],
                   ),
-                  _buildStoresList(context, model, user),
+                  Consumer<Cart>(
+                    builder: (context, cart, child) {
+                      return cart.products.isNotEmpty
+                          ? CartSheet(cart)
+                          : Container();
+                    },
+                  ),
                 ],
               ),
             );

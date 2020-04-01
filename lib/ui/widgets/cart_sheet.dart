@@ -1,12 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:refresco/core/models/cart.dart';
 import 'package:refresco/core/viewModels/widgets/cart_sheet_model.dart';
 import 'package:refresco/ui/theme.dart';
 import 'package:refresco/ui/views/base_view.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
 
 class CartSheet extends StatelessWidget {
-  const CartSheet({
+  final Cart cart;
+
+  const CartSheet(
+    this.cart, {
     Key key,
   }) : super(key: key);
 
@@ -88,7 +92,7 @@ class CartSheet extends StatelessWidget {
                       text: TextSpan(
                         children: [
                           TextSpan(
-                            text: '1',
+                            text: cart.products.length.toString(),
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,

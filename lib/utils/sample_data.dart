@@ -1,10 +1,10 @@
+import 'package:random_string/random_string.dart';
 import 'package:refresco/core/models/address.dart';
 import 'package:refresco/core/models/coordinate.dart';
 import 'package:refresco/core/models/gallon.dart';
 import 'package:refresco/core/models/operating_time.dart';
 import 'package:refresco/core/models/store.dart';
 import 'package:refresco/core/models/time.dart';
-import 'package:random_string/random_string.dart';
 
 class SampleData {
   static final store1 = Store(
@@ -16,11 +16,6 @@ class SampleData {
     maxDeliveryTime: 30,
     phone: 19991408787,
     operatingTime: OperatingTime(opening: Time(8), closing: Time(22)),
-    gallons: [
-      l20gallon1,
-      l20gallon2,
-      l10gallon1,
-    ],
     address: Address(
       streetName: 'Av. Dr. Antônio Carlos Couto de Barros',
       number: 1206,
@@ -41,7 +36,6 @@ class SampleData {
     maxDeliveryTime: 20,
     phone: 19991408787,
     operatingTime: OperatingTime(opening: Time(8), closing: Time(22)),
-    gallons: [l20gallon3, l10gallon1, l10gallon2],
     address: Address(
       streetName: 'R. Antônio Cardinale',
       number: 63,
@@ -62,10 +56,6 @@ class SampleData {
     maxDeliveryTime: 40,
     phone: 19991408787,
     operatingTime: OperatingTime(opening: Time(8), closing: Time(22)),
-    gallons: [
-      l20gallon1,
-      l10gallon2,
-    ],
     address: Address(
       streetName: 'Av. Dr. Antônio Carlos Couto de Barros',
       number: 937,
@@ -86,11 +76,6 @@ class SampleData {
     maxDeliveryTime: 20,
     phone: 19991408787,
     operatingTime: OperatingTime(opening: Time(8), closing: Time(22)),
-    gallons: [
-      l20gallon3,
-      l10gallon1,
-      l10gallon2,
-    ],
     address: Address(
       streetName: 'R. São Pio X',
       number: 466,
@@ -106,29 +91,34 @@ class SampleData {
     type: GallonType.l20,
     price: 9.60,
     company: 'Bonafont',
+    store: store1,
   );
 
   static final l20gallon2 = Gallon(
     type: GallonType.l20,
     price: 8.75,
     company: 'Serra Negra',
+    store: store1,
   );
 
   static final l20gallon3 = Gallon(
     type: GallonType.l20,
     price: 9.20,
     company: 'Bonafont',
+    store: store2,
   );
 
   static final l10gallon1 = Gallon(
     type: GallonType.l10,
     price: 8.40,
     company: 'Dufont',
+    store: store3,
   );
 
   static final l10gallon2 = Gallon(
     type: GallonType.l10,
     price: 8.25,
     company: 'Bonafont',
+    store: store2,
   );
 }

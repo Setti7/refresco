@@ -25,13 +25,6 @@ Store _$StoreFromJson(Map json) {
         : Address.fromJson((json['address'] as Map)?.map(
             (k, e) => MapEntry(k as String, e),
           )),
-    gallons: (json['gallons'] as List)
-        ?.map((e) => e == null
-            ? null
-            : Gallon.fromJson((e as Map)?.map(
-                (k, e) => MapEntry(k as String, e),
-              )))
-        ?.toList(),
   );
 }
 
@@ -45,5 +38,4 @@ Map<String, dynamic> _$StoreToJson(Store instance) => <String, dynamic>{
       'phone': instance.phone,
       'operatingTime': instance.operatingTime?.toJson(),
       'address': instance.address?.toJson(),
-      'gallons': instance.gallons?.map((e) => e?.toJson())?.toList(),
     };
