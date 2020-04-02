@@ -13,6 +13,7 @@ class Coordinate {
   factory Coordinate.fromJson(dynamic json) => _$CoordinateFromJson(json);
 
   factory Coordinate.fromParse(ParseGeoPoint geoPoint) {
+    if (geoPoint == null) return Coordinate(null, null);
     return Coordinate(geoPoint.latitude, geoPoint.longitude);
   }
 
