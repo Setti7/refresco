@@ -39,27 +39,30 @@ class _StoreViewState extends State<StoreView>
         model.getGallons(widget.store);
       },
       builder: (context, model, child) {
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(widget.store.name),
-          ),
-          body: Stack(
-            children: <Widget>[
-              ListView(
-                children: <Widget>[
-                  _buildStoreHeader(context, model),
-                  SizedBox(height: 32),
-                  model.state == ViewState.busy
-                      ? _buildLoading(context)
-                      : _buildItems(context, model),
-                ],
-              ),
-              Consumer<Cart>(
-                builder: (context, cart, child) {
-                  return CartSheet(cart);
-                },
-              )
-            ],
+        return WillPopScope(
+          onWillPop: model.assessPop,
+          child: Scaffold(
+            appBar: AppBar(
+              title: Text(widget.store.name),
+            ),
+            body: Stack(
+              children: <Widget>[
+                ListView(
+                  children: <Widget>[
+                    _buildStoreHeader(context, model),
+                    SizedBox(height: 32),
+                    model.state == ViewState.busy
+                        ? _buildLoading(context)
+                        : _buildItems(context, model),
+                  ],
+                ),
+                Consumer<Cart>(
+                  builder: (context, cart, child) {
+                    return CartSheet(cart);
+                  },
+                )
+              ],
+            ),
           ),
         );
       },

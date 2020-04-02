@@ -106,9 +106,9 @@ class LoginView extends StatelessWidget {
                         RaisedButton(
                           onPressed: model.state == ViewState.busy ? () {} : () {
                             if (model.signIn) {
-                              model.loginWithEmail(context);
+                              model.loginWithEmail();
                             } else {
-                              model.createUser(context);
+                              model.createUser();
                             }
                           },
                           child: model.state == ViewState.idle

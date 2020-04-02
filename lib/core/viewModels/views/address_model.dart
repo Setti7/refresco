@@ -2,28 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:refresco/core/enums/enums.dart';
 import 'package:refresco/core/models/address.dart';
 import 'package:refresco/core/services/location/location_service.dart';
+import 'package:refresco/core/services/navigation/navigation_service.dart';
 import 'package:refresco/core/viewModels/base_model.dart';
 import 'package:refresco/locator.dart';
+import 'package:refresco/ui/delegates/location_search_delegate.dart';
 
-/// TODO:
-/// Make number field required
-/// When changing only the number and not the saved address it crashes
 class AddressModel extends BaseModel {
   LocationService locationService = locator<LocationService>();
+  NavigationService navService = locator<NavigationService>();
 
-  Address _userAddress;
   String errorMessage;
-
-  set userAddress(Address userAddress) {
-    _userAddress = userAddress;
-
-    if (userAddress != null) {
-      numberController.text = _userAddress.number?.toString();
-      complementController.text = _userAddress.complement;
-      pointOfReferenceController.text = _userAddress.pointOfReference;
-    }
-  }
-
   Address showAddress;
 
   // Controllers
@@ -31,9 +19,12 @@ class AddressModel extends BaseModel {
   TextEditingController complementController = TextEditingController();
   TextEditingController pointOfReferenceController = TextEditingController();
 
-  void evaluateWhichAddressToShow() {
-    if (_userAddress != null) {
-      showAddress = _userAddress;
+  set userAddress(Address userAddress) {
+    if (userAddress != null) {
+      showAddress = userAddress;
+      numberController.text = userAddress.number?.toString();
+      complementController.text = userAddress.complement;
+      pointOfReferenceController.text = userAddress.pointOfReference;
     }
   }
 
@@ -45,7 +36,7 @@ class AddressModel extends BaseModel {
     setState(ViewState.idle);
   }
 
-  bool saveNewAddress() {
+  void saveNewAddress() {
     if (showAddress == null) {
       errorMessage = 'Selecione um endereço';
     } else if (numberController.text == '') {
@@ -61,10 +52,19 @@ class AddressModel extends BaseModel {
             ? null
             : pointOfReferenceController.text,
       );
-      return true;
+      navService.goBack();
     }
 
     setState(ViewState.idle);
-    return false;
+  }
+
+  void searchAddress() async {
+    var address = await navService.openSearch<Address>(
+      delegate: LocationSearchDelegate(),
+    );
+
+    if (address != null) {
+      updateSelectedAddress(address);
+    }
   }
 }

@@ -7,13 +7,14 @@ import 'package:refresco/core/services/database/database_service.dart';
 import 'package:refresco/core/services/database/parse_database_service.dart';
 import 'package:refresco/core/services/dialog/dialog_service.dart';
 import 'package:refresco/core/services/location/location_service.dart';
+import 'package:refresco/core/services/navigation/navigation_service.dart';
 import 'package:refresco/core/viewModels/views/address_model.dart';
 import 'package:refresco/core/viewModels/views/buy_model.dart';
 import 'package:refresco/core/viewModels/views/location_search_model.dart';
 import 'package:refresco/core/viewModels/views/login_model.dart';
 import 'package:refresco/core/viewModels/views/store_model.dart';
 import 'package:refresco/core/viewModels/widgets/cart_sheet_model.dart';
-import 'package:refresco/core/viewModels/widgets/current_location_tile.dart';
+import 'package:refresco/core/viewModels/widgets/current_location_tile_model.dart';
 
 GetIt locator = GetIt.instance;
 
@@ -23,7 +24,7 @@ void setupLocator() {
     '9UBUIZ0VeTdGe6YfwEg7KBbL8LSoM8ONAMQyLKzw',
     'http://192.168.15.10:1337/parse',
     autoSendSessionId: true,
-    debug: true,
+//    debug: true,
   );
 
   // Services
@@ -32,6 +33,7 @@ void setupLocator() {
   locator.registerLazySingleton<LocationService>(() => LocationService());
   locator.registerLazySingleton<CartService>(() => CartService());
   locator.registerLazySingleton<DialogService>(() => DialogService());
+  locator.registerLazySingleton<NavigationService>(() => NavigationService());
 
   // View model factories
   locator.registerFactory<LocationSearchModel>(() => LocationSearchModel());

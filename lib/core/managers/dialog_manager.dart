@@ -21,12 +21,19 @@ class _DialogManagerState extends State<DialogManager> {
   @override
   void initState() {
     super.initState();
-    _dialogService.registerDialogListener(_showDialog);
+
+    /// Registering internal functions to show and close dialog with
+    /// DialogService so they can be called from anywhere.
+    _dialogService.registerDialogManagerCallbacks(_showDialog, _closeDialog);
   }
 
   @override
   Widget build(BuildContext context) {
     return widget.child;
+  }
+
+  void _closeDialog() {
+    Navigator.of(context).pop();
   }
 
   void _showDialog(AlertRequest alertRequest) {
@@ -35,9 +42,7 @@ class _DialogManagerState extends State<DialogManager> {
       title: alertRequest.title,
       desc: alertRequest.description,
       type: alertRequest.type,
-      style: AlertStyle(
-        isCloseButton: false
-      ),
+      style: AlertStyle(isCloseButton: false),
       closeFunction: () {
         _dialogService.dialogComplete(AlertResponse(confirmed: false));
       },

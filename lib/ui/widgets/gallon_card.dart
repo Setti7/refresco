@@ -20,7 +20,6 @@ class GallonCard extends StatelessWidget {
       return Card(
         child: InkWell(
           onTap: () => model.addToCart(gallon),
-          onLongPress: () => model.printLength(),
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Row(

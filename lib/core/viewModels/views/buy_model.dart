@@ -1,16 +1,18 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:refresco/core/enums/enums.dart';
 import 'package:refresco/core/models/address.dart';
 import 'package:refresco/core/models/store.dart';
 import 'package:refresco/core/services/auth/auth_service.dart';
 import 'package:refresco/core/services/database/database_service.dart';
+import 'package:refresco/core/services/navigation/navigation_service.dart';
 import 'package:refresco/core/viewModels/base_model.dart';
 import 'package:refresco/locator.dart';
 import 'package:refresco/utils/logger.dart';
-import 'package:logger/logger.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:refresco/utils/routing_constants.dart';
 
 class BuyModel extends BaseModel {
   Logger logger = getLogger('BuyModel');
@@ -18,6 +20,7 @@ class BuyModel extends BaseModel {
   // Services
   AuthService authService = locator<AuthService>();
   DatabaseService dbService = locator<DatabaseService>();
+  NavigationService navService = locator<NavigationService>();
 
   // Controllers
   RefreshController refreshController = RefreshController();
@@ -66,4 +69,6 @@ class BuyModel extends BaseModel {
   }
 
   void logout() => authService.logout();
+
+  void navigateToAddressView() => navService.navigateTo(AddressViewRoute);
 }

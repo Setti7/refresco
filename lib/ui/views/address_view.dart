@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:refresco/core/models/address.dart';
 import 'package:refresco/core/models/user.dart';
 import 'package:refresco/core/viewModels/views/address_model.dart';
 import 'package:refresco/ui/theme.dart';
 import 'package:refresco/ui/views/base_view.dart';
-import 'package:refresco/ui/views/location_search_delegate.dart';
 
 class AddressView extends StatelessWidget {
   @override
@@ -14,7 +12,6 @@ class AddressView extends StatelessWidget {
       return BaseView<AddressModel>(
         onModelReady: (model) {
           model.userAddress = user.address;
-          model.evaluateWhichAddressToShow();
         },
         builder: (context, model, child) {
           return Scaffold(
@@ -38,12 +35,7 @@ class AddressView extends StatelessWidget {
                       ),
                       SizedBox(height: 8),
                       RaisedButton(
-                        onPressed: () {
-                          var result = model.saveNewAddress();
-                          if (result) {
-                            Navigator.of(context).pop();
-                          }
-                        },
+                        onPressed: model.saveNewAddress,
                         child: Text('SALVAR'),
                       ),
                     ],
@@ -67,16 +59,7 @@ class AddressView extends StatelessWidget {
 
     return InkWell(
       borderRadius: AppShapes.inputBorderRadius,
-      onTap: () async {
-        var address = await showSearch<Address>(
-          context: context,
-          delegate: LocationSearchDelegate(),
-        );
-
-        if (address != null) {
-          model.updateSelectedAddress(address);
-        }
-      },
+      onTap: model.searchAddress,
       child: Container(
         decoration: BoxDecoration(
           color: AppColors.primary.withOpacity(0.07),
