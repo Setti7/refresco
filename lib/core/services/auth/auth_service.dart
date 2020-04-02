@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:refresco/core/services/service_response.dart';
+import 'package:refresco/core/dataModels/service_response.dart';
 import 'package:refresco/core/models/user.dart';
 import 'package:rxdart/rxdart.dart';
 

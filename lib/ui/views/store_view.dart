@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:refresco/core/enums/enums.dart';
-import 'package:refresco/core/models/cart.dart';
+import 'package:refresco/core/dataModels/cart.dart';
 import 'package:refresco/core/models/gallon.dart';
 import 'package:refresco/core/models/store.dart';
 import 'package:refresco/core/models/user.dart';

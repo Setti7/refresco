@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
+import 'package:refresco/core/managers/dialog_manager.dart';
 import 'package:refresco/core/models/user.dart';
 import 'package:refresco/core/services/auth/auth_service.dart';
 import 'package:refresco/locator.dart';
 import 'package:refresco/ui/views/buy_view.dart';
 
-import 'core/models/cart.dart';
+import 'core/dataModels/cart.dart';
 import 'core/services/cart/cart_service.dart';
 import 'ui/theme.dart';
 
@@ -41,6 +42,13 @@ class MyApp extends StatelessWidget {
           accentTextTheme: AppThemes.accentTextTheme,
           inputDecorationTheme: AppThemes.inputDecorationTheme,
           cardTheme: AppThemes.cardTheme,
+        ),
+        builder: (context, widget) => Navigator(
+          onGenerateRoute: (settings) => MaterialPageRoute(
+            builder: (context) => DialogManager(
+              child: widget,
+            ),
+          ),
         ),
         home: BuyView(),
       ),

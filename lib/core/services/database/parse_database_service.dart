@@ -5,7 +5,7 @@ import 'package:refresco/core/models/gallon.dart';
 import 'package:refresco/core/models/store.dart';
 import 'package:refresco/core/services/api/parse_api.dart';
 import 'package:refresco/core/services/database/database_service.dart';
-import 'package:refresco/core/services/service_response.dart';
+import 'package:refresco/core/dataModels/service_response.dart';
 import 'package:refresco/utils/logger.dart';
 
 class ParseDatabaseService implements DatabaseService {
@@ -61,7 +61,7 @@ class ParseDatabaseService implements DatabaseService {
       ..whereEqualTo(
         'type',
         gallonType == GallonType.l20 ? 'l20' : 'l10',
-      );
+      )..includeObject(['store']);
 
     var response = await api.query(query);
 
@@ -69,8 +69,8 @@ class ParseDatabaseService implements DatabaseService {
 
     if (response.success) {
       if (response.results != null) {
-        gallons = response.results.map((store) {
-          return Gallon.fromParse(store);
+        gallons = response.results.map((gallon) {
+          return Gallon.fromParse(gallon);
         }).toList();
       }
       return ServiceResponse(success: true, results: gallons);

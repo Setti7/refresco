@@ -6,7 +6,7 @@ import 'package:refresco/core/models/address.dart';
 import 'package:refresco/core/models/gallon.dart';
 import 'package:refresco/core/models/store.dart';
 import 'package:refresco/core/services/database/database_service.dart';
-import 'package:refresco/core/services/service_response.dart';
+import 'package:refresco/core/dataModels/service_response.dart';
 import 'package:refresco/utils/logger.dart';
 import 'package:logger/logger.dart';
 
