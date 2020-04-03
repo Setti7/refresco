@@ -64,6 +64,7 @@ class AddressView extends StatelessWidget {
       onTap: () async {
         model.updateSelectedAddress(
           await showSearch<Address>(
+            context: context,
             delegate: LocationSearchDelegate(),
           ),
         );
