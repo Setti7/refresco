@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:refresco/core/enums/enums.dart';
+import 'package:get/get.dart';
 import 'package:refresco/core/dataModels/service_response.dart';
+import 'package:refresco/core/enums/enums.dart';
 import 'package:refresco/core/services/auth/auth_service.dart';
 import 'package:refresco/core/viewModels/base_model.dart';
 import 'package:refresco/locator.dart';
@@ -23,7 +24,7 @@ class LoginModel extends BaseModel {
     setState(ViewState.idle);
   }
 
-  Future loginWithEmail(BuildContext context) async {
+  Future loginWithEmail() async {
     if (!_validateFields()) return;
     setState(ViewState.busy);
     ServiceResponse response;
@@ -34,14 +35,14 @@ class LoginModel extends BaseModel {
     );
 
     if (response.success) {
-      Navigator.pop(context);
+      Get.back();
     } else {
       errorMessage = response.message;
     }
     setState(ViewState.idle);
   }
 
-  Future createUser(BuildContext context) async {
+  Future createUser() async {
     if (!_validateFields()) return;
     setState(ViewState.busy);
     ServiceResponse response;
@@ -52,7 +53,7 @@ class LoginModel extends BaseModel {
     );
 
     if (response.success) {
-      Navigator.pop(context);
+      Get.back();
     } else {
       errorMessage = response.message;
     }

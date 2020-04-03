@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:refresco/core/enums/enums.dart';
 import 'package:refresco/core/dataModels/cart.dart';
+import 'package:refresco/core/enums/enums.dart';
 import 'package:refresco/core/models/user.dart';
 import 'package:refresco/core/viewModels/views/buy_model.dart';
 import 'package:refresco/ui/theme.dart';
 import 'package:refresco/ui/widgets/cart_sheet.dart';
 import 'package:refresco/ui/widgets/store_card.dart';
+import 'package:refresco/utils/routing_constants.dart';
 
-import 'address_view.dart';
 import 'base_view.dart';
 import 'login_view.dart';
 
@@ -28,8 +29,7 @@ class BuyView extends StatelessWidget {
                     icon: Icon(
                         user.isAnonymous ? Icons.vpn_key : Icons.exit_to_app),
                     onPressed: user.isAnonymous
-                        ? () => Navigator.of(context).push(
-                            MaterialPageRoute(builder: (_) => LoginView()))
+                        ? () => Get.toNamed(LoginViewRoute)
                         : model.logout,
                   ),
                 ],
@@ -43,7 +43,7 @@ class BuyView extends StatelessWidget {
                         color: Colors.white,
                         child: Column(
                           children: <Widget>[
-                            _buildAddress(context, user),
+                            _buildAddress(context, model, user),
                           ],
                         ),
                       ),
@@ -66,12 +66,9 @@ class BuyView extends StatelessWidget {
     );
   }
 
-  Widget _buildAddress(BuildContext context, User user) {
+  Widget _buildAddress(BuildContext context, BuyModel model, User user) {
     return ListTile(
-      onTap: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (_) => AddressView()));
-      },
+      onTap: model.navigateToAddressView,
       title: Text(
         user.address == null ? 'Endereço' : user.address.streetAndNumber,
         style: Theme.of(context).textTheme.headline6,

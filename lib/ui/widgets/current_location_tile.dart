@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:refresco/core/enums/enums.dart';
 import 'package:refresco/core/models/address.dart';
-import 'package:refresco/core/viewModels/widgets/current_location_tile.dart';
+import 'package:refresco/core/viewModels/widgets/current_location_tile_model.dart';
 import 'package:refresco/ui/theme.dart';
 import 'package:refresco/ui/views/base_view.dart';
 

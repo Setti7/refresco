@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
-import 'package:refresco/core/managers/dialog_manager.dart';
 import 'package:refresco/core/models/user.dart';
 import 'package:refresco/core/services/auth/auth_service.dart';
 import 'package:refresco/locator.dart';
+import 'package:refresco/router.dart' as router;
 import 'package:refresco/ui/views/buy_view.dart';
+import 'package:refresco/utils/routing_constants.dart';
 
 import 'core/dataModels/cart.dart';
 import 'core/services/cart/cart_service.dart';
@@ -33,7 +35,10 @@ class MyApp extends StatelessWidget {
         )
       ],
       child: MaterialApp(
+        navigatorKey: Get.key,
         title: 'Refresco',
+        onGenerateRoute: router.generateRoute,
+        initialRoute: BuyViewRoute,
         theme: ThemeData(
           primarySwatch: AppColors.primary,
           scaffoldBackgroundColor: AppColors.scaffoldBackground,
@@ -42,13 +47,6 @@ class MyApp extends StatelessWidget {
           accentTextTheme: AppThemes.accentTextTheme,
           inputDecorationTheme: AppThemes.inputDecorationTheme,
           cardTheme: AppThemes.cardTheme,
-        ),
-        builder: (context, widget) => Navigator(
-          onGenerateRoute: (settings) => MaterialPageRoute(
-            builder: (context) => DialogManager(
-              child: widget,
-            ),
-          ),
         ),
         home: BuyView(),
       ),

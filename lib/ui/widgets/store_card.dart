@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:refresco/core/models/store.dart';
 import 'package:refresco/ui/theme.dart';
-import 'package:refresco/ui/views/store_view.dart';
+import 'package:refresco/utils/routing_constants.dart';
 
 class StoreCard extends StatelessWidget {
   final Store store;
@@ -20,8 +21,7 @@ class StoreCard extends StatelessWidget {
           margin: const EdgeInsets.only(right: 16.0, left: 16.0, bottom: 16.0),
           child: InkWell(
             borderRadius: AppShapes.cardBorderRadius,
-            onTap: () => Navigator.push(
-                context, MaterialPageRoute(builder: (_) => StoreView(store))),
+            onTap: () => Get.toNamed(StoreViewRoute, arguments: store),
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(

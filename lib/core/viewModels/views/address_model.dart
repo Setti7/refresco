@@ -1,29 +1,15 @@
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 import 'package:refresco/core/enums/enums.dart';
 import 'package:refresco/core/models/address.dart';
 import 'package:refresco/core/services/location/location_service.dart';
 import 'package:refresco/core/viewModels/base_model.dart';
 import 'package:refresco/locator.dart';
 
-/// TODO:
-/// Make number field required
-/// When changing only the number and not the saved address it crashes
 class AddressModel extends BaseModel {
   LocationService locationService = locator<LocationService>();
 
-  Address _userAddress;
   String errorMessage;
-
-  set userAddress(Address userAddress) {
-    _userAddress = userAddress;
-
-    if (userAddress != null) {
-      numberController.text = _userAddress.number?.toString();
-      complementController.text = _userAddress.complement;
-      pointOfReferenceController.text = _userAddress.pointOfReference;
-    }
-  }
-
   Address showAddress;
 
   // Controllers
@@ -31,13 +17,20 @@ class AddressModel extends BaseModel {
   TextEditingController complementController = TextEditingController();
   TextEditingController pointOfReferenceController = TextEditingController();
 
-  void evaluateWhichAddressToShow() {
-    if (_userAddress != null) {
-      showAddress = _userAddress;
+  set userAddress(Address userAddress) {
+    if (userAddress != null) {
+      showAddress = userAddress;
+      numberController.text = userAddress.number?.toString();
+      complementController.text = userAddress.complement;
+      pointOfReferenceController.text = userAddress.pointOfReference;
     }
   }
 
   void updateSelectedAddress(Address address) {
+    if (address == null) {
+      return;
+    }
+
     showAddress = address;
     numberController.clear();
     complementController.clear();
@@ -45,7 +38,7 @@ class AddressModel extends BaseModel {
     setState(ViewState.idle);
   }
 
-  bool saveNewAddress() {
+  void saveNewAddress() {
     if (showAddress == null) {
       errorMessage = 'Selecione um endereço';
     } else if (numberController.text == '') {
@@ -61,10 +54,9 @@ class AddressModel extends BaseModel {
             ? null
             : pointOfReferenceController.text,
       );
-      return true;
+      Get.back();
     }
 
     setState(ViewState.idle);
-    return false;
   }
 }
