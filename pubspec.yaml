@@ -37,7 +37,6 @@ dependencies:
   great_circle_distance2: ^1.0.1+1
   sliding_sheet: ^0.2.10
   equatable: ^1.1.1
-  money2: ^1.3.0
   get:
     git : git://github.com/jonataslaw/get.git
 # The following adds the Cupertino Icons font to your application.
