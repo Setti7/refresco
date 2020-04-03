@@ -124,7 +124,7 @@ class CartSheet extends StatelessWidget {
                   children: [
                     TextSpan(text: 'R\$'),
                     TextSpan(
-                      text: '${orderItem.product.priceIntegers}',
+                      text: orderItem.product.priceIntegers,
                       style: Theme.of(context).textTheme.headline5,
                     ),
                     TextSpan(text: ',${orderItem.product.priceDecimals}'),

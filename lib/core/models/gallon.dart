@@ -11,7 +11,7 @@ enum GallonType { l20, l10 }
 class Gallon {
   final String id;
   final GallonType type;
-  final double price;
+  final int price;
   final String company;
   final Store store;
 
@@ -23,9 +23,9 @@ class Gallon {
     this.store,
   });
 
-  int get priceDecimals => (price.remainder(1) * 100).round();
+  String get priceDecimals => (price / 100).toStringAsFixed(2).split('.').last;
 
-  int get priceIntegers => price.truncate();
+  String get priceIntegers => (price / 100).toStringAsFixed(2).split('.').first;
 
   String get typeAsString => type == GallonType.l20 ? '20L' : '10L';
 
@@ -34,7 +34,7 @@ class Gallon {
     return Gallon(
       id: gallon.objectId,
       type: gallonTypeFromString(gallon.get<String>('type')),
-      price: gallon.get<num>('price').toDouble(),
+      price: gallon.get<int>('price'),
       company: gallon.get<String>('company'),
       store: Store.fromParse(gallon.get<ParseObject>('store')),
     );
