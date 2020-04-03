@@ -60,7 +60,7 @@ class ParseDatabaseService implements DatabaseService {
       ..whereEqualTo('store', Store.toParse(store))
       ..whereEqualTo(
         'type',
-        gallonType == GallonType.l20 ? 'l20' : 'l10',
+        Gallon.gallonTypeToString(gallonType),
       )..includeObject(['store']);
 
     var response = await api.query(query);

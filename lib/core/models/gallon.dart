@@ -27,11 +27,13 @@ class Gallon {
 
   int get priceIntegers => price.truncate();
 
+  String get typeAsString => type == GallonType.l20 ? '20L' : '10L';
+
   factory Gallon.fromParse(ParseObject gallon) {
     if (gallon == null) return null;
     return Gallon(
       id: gallon.objectId,
-      type: _gallonTypeFromString(gallon.get<String>('type')),
+      type: gallonTypeFromString(gallon.get<String>('type')),
       price: gallon.get<num>('price').toDouble(),
       company: gallon.get<String>('company'),
       store: Store.fromParse(gallon.get<ParseObject>('store')),
@@ -41,7 +43,7 @@ class Gallon {
   static ParseObject toParse(Gallon gallon) {
     return ParseObject('Store')
       ..objectId = gallon.id ?? randomAlphaNumeric(10)
-      ..set('type', _gallonTypeToString(gallon.type))
+      ..set('type', gallonTypeToString(gallon.type))
       ..set('price', gallon.price)
       ..set('company', gallon.company)
       ..set('store', Store.toParse(gallon.store));
@@ -51,7 +53,7 @@ class Gallon {
 
   Map<String, dynamic> toJson() => _$GallonToJson(this);
 
-  static GallonType _gallonTypeFromString(String gallonType) {
+  static GallonType gallonTypeFromString(String gallonType) {
     if (gallonType == 'l20') {
       return GallonType.l20;
     } else if (gallonType == 'l10') {
@@ -61,7 +63,7 @@ class Gallon {
     }
   }
 
-  static String _gallonTypeToString(GallonType gallonType) {
+  static String gallonTypeToString(GallonType gallonType) {
     if (gallonType == GallonType.l20) {
       return 'l20';
     } else if (gallonType == GallonType.l10) {

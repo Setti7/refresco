@@ -14,7 +14,6 @@ class GallonCard extends StatelessWidget {
     var priceDecimal =
         ((gallon.price % 1) * 10).truncate().toString().padRight(2, '0');
     var priceInteger = gallon.price.truncate().toString();
-    var type = gallon.type == GallonType.l20 ? '20L' : '10L';
 
     return BaseView<StoreModel>(builder: (context, model, child) {
       return Card(
@@ -25,7 +24,7 @@ class GallonCard extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text('${gallon.company} - $type',
+                Text('${gallon.company} - ${gallon.typeAsString}',
                     textAlign: TextAlign.left,
                     style: AppThemes.boldPlainHeadline6),
                 RichText(

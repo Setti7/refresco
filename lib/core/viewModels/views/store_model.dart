@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:logger/logger.dart';
 import 'package:refresco/core/enums/enums.dart';
 import 'package:refresco/core/models/address.dart';
 import 'package:refresco/core/models/gallon.dart';
@@ -11,12 +10,8 @@ import 'package:refresco/core/services/location/location_service.dart';
 import 'package:refresco/core/viewModels/base_model.dart';
 import 'package:refresco/locator.dart';
 import 'package:refresco/ui/widgets/add_to_cart_error_dialog.dart';
-import 'package:refresco/utils/logger.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
 
 class StoreModel extends BaseModel {
-  Logger logger = getLogger('StoreModel');
-
   // Services
   DatabaseService dbService = locator<DatabaseService>();
   LocationService locationService = locator<LocationService>();
@@ -48,16 +43,15 @@ class StoreModel extends BaseModel {
     setState(ViewState.idle);
   }
 
-  void addToCart(Gallon gallon, {Alert onErrorDialog}) async {
+  void addToCart(Gallon gallon) async {
     var success = cartService.addToCart(gallon);
 
     if (!success) {
-      Get.dialog(AddToCartErrorDialog(onConfirm: clearCart));
+      var result = await Get.dialog<bool>(AddToCartErrorDialog());
+      if (result == true) {
+        cartService.clearCart();
+      }
     }
-  }
-
-  void clearCart() {
-    print('clearing...');
   }
 
   void setGallonType(GallonType newGallonType) => gallonType = newGallonType;
