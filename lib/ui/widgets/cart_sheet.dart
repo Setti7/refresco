@@ -1,9 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:refresco/core/dataModels/cart.dart';
+import 'package:refresco/core/models/user.dart';
 import 'package:refresco/core/viewModels/widgets/cart_sheet_model.dart';
 import 'package:refresco/ui/theme.dart';
 import 'package:refresco/ui/views/base_view.dart';
+import 'package:refresco/ui/widgets/address_tile.dart';
+import 'package:refresco/utils/routing_constants.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
 
 class CartSheet extends StatelessWidget {
@@ -23,6 +28,8 @@ class CartSheet extends StatelessWidget {
           closeSheetOnBackButtonPressed: true,
           cornerRadiusOnFullscreen: 0,
           cornerRadius: 16,
+          elevation: 8,
+          duration: Duration(milliseconds: 500),
           padding: EdgeInsets.zero,
           listener: model.sheetListener,
           snapSpec: const SnapSpec(
@@ -33,16 +40,20 @@ class CartSheet extends StatelessWidget {
             // This is the content of the sheet that will get
             // scrolled, if the content is bigger than the available
             // height of the sheet.
-            return Column(
-              children: <Widget>[
-                Container(
-                  color: model.sheetController.state?.isExpanded == true
-                      ? Colors.white
-                      : AppColors.primary.withOpacity(model.cartSheetOpacity),
-                  height: MediaQuery.of(context).size.height,
-                  child: _buildBody(),
-                ),
-              ],
+            return ColorFiltered(
+              colorFilter: ColorFilter.mode(
+                AppColors.primary.withOpacity(model.cartSheetOpacity),
+                BlendMode.srcOver,
+              ),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    color: AppColors.scaffoldBackground,
+                    height: MediaQuery.of(context).size.height,
+                    child: _buildBody(context, model),
+                  ),
+                ],
+              ),
             );
           },
         );
@@ -50,9 +61,90 @@ class CartSheet extends StatelessWidget {
     );
   }
 
-  Widget _buildBody() {
-    return Center(
-      child: Text('This is the content of the sheet'),
+  Widget _buildBody(BuildContext context, CartSheetModel model) {
+    return ListView(
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: Consumer<User>(builder: (context, user, child) {
+            return Container(
+              padding: const EdgeInsets.only(top: 8, left: 16, right: 16),
+              color: Colors.white,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    'Entregar em',
+                    style: Theme.of(context).textTheme.caption,
+                  ),
+                  AddressTile(
+                    contentPadding: EdgeInsets.zero,
+                    address: user.address,
+                    onPressed: () => Get.toNamed(AddressViewRoute),
+                  ),
+                ],
+              ),
+            );
+          }),
+        ),
+        _buildProductList(context),
+        Text('Total: ${cart.totalPrice}, subtotal, delivery fee'),
+        Text('Pay'),
+      ],
+    );
+  }
+
+  Widget _buildProductList(BuildContext context) {
+    var children = <Widget>[];
+
+    cart.products.forEach((orderItem) {
+      children.add(
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              RichText(
+                text: TextSpan(
+                  style: Theme.of(context).textTheme.bodyText2,
+                  children: [
+                    TextSpan(
+                        text: '${orderItem.amount}x ',
+                        style: TextStyle(color: Colors.black45)),
+                    TextSpan(
+                        text: '${orderItem.product.company} - '
+                            '${orderItem.product.typeAsString}',
+                        style: AppThemes.boldPlainHeadline6),
+                  ],
+                ),
+              ),
+              RichText(
+                text: TextSpan(
+                  style: Theme.of(context).textTheme.bodyText2,
+                  children: [
+                    TextSpan(text: 'R\$'),
+                    TextSpan(
+                      text: orderItem.product.priceIntegers,
+                      style: Theme.of(context).textTheme.headline5,
+                    ),
+                    TextSpan(text: ',${orderItem.product.priceDecimals}'),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    });
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: Container(
+        color: Colors.white,
+        child: Column(
+          children: children,
+        ),
+      ),
     );
   }
 
@@ -92,7 +184,7 @@ class CartSheet extends StatelessWidget {
                       text: TextSpan(
                         children: [
                           TextSpan(
-                            text: cart.products.length.toString(),
+                            text: cart.totalItemAmount.toString(),
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,

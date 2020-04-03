@@ -4,10 +4,6 @@ import 'package:get/get.dart';
 import 'package:refresco/ui/theme.dart';
 
 class AddToCartErrorDialog extends StatelessWidget {
-  VoidCallback onConfirm;
-
-  AddToCartErrorDialog({this.onConfirm});
-
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -37,18 +33,12 @@ class AddToCartErrorDialog extends StatelessWidget {
             ButtonBar(
               children: <Widget>[
                 FlatButton(
-                  child: Text("Voltar"),
-                  onPressed: () {
-                    return Get.back(result: true);
-                  },
+                  child: Text('Voltar'),
+                  onPressed: () => Get.back(result: false),
                 ),
                 RaisedButton(
-                  child: Text("Limpar"),
-                  onPressed: () {
-                    if (onConfirm != null) onConfirm();
-
-                    return Get.back(result: true);
-                  },
+                  child: Text('Limpar'),
+                  onPressed: () => Get.back(result: true),
                 )
               ],
             )

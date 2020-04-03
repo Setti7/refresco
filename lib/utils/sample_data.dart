@@ -89,35 +89,35 @@ class SampleData {
 
   static final l20gallon1 = Gallon(
     type: GallonType.l20,
-    price: 9.60,
+    price: 960,
     company: 'Bonafont',
     store: store1,
   );
 
   static final l20gallon2 = Gallon(
     type: GallonType.l20,
-    price: 8.75,
+    price: 875,
     company: 'Serra Negra',
     store: store1,
   );
 
   static final l20gallon3 = Gallon(
     type: GallonType.l20,
-    price: 9.20,
+    price: 920,
     company: 'Bonafont',
     store: store2,
   );
 
   static final l10gallon1 = Gallon(
     type: GallonType.l10,
-    price: 8.40,
+    price: 840,
     company: 'Dufont',
     store: store3,
   );
 
   static final l10gallon2 = Gallon(
     type: GallonType.l10,
-    price: 8.25,
+    price: 825,
     company: 'Bonafont',
     store: store2,
   );

@@ -11,11 +11,6 @@ class GallonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var priceDecimal =
-        ((gallon.price % 1) * 10).truncate().toString().padRight(2, '0');
-    var priceInteger = gallon.price.truncate().toString();
-    var type = gallon.type == GallonType.l20 ? '20L' : '10L';
-
     return BaseView<StoreModel>(builder: (context, model, child) {
       return Card(
         child: InkWell(
@@ -25,7 +20,7 @@ class GallonCard extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text('${gallon.company} - $type',
+                Text('${gallon.company} - ${gallon.typeAsString}',
                     textAlign: TextAlign.left,
                     style: AppThemes.boldPlainHeadline6),
                 RichText(
@@ -34,10 +29,10 @@ class GallonCard extends StatelessWidget {
                     children: [
                       TextSpan(text: 'R\$'),
                       TextSpan(
-                        text: '$priceInteger',
+                        text: gallon.priceIntegers,
                         style: Theme.of(context).textTheme.headline5,
                       ),
-                      TextSpan(text: ',$priceDecimal'),
+                      TextSpan(text: ',${gallon.priceDecimals}'),
                     ],
                   ),
                 ),

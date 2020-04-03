@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:refresco/core/enums/enums.dart';
@@ -12,7 +11,6 @@ import 'package:refresco/core/services/database/database_service.dart';
 import 'package:refresco/core/viewModels/base_model.dart';
 import 'package:refresco/locator.dart';
 import 'package:refresco/utils/logger.dart';
-import 'package:refresco/utils/routing_constants.dart';
 
 class BuyModel extends BaseModel {
   Logger logger = getLogger('BuyModel');
@@ -68,6 +66,4 @@ class BuyModel extends BaseModel {
   }
 
   void logout() => authService.logout();
-
-  void navigateToAddressView() => Get.toNamed(AddressViewRoute);
 }

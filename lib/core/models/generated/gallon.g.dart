@@ -8,16 +8,20 @@ part of '../gallon.dart';
 
 Gallon _$GallonFromJson(Map json) {
   return Gallon(
+    id: json['id'] as String,
     type: _$enumDecode(_$GallonTypeEnumMap, json['type']),
-    price: (json['price'] as num).toDouble(),
+    price: json['price'] as int,
     company: json['company'] as String,
+    store: Store.fromJson(Map<String, dynamic>.from(json['store'] as Map)),
   );
 }
 
 Map<String, dynamic> _$GallonToJson(Gallon instance) => <String, dynamic>{
+      'id': instance.id,
       'type': _$GallonTypeEnumMap[instance.type],
       'price': instance.price,
       'company': instance.company,
+      'store': instance.store.toJson(),
     };
 
 T _$enumDecode<T>(

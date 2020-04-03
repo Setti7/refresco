@@ -7,12 +7,12 @@ import 'package:refresco/core/enums/enums.dart';
 import 'package:refresco/core/models/user.dart';
 import 'package:refresco/core/viewModels/views/buy_model.dart';
 import 'package:refresco/ui/theme.dart';
+import 'package:refresco/ui/widgets/address_tile.dart';
 import 'package:refresco/ui/widgets/cart_sheet.dart';
 import 'package:refresco/ui/widgets/store_card.dart';
 import 'package:refresco/utils/routing_constants.dart';
 
 import 'base_view.dart';
-import 'login_view.dart';
 
 class BuyView extends StatelessWidget {
   @override
@@ -43,7 +43,10 @@ class BuyView extends StatelessWidget {
                         color: Colors.white,
                         child: Column(
                           children: <Widget>[
-                            _buildAddress(context, model, user),
+                            AddressTile(
+                              address: user.address,
+                              onPressed: () => Get.toNamed(AddressViewRoute),
+                            ),
                           ],
                         ),
                       ),
@@ -63,27 +66,6 @@ class BuyView extends StatelessWidget {
           },
         );
       },
-    );
-  }
-
-  Widget _buildAddress(BuildContext context, BuyModel model, User user) {
-    return ListTile(
-      onTap: model.navigateToAddressView,
-      title: Text(
-        user.address == null ? 'Endereço' : user.address.streetAndNumber,
-        style: Theme.of(context).textTheme.headline6,
-      ),
-      subtitle: Text(
-        user.address == null
-            ? 'Escolha um endereço para entrega.'
-            : user.address.districtAndCity,
-        style: Theme.of(context).textTheme.subtitle1,
-        overflow: TextOverflow.ellipsis,
-      ),
-      trailing: Icon(
-        Icons.location_on,
-        color: AppColors.accent,
-      ),
     );
   }
 
