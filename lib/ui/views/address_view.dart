@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:refresco/core/models/address.dart';
 import 'package:refresco/core/models/user.dart';
 import 'package:refresco/core/viewModels/views/address_model.dart';
+import 'package:refresco/ui/delegates/location_search_delegate.dart';
 import 'package:refresco/ui/theme.dart';
 import 'package:refresco/ui/views/base_view.dart';
 
@@ -54,12 +56,18 @@ class AddressView extends StatelessWidget {
     String subtitle;
     var address = model.showAddress;
 
-    headline = address.streetName ?? 'Endereço';
-    subtitle = address.districtAndCity ?? 'Escolha um endereço.';
+    headline = address?.streetName ?? 'Endereço';
+    subtitle = address?.districtAndCity ?? 'Escolha um endereço.';
 
     return InkWell(
       borderRadius: AppShapes.inputBorderRadius,
-      onTap: model.searchAddress,
+      onTap: () async {
+        model.updateSelectedAddress(
+          await showSearch<Address>(
+            delegate: LocationSearchDelegate(),
+          ),
+        );
+      },
       child: Container(
         decoration: BoxDecoration(
           color: AppColors.primary.withOpacity(0.07),

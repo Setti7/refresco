@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:refresco/core/dataModels/cart.dart';
@@ -8,6 +9,7 @@ import 'package:refresco/core/viewModels/views/buy_model.dart';
 import 'package:refresco/ui/theme.dart';
 import 'package:refresco/ui/widgets/cart_sheet.dart';
 import 'package:refresco/ui/widgets/store_card.dart';
+import 'package:refresco/utils/routing_constants.dart';
 
 import 'base_view.dart';
 import 'login_view.dart';
@@ -27,8 +29,7 @@ class BuyView extends StatelessWidget {
                     icon: Icon(
                         user.isAnonymous ? Icons.vpn_key : Icons.exit_to_app),
                     onPressed: user.isAnonymous
-                        ? () => Navigator.of(context).push(
-                            MaterialPageRoute(builder: (_) => LoginView()))
+                        ? () => Get.toNamed(LoginViewRoute)
                         : model.logout,
                   ),
                 ],

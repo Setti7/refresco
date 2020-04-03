@@ -1,15 +1,13 @@
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 import 'package:refresco/core/enums/enums.dart';
 import 'package:refresco/core/models/address.dart';
 import 'package:refresco/core/services/location/location_service.dart';
-import 'package:refresco/core/services/navigation/navigation_service.dart';
 import 'package:refresco/core/viewModels/base_model.dart';
 import 'package:refresco/locator.dart';
-import 'package:refresco/ui/delegates/location_search_delegate.dart';
 
 class AddressModel extends BaseModel {
   LocationService locationService = locator<LocationService>();
-  NavigationService navService = locator<NavigationService>();
 
   String errorMessage;
   Address showAddress;
@@ -29,6 +27,10 @@ class AddressModel extends BaseModel {
   }
 
   void updateSelectedAddress(Address address) {
+    if (address == null) {
+      return;
+    }
+
     showAddress = address;
     numberController.clear();
     complementController.clear();
@@ -52,19 +54,9 @@ class AddressModel extends BaseModel {
             ? null
             : pointOfReferenceController.text,
       );
-      navService.goBack();
+      Get.back();
     }
 
     setState(ViewState.idle);
-  }
-
-  void searchAddress() async {
-    var address = await navService.openSearch<Address>(
-      delegate: LocationSearchDelegate(),
-    );
-
-    if (address != null) {
-      updateSelectedAddress(address);
-    }
   }
 }

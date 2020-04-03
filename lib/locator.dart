@@ -5,9 +5,7 @@ import 'package:refresco/core/services/auth/parse_auth_service.dart';
 import 'package:refresco/core/services/cart/cart_service.dart';
 import 'package:refresco/core/services/database/database_service.dart';
 import 'package:refresco/core/services/database/parse_database_service.dart';
-import 'package:refresco/core/services/dialog/dialog_service.dart';
 import 'package:refresco/core/services/location/location_service.dart';
-import 'package:refresco/core/services/navigation/navigation_service.dart';
 import 'package:refresco/core/viewModels/views/address_model.dart';
 import 'package:refresco/core/viewModels/views/buy_model.dart';
 import 'package:refresco/core/viewModels/views/location_search_model.dart';
@@ -32,8 +30,6 @@ void setupLocator() {
   locator.registerLazySingleton<DatabaseService>(() => ParseDatabaseService());
   locator.registerLazySingleton<LocationService>(() => LocationService());
   locator.registerLazySingleton<CartService>(() => CartService());
-  locator.registerLazySingleton<DialogService>(() => DialogService());
-  locator.registerLazySingleton<NavigationService>(() => NavigationService());
 
   // View model factories
   locator.registerFactory<LocationSearchModel>(() => LocationSearchModel());

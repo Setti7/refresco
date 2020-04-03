@@ -1,14 +1,10 @@
 import 'package:logger/logger.dart';
 import 'package:refresco/core/dataModels/cart.dart';
 import 'package:refresco/core/models/gallon.dart';
-import 'package:refresco/core/services/dialog/dialog_service.dart';
-import 'package:refresco/locator.dart';
 import 'package:refresco/utils/logger.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CartService {
-  DialogService dialogService = locator<DialogService>();
-
   final Logger _logger = getLogger('CartService');
 
   // Streams

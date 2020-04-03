@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
-import 'package:refresco/core/managers/dialog_manager.dart';
 import 'package:refresco/core/models/user.dart';
 import 'package:refresco/core/services/auth/auth_service.dart';
-import 'package:refresco/core/services/navigation/navigation_service.dart';
 import 'package:refresco/locator.dart';
 import 'package:refresco/router.dart' as router;
 import 'package:refresco/ui/views/buy_view.dart';
@@ -36,7 +35,7 @@ class MyApp extends StatelessWidget {
         )
       ],
       child: MaterialApp(
-        navigatorKey: locator<NavigationService>().navigatorKey,
+        navigatorKey: Get.key,
         title: 'Refresco',
         onGenerateRoute: router.generateRoute,
         initialRoute: BuyViewRoute,
@@ -48,13 +47,6 @@ class MyApp extends StatelessWidget {
           accentTextTheme: AppThemes.accentTextTheme,
           inputDecorationTheme: AppThemes.inputDecorationTheme,
           cardTheme: AppThemes.cardTheme,
-        ),
-        builder: (context, widget) => Navigator(
-          onGenerateRoute: (settings) => MaterialPageRoute(
-            builder: (context) => DialogManager(
-              child: widget,
-            ),
-          ),
         ),
         home: BuyView(),
       ),
