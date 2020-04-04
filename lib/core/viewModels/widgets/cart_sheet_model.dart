@@ -1,4 +1,7 @@
+import 'package:get/get.dart';
+import 'package:refresco/core/models/store.dart';
 import 'package:refresco/core/viewModels/base_model.dart';
+import 'package:refresco/utils/routing_constants.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
 
 class CartSheetModel extends BaseModel {
@@ -10,17 +13,21 @@ class CartSheetModel extends BaseModel {
 
   void sheetListener(SheetState state) {
     cartSheetScrollProgress = state.progress;
-    cartSheetOpacity = 1 - _interval(0.7, 1.0, cartSheetScrollProgress);
+    cartSheetOpacity = 1 - _interval(0.6, 0.95, cartSheetScrollProgress);
     sheetController.rebuild();
   }
 
   void toggleCart() {
-    if (sheetController.state?.isCollapsed == true ||
+    if (sheetController.state?.isCollapsed ?? false ||
         sheetController.state == null) {
       sheetController.expand();
-    } else if (sheetController.state?.isExpanded == true) {
+    } else if (sheetController.state?.isExpanded ?? false) {
       sheetController.collapse();
     }
+  }
+
+  void goToStore(Store store) async {
+    Get.toNamed(StoreViewRoute, arguments: store);
   }
 
   double _interval(double lower, double upper, double progress) {

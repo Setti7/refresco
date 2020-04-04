@@ -43,12 +43,12 @@ class StoreModel extends BaseModel {
     setState(ViewState.idle);
   }
 
-  void addToCart(Gallon gallon) async {
-    var success = cartService.addToCart(gallon);
+  void addToCart(Gallon gallon, Store store) async {
+    var success = cartService.addToCart(gallon, store);
 
     if (!success) {
       var result = await Get.dialog<bool>(AddToCartErrorDialog());
-      if (result == true) {
+      if (result ?? false) {
         cartService.clearCart();
       }
     }

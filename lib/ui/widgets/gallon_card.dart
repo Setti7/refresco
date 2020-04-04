@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:refresco/core/models/gallon.dart';
+import 'package:refresco/core/models/store.dart';
 import 'package:refresco/core/viewModels/views/store_model.dart';
 import 'package:refresco/ui/theme.dart';
 import 'package:refresco/ui/views/base_view.dart';
 
 class GallonCard extends StatelessWidget {
-  const GallonCard(this.gallon);
+  const GallonCard(this.gallon, this.store);
 
   final Gallon gallon;
+  final Store store;
 
   @override
   Widget build(BuildContext context) {
     return BaseView<StoreModel>(builder: (context, model, child) {
       return Card(
         child: InkWell(
-          onTap: () => model.addToCart(gallon),
+          onTap: () => model.addToCart(gallon, store),
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Row(

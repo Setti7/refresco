@@ -22,7 +22,7 @@ class AddressView extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
               child: ListView(
                 children: <Widget>[
-                  _buildAddressTile(context, model),
+                  _buildAddressField(context, model),
                   SizedBox(height: 32),
                   _buildNumberAndComplementFields(model),
                   SizedBox(height: 24),
@@ -51,7 +51,7 @@ class AddressView extends StatelessWidget {
     });
   }
 
-  Widget _buildAddressTile(BuildContext context, AddressModel model) {
+  Widget _buildAddressField(BuildContext context, AddressModel model) {
     String headline;
     String subtitle;
     var address = model.showAddress;
@@ -92,6 +92,8 @@ class AddressView extends StatelessWidget {
                   Text(
                     headline,
                     style: Theme.of(context).textTheme.headline6,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   SizedBox(height: 4),
                   Text(
@@ -153,6 +155,8 @@ class AddressView extends StatelessWidget {
                 padding: EdgeInsets.only(left: 8),
                 child: Text(
                   'Apto / Bloco / Casa etc.',
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                   style: AppThemes.boldPlainHeadline6,
                 ),
               ),
