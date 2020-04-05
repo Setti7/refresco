@@ -1,28 +1,29 @@
 import 'package:get/get.dart';
+import 'package:refresco/core/enums/enums.dart';
 import 'package:refresco/core/models/store.dart';
 import 'package:refresco/core/viewModels/base_model.dart';
 import 'package:refresco/utils/routing_constants.dart';
-import 'package:sliding_sheet/sliding_sheet.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class CartSheetModel extends BaseModel {
   // Controllers
-  SheetController sheetController = SheetController();
+  PanelController panelController;
 
   double cartSheetScrollProgress = 0;
   double cartSheetOpacity = 1;
 
-  void sheetListener(SheetState state) {
-    cartSheetScrollProgress = state.progress;
+  void sheetListener(double progress) {
+    cartSheetScrollProgress = progress;
     cartSheetOpacity = 1 - _interval(0.6, 0.95, cartSheetScrollProgress);
-    sheetController.rebuild();
+    setState(ViewState.idle);
   }
 
   void toggleCart() {
-    if (sheetController.state?.isCollapsed ?? false ||
-        sheetController.state == null) {
-      sheetController.expand();
-    } else if (sheetController.state?.isExpanded ?? false) {
-      sheetController.collapse();
+    var duration = Duration(milliseconds: 300);
+    if (panelController.panelPosition > 0.98) {
+      panelController.animatePanelToPosition(0, duration: duration);
+    } else {
+      panelController.animatePanelToPosition(1, duration: duration);
     }
   }
 

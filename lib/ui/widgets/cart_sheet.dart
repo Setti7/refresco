@@ -9,137 +9,148 @@ import 'package:refresco/ui/theme.dart';
 import 'package:refresco/ui/views/base_view.dart';
 import 'package:refresco/ui/widgets/address_tile.dart';
 import 'package:refresco/utils/routing_constants.dart';
-import 'package:sliding_sheet/sliding_sheet.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class CartSheet extends StatelessWidget {
   final Cart cart;
+  final PanelController panelController = PanelController();
 
-  const CartSheet(
+  CartSheet(
     this.cart, {
     Key key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var panelMaxHeight = MediaQuery.of(context).size.height -
+        kToolbarHeight -
+        MediaQuery.of(context).padding.top;
+
     return BaseView<CartSheetModel>(
+      onModelReady: (model) => model.panelController = panelController,
       builder: (context, model, child) {
-        return SlidingSheet(
-          controller: model.sheetController,
-          closeSheetOnBackButtonPressed: true,
-          cornerRadiusOnFullscreen: 0,
-          cornerRadius: 16,
-          elevation: 12,
-          duration: Duration(milliseconds: 500),
-          padding: EdgeInsets.zero,
-          listener: model.sheetListener,
-          snapSpec: const SnapSpec(
-            snappings: [0.1, 1.0],
-          ),
-          headerBuilder: (context, state) => _buildHeader(context, model),
-          builder: (context, state) {
-            // This is the content of the sheet that will get
-            // scrolled, if the content is bigger than the available
-            // height of the sheet.
-            return ColorFiltered(
-              colorFilter: ColorFilter.mode(
-                AppColors.primary.withOpacity(model.cartSheetOpacity),
-                BlendMode.srcOver,
-              ),
-              child: _buildBody(context, model),
-            );
+        return SlidingUpPanel(
+          controller: model.panelController,
+          backdropEnabled: true,
+          minHeight: kBottomNavigationBarHeight,
+          borderRadius: AppShapes.bottomSheetBorderRadius,
+          maxHeight: panelMaxHeight,
+          onPanelSlide: model.sheetListener,
+          panelBuilder: (scrollController) {
+            return _buildBody(context, model, scrollController);
           },
         );
       },
     );
   }
 
-  Widget _buildBody(BuildContext context, CartSheetModel model) {
+  Widget _buildBody(BuildContext context, CartSheetModel model,
+      ScrollController scrollController) {
     return Container(
-      color: AppColors.scaffoldBackground,
-      child: ListView(
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
-        padding: EdgeInsets.only(bottom: 16),
+      decoration: BoxDecoration(
+        color: AppColors.scaffoldBackground,
+        borderRadius:
+            AppShapes.bottomSheetBorderRadius * model.cartSheetOpacity,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          SizedBox(height: 8),
-          _buildAddressTile(),
-          SizedBox(height: 8),
-          _buildStore(),
-          _buildProductList(context, model),
-          _buildPaymentDetails(context),
-          SizedBox(height: 8),
-          Container(
-            color: Colors.white,
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  'Pagamento',
-                  style: Theme.of(context).textTheme.headline6,
+          _buildHeader(context, model),
+          Expanded(
+            child: ColorFiltered(
+              colorFilter: ColorFilter.mode(
+                AppColors.primary.withOpacity(model.cartSheetOpacity),
+                BlendMode.srcOver,
+              ),
+              child: ListView(
+                controller: scrollController,
+                padding: EdgeInsets.only(bottom: 40),
+                children: <Widget>[
+                  _buildAddressTile(),
+                  SizedBox(height: 8),
+                  _buildStore(),
+                  _buildProductList(context, model),
+                  _buildPaymentDetails(context),
+                  SizedBox(height: 8),
+                  _buildPayment(context),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Container _buildPayment(BuildContext context) {
+    return Container(
+      color: Colors.white,
+      padding: EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            'Pagamento',
+            style: Theme.of(context).textTheme.headline6,
+          ),
+          SizedBox(height: 24),
+          Material(
+            child: InkWell(
+              borderRadius: AppShapes.inputBorderRadius,
+              onTap: () async {},
+              child: Container(
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withOpacity(0.07),
+                  borderRadius: AppShapes.inputBorderRadius,
                 ),
-                SizedBox(height: 24),
-                Material(
-                  child: InkWell(
-                    borderRadius: AppShapes.inputBorderRadius,
-                    onTap: () async {},
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: AppColors.primary.withOpacity(0.07),
-                        borderRadius: AppShapes.inputBorderRadius,
+                child: Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 24),
+                      child: Icon(
+                        Icons.credit_card,
+                        color: AppColors.primary,
+                        size: AppShapes.iconSize,
                       ),
-                      child: Row(
+                    ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16.0, vertical: 24),
-                            child: Icon(
-                              Icons.credit_card,
-                              color: AppColors.primary,
-                              size: AppShapes.iconSize,
-                            ),
+                          Text(
+                            'Forma de pagamento',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.headline6,
                           ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  'Forma de pagamento',
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context).textTheme.headline6,
-                                ),
-                                SizedBox(height: 4),
-                                Text(
-                                  'Escolha uma forma',
-                                  overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context).textTheme.subtitle1,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 16.0),
-                            child: Icon(
-                              Icons.chevron_right,
-                              color: AppColors.primary,
-                              size: AppShapes.iconSize,
-                            ),
+                          SizedBox(height: 4),
+                          Text(
+                            'Escolha uma forma',
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.subtitle1,
                           ),
                         ],
                       ),
                     ),
-                  ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Icon(
+                        Icons.chevron_right,
+                        color: AppColors.primary,
+                        size: AppShapes.iconSize,
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(height: 24),
-                Center(
-                  child: RaisedButton(
-                    onPressed: cart.products.isEmpty ? null : () {},
-                    child: Text('Finalizar pagamento'),
-                  ),
-                ),
-              ],
+              ),
+            ),
+          ),
+          SizedBox(height: 24),
+          Center(
+            child: RaisedButton(
+              onPressed: cart.products.isEmpty ? null : () {},
+              child: Text('Finalizar pagamento'),
             ),
           ),
         ],
@@ -353,6 +364,8 @@ class CartSheet extends StatelessWidget {
       decoration: BoxDecoration(
         // Turns blue into white as sheet expands
         color: AppColors.primary.withOpacity(model.cartSheetOpacity),
+        borderRadius:
+            AppShapes.bottomSheetBorderRadius * model.cartSheetOpacity,
       ),
       child: ListTile(
         onTap: model.toggleCart,
