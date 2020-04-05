@@ -18,7 +18,7 @@ class AddressView extends StatelessWidget {
         builder: (context, model, child) {
           return Scaffold(
             bottomNavigationBar: Padding(
-              padding: const EdgeInsets.all(32.0),
+              padding: const EdgeInsets.only(left: 32, right: 32, bottom: 32),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
