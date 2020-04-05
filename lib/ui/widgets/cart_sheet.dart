@@ -29,16 +29,19 @@ class CartSheet extends StatelessWidget {
     return BaseView<CartSheetModel>(
       onModelReady: (model) => model.panelController = panelController,
       builder: (context, model, child) {
-        return SlidingUpPanel(
-          controller: model.panelController,
-          backdropEnabled: true,
-          minHeight: kBottomNavigationBarHeight,
-          borderRadius: AppShapes.bottomSheetBorderRadius,
-          maxHeight: panelMaxHeight,
-          onPanelSlide: model.sheetListener,
-          panelBuilder: (scrollController) {
-            return _buildBody(context, model, scrollController);
-          },
+        return WillPopScope(
+          onWillPop: model.assesPop,
+          child: SlidingUpPanel(
+            controller: model.panelController,
+            backdropEnabled: true,
+            minHeight: kBottomNavigationBarHeight,
+            borderRadius: AppShapes.bottomSheetBorderRadius,
+            maxHeight: panelMaxHeight,
+            onPanelSlide: model.sheetListener,
+            panelBuilder: (scrollController) {
+              return _buildBody(context, model, scrollController);
+            },
+          ),
         );
       },
     );
@@ -97,7 +100,7 @@ class CartSheet extends StatelessWidget {
           Material(
             child: InkWell(
               borderRadius: AppShapes.inputBorderRadius,
-              onTap: () async {},
+              onTap: () {},
               child: Container(
                 decoration: BoxDecoration(
                   color: AppColors.primary.withOpacity(0.07),
@@ -298,7 +301,12 @@ class CartSheet extends StatelessWidget {
         children: <Widget>[
           Divider(),
           FlatButton(
-            onPressed: () => model.goToStore(cart.store),
+            onPressed: cart.store == null
+                ? null
+                : () => Get.toNamed(
+                      StoreViewRoute,
+                      arguments: cart.store,
+                    ),
             child: Text('Adicionar mais itens'),
           ),
           Divider(),
