@@ -17,32 +17,37 @@ class AddressView extends StatelessWidget {
         },
         builder: (context, model, child) {
           return Scaffold(
-            appBar: AppBar(title: Text('Endereço de entrega')),
-            body: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-              child: ListView(
+            bottomNavigationBar: Padding(
+              padding: const EdgeInsets.all(32.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  _buildAddressField(context, model),
-                  SizedBox(height: 32),
-                  _buildNumberAndComplementFields(model),
-                  SizedBox(height: 24),
-                  _buildReferencePointField(model),
-                  SizedBox(height: 48),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      Center(
-                        child: Text(model.errorMessage ?? '',
-                            style: AppThemes.boldPlainHeadline6),
-                      ),
-                      SizedBox(height: 8),
-                      RaisedButton(
-                        onPressed: model.saveNewAddress,
-                        child: Text('SALVAR'),
-                      ),
-                    ],
+                  Center(
+                    child: Text(model.errorMessage ?? '',
+                        style: AppThemes.boldPlainHeadline6),
+                  ),
+                  SizedBox(height: 8),
+                  RaisedButton(
+                    onPressed: model.saveNewAddress,
+                    child: Text('SALVAR'),
                   ),
                 ],
+              ),
+            ),
+            appBar: AppBar(title: Text('Endereço de entrega')),
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+                child: Column(
+                  children: <Widget>[
+                    _buildAddressField(context, model),
+                    SizedBox(height: 32),
+                    _buildNumberAndComplementFields(model),
+                    SizedBox(height: 24),
+                    _buildReferencePointField(model),
+                  ],
+                ),
               ),
             ),
           );

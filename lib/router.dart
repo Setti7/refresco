@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:refresco/core/models/store.dart';
@@ -13,18 +14,59 @@ Route<dynamic> generateRoute(RouteSettings settings) {
 
   switch (settings.name) {
     case BuyViewRoute:
-      return MaterialPageRoute(builder: (context) => BuyView());
+      return _fadeThrough((context) => BuyView());
     case LoginViewRoute:
-      return MaterialPageRoute(builder: (context) => LoginView());
+      return _fadeThrough((context) => LoginView());
     case AddressViewRoute:
-      return MaterialPageRoute(builder: (context) => AddressView());
+      return _sharedAxis(
+        (context) => AddressView(),
+        SharedAxisTransitionType.vertical,
+      );
     case StoreViewRoute:
-      return MaterialPageRoute(
-        builder: (context) => StoreView(settings.arguments as Store),
+      return _sharedAxis(
+        (context) => StoreView(settings.arguments as Store),
+        SharedAxisTransitionType.horizontal,
       );
     default:
       // TODO: set default route to intro view
       _logger.e('Route "${settings.name}" not found.');
       return MaterialPageRoute(builder: (context) => BuyView());
   }
+}
+
+Route<T> _fadeThrough<T>(WidgetBuilder page) {
+  return PageRouteBuilder<T>(
+    pageBuilder: (context, animation, secondaryAnimation) => page(context),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      return FadeThroughTransition(
+        animation: animation,
+        secondaryAnimation: secondaryAnimation,
+        child: child,
+      );
+    },
+  );
+}
+
+Route<T> _fadeScale<T>(WidgetBuilder page) {
+  return PageRouteBuilder<T>(
+    pageBuilder: (context, animation, secondaryAnimation) => page(context),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      return FadeScaleTransition(animation: animation, child: child);
+    },
+  );
+}
+
+Route<T> _sharedAxis<T>(WidgetBuilder page,
+    [SharedAxisTransitionType type = SharedAxisTransitionType.scaled]) {
+  return PageRouteBuilder<T>(
+    pageBuilder: (context, animation, secondaryAnimation) => page(context),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      return SharedAxisTransition(
+        child: child,
+        animation: animation,
+        secondaryAnimation: secondaryAnimation,
+        transitionType: type,
+      );
+    },
+  );
 }

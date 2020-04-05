@@ -27,8 +27,15 @@ class StoreCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(store.name,
-                      style: Theme.of(context).textTheme.headline6),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Text(store.name,
+                            style: Theme.of(context).textTheme.headline6),
+                      ),
+                      Icon(Icons.chevron_right, color: Colors.black54,)
+                    ],
+                  ),
                   Divider(),
                   SizedBox(height: 16.0),
                   Row(

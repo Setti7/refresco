@@ -6,6 +6,8 @@ import 'package:refresco/utils/routing_constants.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class CartSheetModel extends BaseModel {
+  Duration animationDuration = Duration(milliseconds: 300);
+
   // Controllers
   PanelController panelController;
 
@@ -19,11 +21,19 @@ class CartSheetModel extends BaseModel {
   }
 
   void toggleCart() {
-    var duration = Duration(milliseconds: 300);
     if (panelController.panelPosition > 0.98) {
-      panelController.animatePanelToPosition(0, duration: duration);
+      panelController.animatePanelToPosition(0, duration: animationDuration);
     } else {
-      panelController.animatePanelToPosition(1, duration: duration);
+      panelController.animatePanelToPosition(1, duration: animationDuration);
+    }
+  }
+
+  Future<bool> assesPop() async {
+    if (panelController.isPanelClosed) {
+      return true;
+    } else {
+      panelController.animatePanelToPosition(0, duration: animationDuration);
+      return false;
     }
   }
 

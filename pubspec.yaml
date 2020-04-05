@@ -38,6 +38,7 @@ dependencies:
   equatable: ^1.1.1
   device_preview: ^0.4.3
   sliding_up_panel: ^1.0.1
+  animations: ^1.0.0+5
   get:
     git: git://github.com/jonataslaw/get.git
 # The following adds the Cupertino Icons font to your application.
