@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:refresco/core/enums/enums.dart';
 import 'package:refresco/core/dataModels/cart.dart';
+import 'package:refresco/core/enums/enums.dart';
 import 'package:refresco/core/models/gallon.dart';
 import 'package:refresco/core/models/store.dart';
 import 'package:refresco/core/models/user.dart';
@@ -137,7 +137,7 @@ class _StoreViewState extends State<StoreView>
     var gallonCards = <Widget>[];
 
     gallonCards = model.gallons.map<Widget>((g) {
-      return GallonCard(g);
+      return GallonCard(g, widget.store);
     }).toList();
 
     if (gallonCards.isEmpty) {

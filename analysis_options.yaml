@@ -1,1 +1,6 @@
 include: package:pedantic/analysis_options.yaml
+
+
+linter:
+  rules:
+    dead_code: info

@@ -13,6 +13,8 @@ import 'core/dataModels/cart.dart';
 import 'core/services/cart/cart_service.dart';
 import 'ui/theme.dart';
 
+// TODO: use auto_resize_text
+
 void main() {
   Logger.level = Level.debug;
   WidgetsFlutterBinding.ensureInitialized();

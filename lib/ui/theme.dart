@@ -58,6 +58,12 @@ class AppThemes {
     color: Colors.black45,
   );
 
+  static final boldPrimaryDarkHeadline6 = TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.w500,
+    color: AppColors.primary[900],
+  );
+
   static final storeCardTheme = ThemeData(
     textTheme: TextTheme(
       headline5: TextStyle(

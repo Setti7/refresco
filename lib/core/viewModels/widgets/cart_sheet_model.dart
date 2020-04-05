@@ -1,26 +1,34 @@
+import 'package:get/get.dart';
+import 'package:refresco/core/enums/enums.dart';
+import 'package:refresco/core/models/store.dart';
 import 'package:refresco/core/viewModels/base_model.dart';
-import 'package:sliding_sheet/sliding_sheet.dart';
+import 'package:refresco/utils/routing_constants.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class CartSheetModel extends BaseModel {
   // Controllers
-  SheetController sheetController = SheetController();
+  PanelController panelController;
 
   double cartSheetScrollProgress = 0;
   double cartSheetOpacity = 1;
 
-  void sheetListener(SheetState state) {
-    cartSheetScrollProgress = state.progress;
-    cartSheetOpacity = 1 - _interval(0.7, 1.0, cartSheetScrollProgress);
-    sheetController.rebuild();
+  void sheetListener(double progress) {
+    cartSheetScrollProgress = progress;
+    cartSheetOpacity = 1 - _interval(0.6, 0.95, cartSheetScrollProgress);
+    setState(ViewState.idle);
   }
 
   void toggleCart() {
-    if (sheetController.state?.isCollapsed == true ||
-        sheetController.state == null) {
-      sheetController.expand();
-    } else if (sheetController.state?.isExpanded == true) {
-      sheetController.collapse();
+    var duration = Duration(milliseconds: 300);
+    if (panelController.panelPosition > 0.98) {
+      panelController.animatePanelToPosition(0, duration: duration);
+    } else {
+      panelController.animatePanelToPosition(1, duration: duration);
     }
+  }
+
+  void goToStore(Store store) async {
+    Get.toNamed(StoreViewRoute, arguments: store);
   }
 
   double _interval(double lower, double upper, double progress) {

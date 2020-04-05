@@ -1,5 +1,6 @@
 import 'package:refresco/core/dataModels/cart.dart';
 import 'package:refresco/core/models/gallon.dart';
+import 'package:refresco/core/models/store.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CartService {
@@ -8,14 +9,14 @@ class CartService {
   final BehaviorSubject<Cart> _cartSubject =
       BehaviorSubject.seeded(Cart.empty());
 
-  bool addToCart(Gallon gallon) {
+  bool addToCart(Gallon gallon, Store store) {
     var currentCart = _cartSubject.value;
 
     if (currentCart.store != null && currentCart.store.id != gallon.store.id) {
       return false;
     }
 
-    _cartSubject.add(currentCart.add(gallon));
+    _cartSubject.add(currentCart.add(gallon, store));
     return true;
   }
 

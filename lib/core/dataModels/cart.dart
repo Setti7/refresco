@@ -23,7 +23,7 @@ class Cart {
     );
   }
 
-  Cart add(Gallon gallon) {
+  Cart add(Gallon gallon, Store store) {
     var cartItem = products.firstWhere(
       (item) => item.product.id == gallon.id,
       orElse: () => null,
@@ -44,7 +44,7 @@ class Cart {
     }
 
     return Cart(
-      store: gallon.store,
+      store: store,
       products: Set.from(
         products..add(cartItem),
       ),
@@ -57,9 +57,17 @@ class Cart {
     });
   }
 
-  double get totalPrice {
+  int get _totalPrice {
     return products.fold(0, (previousValue, cartItem) {
       return previousValue + (cartItem.product.price * cartItem.amount);
     });
+  }
+
+  String get priceDecimals {
+    return (_totalPrice / 100).toStringAsFixed(2).split('.').last;
+  }
+
+  String get priceIntegers {
+    return (_totalPrice / 100).toStringAsFixed(2).split('.').first;
   }
 }
