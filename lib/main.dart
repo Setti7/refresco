@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
         navigatorKey: Get.key,
         title: 'Refresco',
         onGenerateRoute: router.generateRoute,
-        initialRoute: BuyViewRoute,
+        initialRoute: Router.BuyViewRoute,
         theme: ThemeData(
           primarySwatch: AppColors.primary,
           scaffoldBackgroundColor: AppColors.scaffoldBackground,

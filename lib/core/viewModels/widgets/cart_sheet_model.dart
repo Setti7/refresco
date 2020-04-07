@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:refresco/core/dataModels/cart.dart';
+import 'package:refresco/core/dataModels/payment_method.dart';
 import 'package:refresco/core/enums/enums.dart';
 import 'package:refresco/core/models/store.dart';
 import 'package:refresco/core/viewModels/base_model.dart';
@@ -13,6 +15,7 @@ class CartSheetModel extends BaseModel {
 
   double cartSheetScrollProgress = 0;
   double cartSheetOpacity = 1;
+  PaymentMethod paymentMethod;
 
   void sheetListener(double progress) {
     cartSheetScrollProgress = progress;
@@ -38,7 +41,20 @@ class CartSheetModel extends BaseModel {
   }
 
   void goToStore(Store store) async {
-    Get.toNamed(StoreViewRoute, arguments: store);
+    Get.toNamed(Router.StoreViewRoute, arguments: store);
+  }
+
+  void selectPaymentMethod(Cart cart) async {
+    PaymentMethod _method = await Get.toNamed(
+      Router.PaymentMethodViewRoute,
+      arguments: cart,
+    ) as PaymentMethod;
+
+    if (_method == null) {
+      return;
+    }
+
+    paymentMethod = _method;
   }
 
   double _interval(double lower, double upper, double progress) {

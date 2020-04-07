@@ -58,6 +58,12 @@ class AppThemes {
     color: Colors.black45,
   );
 
+  static TextStyle get normalPlainHeadline6Smaller => TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    color: Colors.black54,
+  );
+
   static final boldPrimaryDarkHeadline6 = TextStyle(
     fontSize: 20,
     fontWeight: FontWeight.w500,
@@ -85,7 +91,8 @@ class AppShapes {
       BorderRadius.vertical(top: Radius.circular(16));
   static final ShapeBorder bottomSheetShape =
       RoundedRectangleBorder(borderRadius: bottomSheetBorderRadius);
-  static final double iconSize = 30;
+  static double get  iconSize => 30;
+  static double get  cardIconSize => 32;
 }
 
 class AppAnimations {
