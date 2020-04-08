@@ -9,7 +9,7 @@ class PaymentMethodModel extends BaseModel {
 
   void setPaymentMethod(PaymentMethod paymentMethod) async {
     if (paymentMethod.type == null) {
-      final change = await Get.bottomSheet(
+      final change = await Get.bottomSheet<int>(
         isScrollControlled: true,
         builder: (context) {
           return ChangeBottomSheet(cart: cart);

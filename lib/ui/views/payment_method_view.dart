@@ -53,8 +53,10 @@ class PaymentMethodView extends StatelessWidget {
           children: <Widget>[
             ListTile(
               onTap: () => model.setPaymentMethod(paymentMethod),
-              title: Text(paymentMethod.nameWithType,
-                  style: AppFonts.normalPlainHeadline6Smaller),
+              title: Text(
+                paymentMethod.nameWithType,
+                style: AppFonts.normalPlainHeadline6Smaller,
+              ),
               trailing: Image(
                 image: paymentMethod.image,
                 width: AppShapes.cardIconSize,

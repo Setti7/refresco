@@ -138,7 +138,7 @@ class CartSheet extends StatelessWidget {
                           Text(
                             model.paymentMethod == null
                                 ? 'Escolha uma forma'
-                                : model.paymentMethod.details,
+                                : model.paymentMethod.details(cart.totalPrice),
                             overflow: TextOverflow.ellipsis,
                             style: Theme.of(context).textTheme.subtitle1,
                           ),

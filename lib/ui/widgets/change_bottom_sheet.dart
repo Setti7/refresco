@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:refresco/core/dataModels/cart.dart';
-import 'package:refresco/utils/money.dart';
+import 'package:refresco/core/viewModels/widgets/change_bottom_sheet_model.dart';
+import 'package:refresco/ui/theme.dart';
+import 'package:refresco/ui/views/base_view.dart';
 
 /// Bottom sheet to set the change needed for this purchase, if the user
 /// selected to pay with money.
 ///
 /// Will return the amount the user will pay in cash as [int] if the user set a
-/// value and confirm it, or explicitly says doesn't need it, otherwise, will
-/// return null
-///
-///   TODO:
-///   - Set a validator for the field, so an error appears if the user set a
-///   value lower than the total price of the order.
-class ChangeBottomSheet extends StatelessWidget {
-  final TextEditingController controller = TextEditingController();
+/// value and confirmed it, otherwise, will return null.
+class ChangeBottomSheet extends StatefulWidget {
   final Cart cart;
 
   ChangeBottomSheet({
@@ -23,73 +19,99 @@ class ChangeBottomSheet extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: MediaQuery.of(context).viewInsets,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 16.0,
-          vertical: 24.0,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Text(
-              'Troco para quanto?',
-              style: Theme.of(context).textTheme.headline6,
-            ),
-            SizedBox(height: 4),
-            Text(
-              'Digite abaixo o quanto irá pagar em dinheiro para o entregador',
-              style: Theme.of(context).textTheme.bodyText2,
-            ),
-            SizedBox(height: 24),
-            Text(
-              'Seu pedido deu R\$ ${cart.priceIntegers},${cart.priceDecimals}',
-              style: Theme.of(context).textTheme.caption,
-            ),
-            SizedBox(height: 8),
-            Row(
-              children: <Widget>[
-                Flexible(
-                  flex: 2,
-                  child: TextFormField(
-                    controller: controller,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      prefix: Text('R\$ '),
-                    ),
-                  ),
-                ),
-                Flexible(
-                  flex: 3,
-                  fit: FlexFit.loose,
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: FlatButton(
-                      onPressed: () => Get.back(result: 0),
-                      child: Text('Não preciso'),
-                    ),
-                  ),
-                )
-              ],
-            ),
-            SizedBox(height: 40),
-            RaisedButton(
-              onPressed: () {
-                final value = MoneyUtils.intMoneyFromDouble(
-                  double.tryParse(controller.text),
-                );
+  _ChangeBottomSheetState createState() => _ChangeBottomSheetState();
+}
 
-                return Get.back(result: value);
-              },
-              child: Text('Confirmar'),
-            )
-          ],
+class _ChangeBottomSheetState extends State<ChangeBottomSheet>
+    with SingleTickerProviderStateMixin {
+  final TextEditingController controller = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return BaseView<ChangeBottomSheetModel>(onModelReady: (model) {
+      model.cart = widget.cart;
+      model.controller = controller;
+    }, builder: (context, model, child) {
+      return Padding(
+        padding: MediaQuery.of(context).viewInsets,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16.0,
+            vertical: 24.0,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text(
+                'Troco para quanto?',
+                style: Theme.of(context).textTheme.headline6,
+              ),
+              SizedBox(height: 4),
+              Text(
+                'Digite abaixo o quanto irá pagar em dinheiro para o entregador',
+                style: Theme.of(context).textTheme.bodyText2,
+              ),
+              SizedBox(height: 24),
+              Text(
+                'Seu pedido deu R\$ ${model.cart.priceIntegers},${model.cart.priceDecimals}',
+                style: Theme.of(context).textTheme.caption,
+              ),
+              SizedBox(height: 8),
+              Row(
+                children: <Widget>[
+                  Flexible(
+                    flex: 2,
+                    child: TextFormField(
+                      controller: model.controller,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        isDense: true,
+                        prefix: Text('R\$ '),
+                      ),
+                    ),
+                  ),
+                  Flexible(
+                    flex: 3,
+                    fit: FlexFit.loose,
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: FlatButton(
+                        onPressed: () => Get.back(result: model.cart.totalPrice),
+                        child: Text('Não preciso'),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(height: 40),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  AnimatedSize(
+                    duration: Duration(milliseconds: 100),
+                    vsync: this,
+                    child: model.errorMessage != null
+                        ? Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: Text(
+                              model.errorMessage ?? '',
+                              style: AppFonts.normalPlainHeadline6Smaller,
+                              textAlign: TextAlign.center,
+                            ),
+                          )
+                        : Container(),
+                  ),
+                  RaisedButton(
+                    onPressed: model.validateField,
+                    child: Text('Confirmar'),
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 }

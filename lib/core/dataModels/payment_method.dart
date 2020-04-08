@@ -10,9 +10,9 @@ class PaymentMethod {
 
   PaymentMethod({this.name, this.image, this.type, this.change});
 
-  String get details {
+  String details(int totalCartPrice) {
     if (type == null) {
-      if (change == null || change == 0) {
+      if (change == totalCartPrice) {
         return 'Sem troco';
       } else {
         final value = MoneyUtils.intMoneyAsString(change);

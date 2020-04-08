@@ -13,6 +13,7 @@ import 'package:refresco/core/viewModels/views/login_model.dart';
 import 'package:refresco/core/viewModels/views/payment_method_model.dart';
 import 'package:refresco/core/viewModels/views/store_model.dart';
 import 'package:refresco/core/viewModels/widgets/cart_sheet_model.dart';
+import 'package:refresco/core/viewModels/widgets/change_bottom_sheet_model.dart';
 import 'package:refresco/core/viewModels/widgets/current_location_tile_model.dart';
 
 GetIt locator = GetIt.instance;
@@ -39,6 +40,7 @@ void setupLocator() {
   locator.registerFactory<BuyModel>(() => BuyModel());
   locator.registerFactory<StoreModel>(() => StoreModel());
   locator.registerFactory<PaymentMethodModel>(() => PaymentMethodModel());
+  locator.registerFactory<ChangeBottomSheetModel>(() => ChangeBottomSheetModel());
 
   // Widgets model factories
   locator.registerFactory<CartSheetModel>(() => CartSheetModel());

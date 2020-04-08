@@ -7,6 +7,7 @@ class MoneyUtils {
   }
 
   static int intMoneyFromDouble(double value) {
+    if (value == null) return null;
     return (value * 100).truncate();
   }
 }
