@@ -89,7 +89,7 @@ class BuyView extends StatelessWidget {
                     left: 16.0, right: 16.0, top: 32, bottom: 8),
                 child: Text(
                   'As mais próximas:',
-                  style: AppThemes.boldPlainHeadline6,
+                  style: AppFonts.boldPlainHeadline6,
                 ),
               );
             }

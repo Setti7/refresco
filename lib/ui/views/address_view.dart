@@ -25,7 +25,7 @@ class AddressView extends StatelessWidget {
                 children: <Widget>[
                   Center(
                     child: Text(model.errorMessage ?? '',
-                        style: AppThemes.boldPlainHeadline6),
+                        style: AppFonts.boldPlainHeadline6),
                   ),
                   SizedBox(height: 8),
                   RaisedButton(
@@ -135,7 +135,7 @@ class AddressView extends StatelessWidget {
                 padding: EdgeInsets.only(left: 8),
                 child: Text(
                   'Número',
-                  style: AppThemes.boldPlainHeadline6,
+                  style: AppFonts.boldPlainHeadline6,
                 ),
               ),
               SizedBox(height: 8),
@@ -162,7 +162,7 @@ class AddressView extends StatelessWidget {
                   'Apto / Bloco / Casa etc.',
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
-                  style: AppThemes.boldPlainHeadline6,
+                  style: AppFonts.boldPlainHeadline6,
                 ),
               ),
               SizedBox(height: 8),
@@ -189,7 +189,7 @@ class AddressView extends StatelessWidget {
           padding: EdgeInsets.only(left: 8),
           child: Text(
             'Ponto de referência',
-            style: AppThemes.boldPlainHeadline6,
+            style: AppFonts.boldPlainHeadline6,
           ),
         ),
         SizedBox(height: 8),

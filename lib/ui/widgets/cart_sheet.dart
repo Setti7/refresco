@@ -340,13 +340,13 @@ class CartSheet extends StatelessWidget {
                     TextSpan(
                         text: '${orderItem.product.company} - '
                             '${orderItem.product.typeAsString}',
-                        style: AppThemes.boldPlainHeadline6),
+                        style: AppFonts.boldPlainHeadline6),
                   ],
                 ),
               ),
               RichText(
                 text: TextSpan(
-                  style: AppThemes.boldPlainHeadline6,
+                  style: AppFonts.boldPlainHeadline6,
                   children: [
                     TextSpan(
                       text: 'R\$ ',
@@ -439,7 +439,7 @@ class CartSheet extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     'Detalhes',
-                    style: AppThemes.boldPlainHeadline6,
+                    style: AppFonts.boldPlainHeadline6,
                   ),
                   SizedBox(width: 4),
                   Icon(Icons.keyboard_arrow_down, color: Colors.black45),

@@ -15,6 +15,7 @@ class GallonCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return BaseView<StoreModel>(builder: (context, model, child) {
       return Card(
+        color: AppColors.cardSurface,
         child: InkWell(
           onTap: () => model.addToCart(gallon, store),
           child: Padding(
@@ -24,7 +25,7 @@ class GallonCard extends StatelessWidget {
               children: <Widget>[
                 Text('${gallon.company} - ${gallon.typeAsString}',
                     textAlign: TextAlign.left,
-                    style: AppThemes.boldPlainHeadline6),
+                    style: AppFonts.boldPlainHeadline6),
                 RichText(
                   text: TextSpan(
                     style: Theme.of(context).textTheme.bodyText2,
