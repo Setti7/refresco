@@ -79,7 +79,7 @@ class ChangeBottomSheet extends StatelessWidget {
             SizedBox(height: 40),
             RaisedButton(
               onPressed: () {
-                int value = MoneyUtils.intMoneyFromDouble(
+                final value = MoneyUtils.intMoneyFromDouble(
                   double.tryParse(controller.text),
                 );
 

@@ -32,7 +32,7 @@ class FirebaseDatabaseService implements DatabaseService {
           .getDocuments()
           .timeout(Duration(seconds: 5));
 
-      var stores = snapshot.documents.map((doc) {
+      final stores = snapshot.documents.map((doc) {
         return Store.fromJson(doc.data);
       }).toList();
 

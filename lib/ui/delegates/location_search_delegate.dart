@@ -67,7 +67,7 @@ class LocationSearchDelegate extends SearchDelegate<Address> {
           );
         }
 
-        var results = snapshot.data;
+        final results = snapshot.data;
 
         if (results.isEmpty) {
           return Center(
@@ -105,7 +105,7 @@ class LocationSearchDelegate extends SearchDelegate<Address> {
                 );
               }
 
-              var result = results[index - 1];
+              final result = results[index - 1];
 
               return Ink(
                 color: Colors.white,

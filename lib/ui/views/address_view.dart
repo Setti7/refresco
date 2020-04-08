@@ -59,7 +59,7 @@ class AddressView extends StatelessWidget {
   Widget _buildAddressField(BuildContext context, AddressModel model) {
     String headline;
     String subtitle;
-    var address = model.showAddress;
+    final address = model.showAddress;
 
     headline = address?.streetName ?? 'Endereço';
     subtitle = address?.districtAndCity ?? 'Escolha um endereço.';

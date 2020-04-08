@@ -10,7 +10,7 @@ class CartService {
       BehaviorSubject.seeded(Cart.empty());
 
   bool addToCart(Gallon gallon, Store store) {
-    var currentCart = _cartSubject.value;
+    final currentCart = _cartSubject.value;
 
     if (currentCart.store != null && currentCart.store.id != gallon.store.id) {
       return false;

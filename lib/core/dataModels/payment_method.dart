@@ -15,7 +15,7 @@ class PaymentMethod {
       if (change == null || change == 0) {
         return 'Sem troco';
       } else {
-        String value = MoneyUtils.intMoneyAsString(change);
+        final value = MoneyUtils.intMoneyAsString(change);
         return 'Troco para R\$ $value';
       }
     } else {

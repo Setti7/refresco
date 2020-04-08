@@ -120,7 +120,7 @@ class Address {
   String get streetAndNumber => '$streetName, $number';
 
   String get simpleAddress {
-    var _numberOrCity =
+    final _numberOrCity =
         number != null ? ', $number' : city != null ? ' - $city' : '';
 
     return '$streetName$_numberOrCity';

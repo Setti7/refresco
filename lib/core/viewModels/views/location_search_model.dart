@@ -19,7 +19,7 @@ class LocationSearchModel extends BaseModel {
       return;
     }
 
-    var addresses =
+    final addresses =
         await _locationService.findAddressesFromQuery(query);
     _addressesSubject.add(addresses);
   }

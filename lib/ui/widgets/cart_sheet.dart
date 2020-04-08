@@ -22,7 +22,7 @@ class CartSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var panelMaxHeight = MediaQuery.of(context).size.height -
+    final panelMaxHeight = MediaQuery.of(context).size.height -
         kToolbarHeight -
         MediaQuery.of(context).padding.top;
 
@@ -303,7 +303,7 @@ class CartSheet extends StatelessWidget {
   }
 
   Widget _buildProductList(BuildContext context, CartSheetModel model) {
-    var children = <Widget>[];
+    final children = <Widget>[];
 
     children.add(
       Column(

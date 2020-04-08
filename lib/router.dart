@@ -12,8 +12,8 @@ import 'package:refresco/utils/logger.dart';
 import 'package:refresco/utils/routing_constants.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
-  var _logger = getLogger('Router');
-  String routeName = settings.name;
+  final _logger = getLogger('Router');
+  final routeName = settings.name;
 
   if (routeName == Router.BuyViewRoute) {
     return _fadeThrough((context) => BuyView());

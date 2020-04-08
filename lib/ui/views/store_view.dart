@@ -166,7 +166,7 @@ class _StoreViewState extends State<StoreView>
   Widget _buildTabBar(StoreModel model) {
     return TabBar(
       onTap: (index) {
-        var gallonType = index == 0 ? GallonType.l20 : GallonType.l10;
+        final gallonType = index == 0 ? GallonType.l20 : GallonType.l10;
         model.setGallonType(gallonType);
         model.getGallons(widget.store);
       },

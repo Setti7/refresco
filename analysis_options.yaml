@@ -1,6 +1,10 @@
 include: package:pedantic/analysis_options.yaml
 
-
+analyzer:
+  exclude:
+    # Ignore generated files
+    - '**/*.g.dart'
+    - 'lib/src/generated/*.dart'
 linter:
   rules:
-    dead_code: info
+    - prefer_final_locals

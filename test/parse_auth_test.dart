@@ -22,11 +22,11 @@ void main() {
 
   group('ParseAuthService login', () {
     test('login with valid user', () async {
-      var userEmail = 'valid@email.com';
-      var userPassword = 'validPassword';
-      var user = ParseUser(userEmail, userPassword, userEmail);
+      final userEmail = 'valid@email.com';
+      final userPassword = 'validPassword';
+      final user = ParseUser(userEmail, userPassword, userEmail);
 
-      var mockResponse = ParseResponse()
+      final mockResponse = ParseResponse()
         ..success = true
         ..statusCode = 200
         ..count = 1
@@ -38,7 +38,7 @@ void main() {
         (_) async => Future.value(mockResponse),
       );
 
-      var response = await authService.loginWithEmail(
+      final response = await authService.loginWithEmail(
         email: userEmail,
         password: userPassword,
       );

@@ -45,7 +45,7 @@ class CartSheetModel extends BaseModel {
   }
 
   void selectPaymentMethod(Cart cart) async {
-    PaymentMethod _method = await Get.toNamed(
+    final _method = await Get.toNamed(
       Router.PaymentMethodViewRoute,
       arguments: cart,
     ) as PaymentMethod;

@@ -31,7 +31,7 @@ void main() {
     /// ServiceResponse, with an empty list of results, but with no message to
     /// show in the screen.
     test('getStores with null address', () async {
-      var response = await dbService.getStores(null);
+      final response = await dbService.getStores(null);
 
       // Should not hit the backend
       verifyNever(mockApi.query(any));
@@ -42,7 +42,7 @@ void main() {
     /// ParseDatabaseService getStores with no close-by stores should return
     /// a successful ServiceResponse, but with an empty list as results.
     test('getStores with no close stores', () async {
-      var mockResponse = buildSuccessResponseWithNoResults(
+      final mockResponse = buildSuccessResponseWithNoResults(
         ParseResponse(),
         1,
         'Successful request, but no results found',
@@ -52,7 +52,7 @@ void main() {
         (_) async => Future.value(mockResponse),
       );
 
-      var response = await dbService
+      final response = await dbService
           .getStores(Address(coordinate: Coordinate(-22.013252, -47.91365)));
 
       verify(mockApi.query(any)).called(1);
@@ -64,12 +64,12 @@ void main() {
     /// ParseDatabaseService getStores with no errors should return a successful
     /// ServiceResponse with a list of the close-by Stores.
     test('getStores with no errors', () async {
-      var stores = [
+      final stores = [
         Store.toParse(SampleData.store1),
         Store.toParse(SampleData.store2),
       ];
 
-      var mockResponse = ParseResponse()
+      final mockResponse = ParseResponse()
         ..success = true
         ..statusCode = 200
         ..count = 2
@@ -80,7 +80,7 @@ void main() {
         (_) async => Future.value(mockResponse),
       );
 
-      var response = await dbService.getStores(
+      final response = await dbService.getStores(
         Address(coordinate: Coordinate(-22.013252, -47.91365)),
       );
 
@@ -96,7 +96,7 @@ void main() {
     /// ParseDatabaseService getGallons with any error should return a failed
     /// ServiceResponse with empty list results.
     test('getGallons with error', () async {
-      var mockResponse = ParseResponse()
+      final mockResponse = ParseResponse()
         ..success = false
         ..statusCode = -1
         ..count = 0
@@ -110,7 +110,7 @@ void main() {
         (_) async => Future.value(mockResponse),
       );
 
-      var response = await dbService.getGallons(
+      final response = await dbService.getGallons(
         SampleData.store1,
         GallonType.l10,
       );
@@ -125,12 +125,12 @@ void main() {
     /// ParseDatabaseService getGallons with no errors should return a list of
     /// Gallons.
     test('getGallons with no errors', () async {
-      var gallons = [
+      final gallons = [
         Gallon.toParse(SampleData.l20gallon1),
         Gallon.toParse(SampleData.l10gallon1),
       ];
 
-      var mockResponse = ParseResponse()
+      final mockResponse = ParseResponse()
         ..success = true
         ..statusCode = 200
         ..count = 2
@@ -141,7 +141,7 @@ void main() {
         (_) async => Future.value(mockResponse),
       );
 
-      var response = await dbService.getGallons(
+      final response = await dbService.getGallons(
         SampleData.store1,
         GallonType.l10,
       );
