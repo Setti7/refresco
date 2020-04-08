@@ -1,4 +1,5 @@
 import 'package:random_string/random_string.dart';
+import 'package:refresco/core/enums/enums.dart';
 import 'package:refresco/core/models/address.dart';
 import 'package:refresco/core/models/coordinate.dart';
 import 'package:refresco/core/models/gallon.dart';
@@ -7,7 +8,7 @@ import 'package:refresco/core/models/store.dart';
 import 'package:refresco/core/models/time.dart';
 
 class SampleData {
-  static final store1 = Store(
+  static Store get store1 => Store(
     id: randomAlphaNumeric(20),
     name: 'Água Clara',
     description: 'Entrega de água e gás.',
@@ -27,7 +28,7 @@ class SampleData {
     ),
   );
 
-  static final store2 = Store(
+  static Store get store2 => Store(
     id: randomAlphaNumeric(20),
     name: 'Água Azul',
     description: 'Entrega de água e gás.',
@@ -47,7 +48,7 @@ class SampleData {
     ),
   );
 
-  static final store3 = Store(
+  static Store get store3 => Store(
     id: randomAlphaNumeric(20),
     name: 'Água e Gás Campinas',
     description: 'Entrega de água e gás.',
@@ -67,7 +68,7 @@ class SampleData {
     ),
   );
 
-  static final store4 = Store(
+  static Store get store4 => Store(
     id: randomAlphaNumeric(20),
     name: 'Água Azul São Carlos',
     description: 'Entrega de água e gás.',
@@ -87,35 +88,35 @@ class SampleData {
     ),
   );
 
-  static final l20gallon1 = Gallon(
+  static Gallon get l20gallon1 => Gallon(
     type: GallonType.l20,
     price: 960,
     company: 'Bonafont',
     store: store1,
   );
 
-  static final l20gallon2 = Gallon(
+  static Gallon get l20gallon2 => Gallon(
     type: GallonType.l20,
     price: 875,
     company: 'Serra Negra',
     store: store1,
   );
 
-  static final l20gallon3 = Gallon(
+  static Gallon get l20gallon3 => Gallon(
     type: GallonType.l20,
     price: 920,
     company: 'Bonafont',
     store: store2,
   );
 
-  static final l10gallon1 = Gallon(
+  static Gallon get l10gallon1 => Gallon(
     type: GallonType.l10,
     price: 840,
     company: 'Dufont',
     store: store3,
   );
 
-  static final l10gallon2 = Gallon(
+  static Gallon get l10gallon2 => Gallon(
     type: GallonType.l10,
     price: 825,
     company: 'Bonafont',

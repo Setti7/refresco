@@ -1,11 +1,12 @@
 import 'package:logger/logger.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
+import 'package:refresco/core/dataModels/service_response.dart';
+import 'package:refresco/core/enums/enums.dart';
 import 'package:refresco/core/models/address.dart';
 import 'package:refresco/core/models/gallon.dart';
 import 'package:refresco/core/models/store.dart';
 import 'package:refresco/core/services/api/parse_api.dart';
 import 'package:refresco/core/services/database/database_service.dart';
-import 'package:refresco/core/dataModels/service_response.dart';
 import 'package:refresco/utils/logger.dart';
 
 class ParseDatabaseService implements DatabaseService {
@@ -23,7 +24,7 @@ class ParseDatabaseService implements DatabaseService {
       return ServiceResponse(success: false);
     }
 
-    var addressQuery = QueryBuilder(ParseObject('Address'))
+    final addressQuery = QueryBuilder(ParseObject('Address'))
       ..whereWithinKilometers(
         'coordinate',
         ParseGeoPoint(
@@ -33,12 +34,12 @@ class ParseDatabaseService implements DatabaseService {
         10,
       );
 
-    var storeQuery = QueryBuilder(ParseObject('Store'))
+    final storeQuery = QueryBuilder(ParseObject('Store'))
       ..whereValueExists('address', true)
       ..whereMatchesQuery('address', addressQuery)
       ..includeObject(['address']);
 
-    var response = await api.query(storeQuery);
+    final response = await api.query(storeQuery);
 
     var stores = <Store>[];
 
@@ -56,14 +57,15 @@ class ParseDatabaseService implements DatabaseService {
 
   @override
   Future<ServiceResponse> getGallons(Store store, GallonType gallonType) async {
-    var query = QueryBuilder(ParseObject('Gallon'))
+    final query = QueryBuilder(ParseObject('Gallon'))
       ..whereEqualTo('store', Store.toParse(store))
       ..whereEqualTo(
         'type',
         Gallon.gallonTypeToString(gallonType),
-      )..includeObject(['store']);
+      )
+      ..includeObject(['store']);
 
-    var response = await api.query(query);
+    final response = await api.query(query);
 
     var gallons = <Gallon>[];
 

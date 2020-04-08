@@ -42,7 +42,7 @@ class BuyModel extends BaseModel {
     errorTitle = null;
     errorMessage = null;
 
-    var response = await dbService.getStores(address);
+    final response = await dbService.getStores(address);
 
     if (response.success) {
       stores = response.results;

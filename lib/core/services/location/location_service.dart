@@ -19,10 +19,10 @@ class LocationService {
   Future<Address> getCurrentAddress() async {
     if (currentAddress != null) return currentAddress;
 
-    var locationData = await location.getLocation();
-    var coordinates =
+    final locationData = await location.getLocation();
+    final coordinates =
         geo.Coordinates(locationData.latitude, locationData.longitude);
-    var addresses = await findAddressesFromCoordinates(coordinates);
+    final addresses = await findAddressesFromCoordinates(coordinates);
 
     currentAddress = addresses.first;
     return currentAddress;
@@ -30,11 +30,11 @@ class LocationService {
 
   Future<List<Address>> findAddressesFromCoordinates(
       geo.Coordinates coordinates) async {
-    var _addresses = await geo.Geocoder.local
+    final _addresses = await geo.Geocoder.local
         .findAddressesFromCoordinates(coordinates)
         .timeout(Duration(seconds: 2));
 
-    var addresses = _addresses
+    final addresses = _addresses
         .map((address) => Address.fromGeocoderAddress(address))
         .toList();
 
@@ -65,7 +65,7 @@ class LocationService {
       {int number, String complement, String pointOfReference}) {
     var user = authService.getUser();
 
-    var newAddress = Address.copy(
+    final newAddress = Address.copy(
       selectedAddress,
       number: number,
       complement: complement,

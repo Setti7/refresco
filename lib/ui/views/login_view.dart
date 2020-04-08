@@ -24,7 +24,7 @@ class LoginView extends StatelessWidget {
                             color: AppColors.primary,
                             fontWeight: FontWeight.w300)),
                     Text('Delivery de água',
-                        style: AppThemes.boldPlainHeadline6),
+                        style: AppFonts.boldPlainHeadline6),
                     SizedBox(height: 56),
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 16.0),
@@ -86,7 +86,7 @@ class LoginView extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text('Criar conta',
-                              style: AppThemes.boldPlainHeadline6),
+                              style: AppFonts.boldPlainHeadline6),
                           Switch(
                             onChanged: (value) => model.changeAction(value),
                             value: !model.signIn,
@@ -100,7 +100,7 @@ class LoginView extends StatelessWidget {
                       children: [
                         Center(
                           child: Text(model.errorMessage ?? '',
-                              style: AppThemes.boldPlainHeadline6),
+                              style: AppFonts.boldPlainHeadline6),
                         ),
                         SizedBox(height: 8),
                         RaisedButton(

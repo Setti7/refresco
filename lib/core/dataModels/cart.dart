@@ -57,17 +57,17 @@ class Cart {
     });
   }
 
-  int get _totalPrice {
+  int get totalPrice {
     return products.fold(0, (previousValue, cartItem) {
       return previousValue + (cartItem.product.price * cartItem.amount);
     });
   }
 
   String get priceDecimals {
-    return (_totalPrice / 100).toStringAsFixed(2).split('.').last;
+    return (totalPrice / 100).toStringAsFixed(2).split('.').last;
   }
 
   String get priceIntegers {
-    return (_totalPrice / 100).toStringAsFixed(2).split('.').first;
+    return (totalPrice / 100).toStringAsFixed(2).split('.').first;
   }
 }

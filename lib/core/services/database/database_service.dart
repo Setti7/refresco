@@ -1,7 +1,8 @@
+import 'package:refresco/core/dataModels/service_response.dart';
+import 'package:refresco/core/enums/enums.dart';
 import 'package:refresco/core/models/address.dart';
 import 'package:refresco/core/models/gallon.dart';
 import 'package:refresco/core/models/store.dart';
-import 'package:refresco/core/dataModels/service_response.dart';
 
 abstract class DatabaseService {
   /// Get all stores based on user address.

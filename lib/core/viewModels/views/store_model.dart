@@ -31,7 +31,7 @@ class StoreModel extends BaseModel {
     errorTitle = null;
     errorMessage = null;
 
-    var response = await dbService.getGallons(store, gallonType);
+    final response = await dbService.getGallons(store, gallonType);
 
     if (response.success) {
       gallons = response.results;
@@ -44,10 +44,10 @@ class StoreModel extends BaseModel {
   }
 
   void addToCart(Gallon gallon, Store store) async {
-    var success = cartService.addToCart(gallon, store);
+    final success = cartService.addToCart(gallon, store);
 
     if (!success) {
-      var result = await Get.dialog<bool>(AddToCartErrorDialog());
+      final result = await Get.dialog<bool>(AddToCartErrorDialog());
       if (result ?? false) {
         cartService.clearCart();
       }
@@ -58,7 +58,7 @@ class StoreModel extends BaseModel {
 
   String getFormattedDistanceFromUser(
       Address userAddress, Address storeAddress) {
-    var mDistance = locationService.getDistanceBetweenCoordinates(
+    final mDistance = locationService.getDistanceBetweenCoordinates(
       userAddress.coordinate,
       storeAddress.coordinate,
     );

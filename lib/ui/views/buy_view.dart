@@ -29,7 +29,7 @@ class BuyView extends StatelessWidget {
                     icon: Icon(
                         user.isAnonymous ? Icons.vpn_key : Icons.exit_to_app),
                     onPressed: user.isAnonymous
-                        ? () => Get.toNamed(LoginViewRoute)
+                        ? () => Get.toNamed(Router.LoginViewRoute)
                         : model.logout,
                   ),
                 ],
@@ -45,7 +45,7 @@ class BuyView extends StatelessWidget {
                           children: <Widget>[
                             AddressTile(
                               address: user.address,
-                              onPressed: () => Get.toNamed(AddressViewRoute),
+                              onPressed: () => Get.toNamed(Router.AddressViewRoute),
                             ),
                           ],
                         ),
@@ -89,7 +89,7 @@ class BuyView extends StatelessWidget {
                     left: 16.0, right: 16.0, top: 32, bottom: 8),
                 child: Text(
                   'As mais próximas:',
-                  style: AppThemes.boldPlainHeadline6,
+                  style: AppFonts.boldPlainHeadline6,
                 ),
               );
             }

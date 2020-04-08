@@ -35,14 +35,14 @@ class ParseAuthService implements AuthService {
 
   @override
   Future<void> loadUser() async {
-    var dir = await getApplicationDocumentsDirectory();
+    final dir = await getApplicationDocumentsDirectory();
     Hive.init(dir.path + '/hive');
 
     _userBox = await Hive.openBox('userBox');
 
-    var userJson = Map<String, dynamic>.from(_userBox.get('user') ?? {});
+    final userJson = Map<String, dynamic>.from(_userBox.get('user') ?? {});
     if (userJson.isNotEmpty) {
-      var _user = User.fromJson(userJson);
+      final _user = User.fromJson(userJson);
       _userSubject.add(_user);
       _logger.d('user loaded');
     }
@@ -51,7 +51,7 @@ class ParseAuthService implements AuthService {
   @override
   Future<ServiceResponse> loginWithEmail(
       {@required String email, @required String password}) async {
-    var response = await api.login(ParseUser(email, password, email));
+    final response = await api.login(ParseUser(email, password, email));
     if (response.success) {
       updateUser(User.fromParse(response.results.first));
       return ServiceResponse(success: true);
@@ -63,7 +63,7 @@ class ParseAuthService implements AuthService {
   @override
   Future<ServiceResponse> createUserWithEmailAndPassword(
       {@required String email, @required String password}) async {
-    var response = await ParseUser.createUser(email, password, email).signUp();
+    final response = await ParseUser.createUser(email, password, email).signUp();
     if (response.success) {
       updateUser(User.fromParse(response.results.first));
       return ServiceResponse(success: true);
@@ -82,7 +82,7 @@ class ParseAuthService implements AuthService {
     if (_userSubject.value.address == null) {
       _userSubject.add(newUser);
     } else {
-      var oldUser = _userSubject.value;
+      final oldUser = _userSubject.value;
       _userSubject.add(User.newAddress(newUser, oldUser.address));
     }
   }
@@ -92,9 +92,9 @@ class ParseAuthService implements AuthService {
 
   @override
   void logout() async {
-    var oldUser = _userSubject.value;
+    final oldUser = _userSubject.value;
 
-    ParseUser _user = await ParseUser.currentUser();
+    final _user = await ParseUser.currentUser() as ParseUser;
     await _user.logout(deleteLocalUserData: true);
 
     _userSubject.add(User.newAddress(User(), oldUser.address));

@@ -21,7 +21,7 @@ class StoreCard extends StatelessWidget {
           margin: const EdgeInsets.only(right: 16.0, left: 16.0, bottom: 16.0),
           child: InkWell(
             borderRadius: AppShapes.cardBorderRadius,
-            onTap: () => Get.toNamed(StoreViewRoute, arguments: store),
+            onTap: () => Get.toNamed(Router.StoreViewRoute, arguments: store),
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(

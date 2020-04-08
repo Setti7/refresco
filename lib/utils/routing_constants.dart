@@ -1,4 +1,11 @@
-const String BuyViewRoute = '/';
-const String LoginViewRoute = '/login';
-const String AddressViewRoute = '/address';
-const String StoreViewRoute = '/store';
+class Router {
+  static String get BuyViewRoute => '/';
+
+  static String get LoginViewRoute => '/login';
+
+  static String get AddressViewRoute => '/address';
+
+  static String get StoreViewRoute => '/store';
+
+  static String get PaymentMethodViewRoute => '/payment-method';
+}

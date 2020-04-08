@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:refresco/core/dataModels/cart.dart';
 import 'package:refresco/core/enums/enums.dart';
-import 'package:refresco/core/models/gallon.dart';
 import 'package:refresco/core/models/store.dart';
 import 'package:refresco/core/models/user.dart';
 import 'package:refresco/core/viewModels/views/store_model.dart';
@@ -167,7 +166,7 @@ class _StoreViewState extends State<StoreView>
   Widget _buildTabBar(StoreModel model) {
     return TabBar(
       onTap: (index) {
-        var gallonType = index == 0 ? GallonType.l20 : GallonType.l10;
+        final gallonType = index == 0 ? GallonType.l20 : GallonType.l10;
         model.setGallonType(gallonType);
         model.getGallons(widget.store);
       },

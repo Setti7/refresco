@@ -22,7 +22,7 @@ class CartSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var panelMaxHeight = MediaQuery.of(context).size.height -
+    final panelMaxHeight = MediaQuery.of(context).size.height -
         kToolbarHeight -
         MediaQuery.of(context).padding.top;
 
@@ -75,7 +75,7 @@ class CartSheet extends StatelessWidget {
                   _buildProductList(context, model),
                   _buildPaymentDetails(context),
                   SizedBox(height: 8),
-                  _buildPayment(context),
+                  _buildPayment(context, model),
                 ],
               ),
             ),
@@ -85,7 +85,7 @@ class CartSheet extends StatelessWidget {
     );
   }
 
-  Container _buildPayment(BuildContext context) {
+  Widget _buildPayment(BuildContext context, CartSheetModel model) {
     return Container(
       color: Colors.white,
       padding: EdgeInsets.all(16),
@@ -100,7 +100,7 @@ class CartSheet extends StatelessWidget {
           Material(
             child: InkWell(
               borderRadius: AppShapes.inputBorderRadius,
-              onTap: () {},
+              onTap: () => model.selectPaymentMethod(cart),
               child: Container(
                 decoration: BoxDecoration(
                   color: AppColors.primary.withOpacity(0.07),
@@ -111,25 +111,34 @@ class CartSheet extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16.0, vertical: 24),
-                      child: Icon(
-                        Icons.credit_card,
-                        color: AppColors.primary,
-                        size: AppShapes.iconSize,
-                      ),
+                      child: model.paymentMethod == null
+                          ? Icon(
+                              Icons.credit_card,
+                              color: AppColors.primary,
+                              size: AppShapes.iconSize,
+                            )
+                          : Image(
+                              image: model.paymentMethod.image,
+                              width: AppShapes.cardIconSize,
+                            ),
                     ),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            'Forma de pagamento',
+                            model.paymentMethod == null
+                                ? 'Forma de pagamento'
+                                : model.paymentMethod.name,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: Theme.of(context).textTheme.headline6,
                           ),
                           SizedBox(height: 4),
                           Text(
-                            'Escolha uma forma',
+                            model.paymentMethod == null
+                                ? 'Escolha uma forma'
+                                : model.paymentMethod.details(cart.totalPrice),
                             overflow: TextOverflow.ellipsis,
                             style: Theme.of(context).textTheme.subtitle1,
                           ),
@@ -198,7 +207,7 @@ class CartSheet extends StatelessWidget {
             AddressTile(
               contentPadding: EdgeInsets.zero,
               address: user.address,
-              onPressed: () => Get.toNamed(AddressViewRoute),
+              onPressed: () => Get.toNamed(Router.AddressViewRoute),
             ),
           ],
         ),
@@ -294,7 +303,7 @@ class CartSheet extends StatelessWidget {
   }
 
   Widget _buildProductList(BuildContext context, CartSheetModel model) {
-    var children = <Widget>[];
+    final children = <Widget>[];
 
     children.add(
       Column(
@@ -304,7 +313,7 @@ class CartSheet extends StatelessWidget {
             onPressed: cart.store == null
                 ? null
                 : () => Get.toNamed(
-                      StoreViewRoute,
+                      Router.StoreViewRoute,
                       arguments: cart.store,
                     ),
             child: Text('Adicionar mais itens'),
@@ -331,13 +340,13 @@ class CartSheet extends StatelessWidget {
                     TextSpan(
                         text: '${orderItem.product.company} - '
                             '${orderItem.product.typeAsString}',
-                        style: AppThemes.boldPlainHeadline6),
+                        style: AppFonts.boldPlainHeadline6),
                   ],
                 ),
               ),
               RichText(
                 text: TextSpan(
-                  style: AppThemes.boldPlainHeadline6,
+                  style: AppFonts.boldPlainHeadline6,
                   children: [
                     TextSpan(
                       text: 'R\$ ',
@@ -430,7 +439,7 @@ class CartSheet extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     'Detalhes',
-                    style: AppThemes.boldPlainHeadline6,
+                    style: AppFonts.boldPlainHeadline6,
                   ),
                   SizedBox(width: 4),
                   Icon(Icons.keyboard_arrow_down, color: Colors.black45),

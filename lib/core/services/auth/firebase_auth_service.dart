@@ -32,14 +32,14 @@ class FirebaseAuthService implements AuthService {
 
   @override
   Future<void> loadUser() async {
-    var dir = await getApplicationDocumentsDirectory();
+    final dir = await getApplicationDocumentsDirectory();
     Hive.init(dir.path + '/hive');
 
     _userBox = await Hive.openBox('userBox');
 
-    var userJson = Map<String, dynamic>.from(_userBox.get('user') ?? {});
+    final userJson = Map<String, dynamic>.from(_userBox.get('user') ?? {});
     if (userJson.isNotEmpty) {
-      var _user = User.fromJson(userJson);
+      final _user = User.fromJson(userJson);
       _userSubject.add(_user);
       _logger.d('user loaded');
     }
@@ -91,7 +91,7 @@ class FirebaseAuthService implements AuthService {
     if (_userSubject.value.address == null) {
       _userSubject.add(newUser);
     } else {
-      var oldUser = _userSubject.value;
+      final oldUser = _userSubject.value;
       _userSubject.add(User.newAddress(newUser, oldUser.address));
     }
   }
@@ -101,7 +101,7 @@ class FirebaseAuthService implements AuthService {
 
   @override
   void logout() {
-    var oldUser = _userSubject.value;
+    final oldUser = _userSubject.value;
     FirebaseAuth.instance.signOut();
     _userSubject.add(User.newAddress(User(), oldUser.address));
   }

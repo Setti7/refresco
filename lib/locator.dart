@@ -10,8 +10,10 @@ import 'package:refresco/core/viewModels/views/address_model.dart';
 import 'package:refresco/core/viewModels/views/buy_model.dart';
 import 'package:refresco/core/viewModels/views/location_search_model.dart';
 import 'package:refresco/core/viewModels/views/login_model.dart';
+import 'package:refresco/core/viewModels/views/payment_method_model.dart';
 import 'package:refresco/core/viewModels/views/store_model.dart';
 import 'package:refresco/core/viewModels/widgets/cart_sheet_model.dart';
+import 'package:refresco/core/viewModels/widgets/change_bottom_sheet_model.dart';
 import 'package:refresco/core/viewModels/widgets/current_location_tile_model.dart';
 
 GetIt locator = GetIt.instance;
@@ -20,7 +22,7 @@ void setupLocator() {
   // Parse initialization
   Parse().initialize(
     '9UBUIZ0VeTdGe6YfwEg7KBbL8LSoM8ONAMQyLKzw',
-    'http://192.168.15.10:1337/parse',
+    'http://192.168.15.14:1337/parse',
     autoSendSessionId: true,
 //    debug: true,
   );
@@ -37,6 +39,8 @@ void setupLocator() {
   locator.registerFactory<LoginModel>(() => LoginModel());
   locator.registerFactory<BuyModel>(() => BuyModel());
   locator.registerFactory<StoreModel>(() => StoreModel());
+  locator.registerFactory<PaymentMethodModel>(() => PaymentMethodModel());
+  locator.registerFactory<ChangeBottomSheetModel>(() => ChangeBottomSheetModel());
 
   // Widgets model factories
   locator.registerFactory<CartSheetModel>(() => CartSheetModel());
