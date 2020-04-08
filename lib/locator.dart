@@ -21,7 +21,7 @@ void setupLocator() {
   // Parse initialization
   Parse().initialize(
     '9UBUIZ0VeTdGe6YfwEg7KBbL8LSoM8ONAMQyLKzw',
-    'http://192.168.15.10:1337/parse',
+    'http://192.168.15.14:1337/parse',
     autoSendSessionId: true,
 //    debug: true,
   );

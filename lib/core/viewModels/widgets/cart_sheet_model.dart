@@ -35,13 +35,13 @@ class CartSheetModel extends BaseModel {
     if (panelController.isPanelClosed) {
       return true;
     } else {
-      panelController.animatePanelToPosition(0, duration: animationDuration);
+      await panelController.animatePanelToPosition(0, duration: animationDuration);
       return false;
     }
   }
 
   void goToStore(Store store) async {
-    Get.toNamed(Router.StoreViewRoute, arguments: store);
+    await Get.toNamed(Router.StoreViewRoute, arguments: store);
   }
 
   void selectPaymentMethod(Cart cart) async {
