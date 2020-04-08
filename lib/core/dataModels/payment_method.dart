@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:refresco/core/enums/enums.dart';
 import 'package:refresco/utils/money.dart';
-
-enum CardType { credit, debit }
 
 class PaymentMethod {
   final String name;

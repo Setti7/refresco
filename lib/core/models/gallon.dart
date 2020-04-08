@@ -1,11 +1,10 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 import 'package:random_string/random_string.dart';
+import 'package:refresco/core/enums/enums.dart';
 import 'package:refresco/core/models/store.dart';
 
 part 'generated/gallon.g.dart';
-
-enum GallonType { l20, l10 }
 
 @JsonSerializable(explicitToJson: true, nullable: false)
 class Gallon {

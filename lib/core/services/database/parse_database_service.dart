@@ -1,11 +1,12 @@
 import 'package:logger/logger.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
+import 'package:refresco/core/dataModels/service_response.dart';
+import 'package:refresco/core/enums/enums.dart';
 import 'package:refresco/core/models/address.dart';
 import 'package:refresco/core/models/gallon.dart';
 import 'package:refresco/core/models/store.dart';
 import 'package:refresco/core/services/api/parse_api.dart';
 import 'package:refresco/core/services/database/database_service.dart';
-import 'package:refresco/core/dataModels/service_response.dart';
 import 'package:refresco/utils/logger.dart';
 
 class ParseDatabaseService implements DatabaseService {
@@ -61,7 +62,8 @@ class ParseDatabaseService implements DatabaseService {
       ..whereEqualTo(
         'type',
         Gallon.gallonTypeToString(gallonType),
-      )..includeObject(['store']);
+      )
+      ..includeObject(['store']);
 
     var response = await api.query(query);
 

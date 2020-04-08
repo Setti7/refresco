@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
+import 'package:refresco/core/enums/enums.dart';
 import 'package:refresco/core/models/address.dart';
 import 'package:refresco/core/models/coordinate.dart';
 import 'package:refresco/core/models/gallon.dart';

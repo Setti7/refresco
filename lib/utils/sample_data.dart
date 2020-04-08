@@ -1,4 +1,5 @@
 import 'package:random_string/random_string.dart';
+import 'package:refresco/core/enums/enums.dart';
 import 'package:refresco/core/models/address.dart';
 import 'package:refresco/core/models/coordinate.dart';
 import 'package:refresco/core/models/gallon.dart';
