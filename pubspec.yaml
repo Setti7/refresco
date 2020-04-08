@@ -39,8 +39,8 @@ dependencies:
   device_preview: ^0.4.3
   sliding_up_panel: ^1.0.1
   animations: ^1.0.0+5
-  get:
-    git: git://github.com/jonataslaw/get.git
+  get: ^1.12.0-dev
+
 # The following adds the Cupertino Icons font to your application.
 # Use with the CupertinoIcons class for iOS style icons.
 cupertino_icons: ^0.1.2
