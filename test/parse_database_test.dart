@@ -98,7 +98,7 @@ void main() {
       final mockResponse = QueryResult(
         data: null,
         exception:
-            OperationException(graphqlErrors: [GraphQLError(raw: 'erro')]),
+            OperationException(graphqlErrors: [GraphQLError(raw: 'error')]),
       );
 
       when(mockClient.query(any)).thenAnswer(
