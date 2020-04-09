@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of '../store.dart';
+part of 'store.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
@@ -9,7 +9,7 @@ part of '../store.dart';
 Store _$StoreFromJson(Map json) {
   return Store(
     name: json['name'] as String,
-    id: json['id'] as String,
+    id: json['objectId'] as String,
     description: json['description'] as String,
     rating: (json['rating'] as num)?.toDouble(),
     minDeliveryTime: json['minDeliveryTime'] as int,
@@ -29,7 +29,7 @@ Store _$StoreFromJson(Map json) {
 }
 
 Map<String, dynamic> _$StoreToJson(Store instance) => <String, dynamic>{
-      'id': instance.id,
+      'objectId': instance.id,
       'name': instance.name,
       'description': instance.description,
       'rating': instance.rating,

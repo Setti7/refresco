@@ -1,12 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:refresco/core/models/address.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:parse_server_sdk/parse_server_sdk.dart';
+import 'package:refresco/core/models/address.dart';
 
-part 'generated/user.g.dart';
+part 'user.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class User {
+  @JsonKey(name: 'objectId')
   final String id;
   final String fullName;
   final String email;
@@ -35,14 +35,6 @@ class User {
       id: user.uid,
       fullName: user.displayName,
       email: user.email,
-    );
-  }
-
-  factory User.fromParse(ParseUser user) {
-    return User(
-      id: user.objectId,
-      fullName: user.username,
-      email: user.emailAddress,
     );
   }
 

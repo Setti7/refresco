@@ -37,7 +37,7 @@ class LoginModel extends BaseModel {
     if (response.success) {
       Get.back();
     } else {
-      errorMessage = response.message;
+      errorMessage = response.errorMessage;
     }
     setState(ViewState.idle);
   }
@@ -55,7 +55,7 @@ class LoginModel extends BaseModel {
     if (response.success) {
       Get.back();
     } else {
-      errorMessage = response.message;
+      errorMessage = response.errorMessage;
     }
     setState(ViewState.idle);
   }

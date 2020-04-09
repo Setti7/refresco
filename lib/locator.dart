@@ -1,5 +1,5 @@
 import 'package:get_it/get_it.dart';
-import 'package:parse_server_sdk/parse_server_sdk.dart';
+import 'package:refresco/core/services/api/graphql_api.dart';
 import 'package:refresco/core/services/auth/auth_service.dart';
 import 'package:refresco/core/services/auth/parse_auth_service.dart';
 import 'package:refresco/core/services/cart/cart_service.dart';
@@ -19,19 +19,13 @@ import 'package:refresco/core/viewModels/widgets/current_location_tile_model.dar
 GetIt locator = GetIt.instance;
 
 void setupLocator() {
-  // Parse initialization
-  Parse().initialize(
-    '9UBUIZ0VeTdGe6YfwEg7KBbL8LSoM8ONAMQyLKzw',
-    'http://192.168.15.14:1337/parse',
-    autoSendSessionId: true,
-//    debug: true,
-  );
 
   // Services
   locator.registerLazySingleton<AuthService>(() => ParseAuthService());
   locator.registerLazySingleton<DatabaseService>(() => ParseDatabaseService());
   locator.registerLazySingleton<LocationService>(() => LocationService());
   locator.registerLazySingleton<CartService>(() => CartService());
+  locator.registerLazySingleton<GraphQLApi>(() => GraphQLApi());
 
   // View model factories
   locator.registerFactory<LocationSearchModel>(() => LocationSearchModel());
@@ -40,7 +34,8 @@ void setupLocator() {
   locator.registerFactory<BuyModel>(() => BuyModel());
   locator.registerFactory<StoreModel>(() => StoreModel());
   locator.registerFactory<PaymentMethodModel>(() => PaymentMethodModel());
-  locator.registerFactory<ChangeBottomSheetModel>(() => ChangeBottomSheetModel());
+  locator
+      .registerFactory<ChangeBottomSheetModel>(() => ChangeBottomSheetModel());
 
   // Widgets model factories
   locator.registerFactory<CartSheetModel>(() => CartSheetModel());

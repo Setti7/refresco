@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of '../gallon.dart';
+part of 'gallon.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
@@ -8,7 +8,7 @@ part of '../gallon.dart';
 
 Gallon _$GallonFromJson(Map json) {
   return Gallon(
-    id: json['id'] as String,
+    id: json['objectId'] as String,
     type: _$enumDecode(_$GallonTypeEnumMap, json['type']),
     price: json['price'] as int,
     company: json['company'] as String,
@@ -17,7 +17,7 @@ Gallon _$GallonFromJson(Map json) {
 }
 
 Map<String, dynamic> _$GallonToJson(Gallon instance) => <String, dynamic>{
-      'id': instance.id,
+      'objectId': instance.id,
       'type': _$GallonTypeEnumMap[instance.type],
       'price': instance.price,
       'company': instance.company,

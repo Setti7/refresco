@@ -1,31 +1,22 @@
-import 'package:parse_server_sdk/parse_server_sdk.dart';
 
 class ServiceResponse {
   const ServiceResponse({
     this.success,
     this.results,
-    this.message,
+    this.errorMessage,
+    this.errorTitle,
   });
 
   final bool success;
-  final String message;
+  final String errorMessage;
+  final String errorTitle;
   final List results;
-
-  factory ServiceResponse.fromParseError(
-    ParseError parseError, {
-    List results,
-  }) {
-    return ServiceResponse(
-      success: false,
-      message: _getParseErrorMessage(parseError.code),
-      results: results
-    );
-  }
 
   factory ServiceResponse.fromFirebaseError(String code, {List results}) {
     return ServiceResponse(
       success: false,
-      message: _getFirebaseErrorMessage(code),
+      errorTitle: 'Opa :(',
+      errorMessage: _getFirebaseErrorMessage(code),
       results: results
     );
   }

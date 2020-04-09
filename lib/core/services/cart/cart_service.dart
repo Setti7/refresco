@@ -5,7 +5,7 @@ import 'package:rxdart/rxdart.dart';
 
 class CartService {
   // Streams
-  Observable<Cart> get cart => _cartSubject.stream;
+  Stream<Cart> get cart => _cartSubject.stream;
   final BehaviorSubject<Cart> _cartSubject =
       BehaviorSubject.seeded(Cart.empty());
 

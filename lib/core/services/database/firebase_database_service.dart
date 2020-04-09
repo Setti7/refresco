@@ -41,7 +41,7 @@ class FirebaseDatabaseService implements DatabaseService {
       return ServiceResponse.fromFirebaseError(e.code);
     } on TimeoutException {
       return ServiceResponse(
-          success: false, message: 'O servidor demorou muito para responder.');
+          success: false, errorMessage: 'O servidor demorou muito para responder.');
     }
   }
 

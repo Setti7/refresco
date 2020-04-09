@@ -10,7 +10,7 @@ class LocationSearchModel extends BaseModel {
   final BehaviorSubject<List<Address>> _addressesSubject =
       BehaviorSubject<List<Address>>();
 
-  Observable<List<Address>> get addressesObservable =>
+  Stream<List<Address>> get addressesObservable =>
       _addressesSubject.stream;
 
   void updateQuery(String query) async {

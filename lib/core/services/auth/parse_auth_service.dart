@@ -1,21 +1,26 @@
 import 'package:flutter/cupertino.dart';
-import 'package:refresco/core/models/user.dart';
-import 'package:refresco/core/services/api/parse_api.dart';
-import 'package:refresco/core/services/auth/auth_service.dart';
-import 'package:refresco/core/dataModels/service_response.dart';
-import 'package:refresco/utils/logger.dart';
+import 'package:graphql/client.dart';
 import 'package:hive/hive.dart';
 import 'package:logger/logger.dart';
-import 'package:parse_server_sdk/parse_server_sdk.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:refresco/core/dataModels/graphql_node.dart';
+import 'package:refresco/core/dataModels/service_response.dart';
+import 'package:refresco/core/models/user.dart';
+import 'package:refresco/core/services/api/graphql_api.dart';
+import 'package:refresco/core/services/api/mutations/login.dart';
+import 'package:refresco/core/services/api/mutations/logout.dart';
+import 'package:refresco/core/services/api/mutations/sign_up.dart';
+import 'package:refresco/core/services/auth/auth_service.dart';
+import 'package:refresco/locator.dart';
+import 'package:refresco/utils/logger.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ParseAuthService implements AuthService {
-  ParseApi api;
+  final Logger _logger = getLogger('ParseAuthService');
+  GraphQLApi api = locator<GraphQLApi>();
+  Box _userBox;
 
-  ParseAuthService({this.api}) {
-    api ??= ParseApi();
-
+  ParseAuthService() {
     loadUser().then((value) {
       user.listen((user) {
         _userBox.put('user', user.toJson());
@@ -23,15 +28,12 @@ class ParseAuthService implements AuthService {
     });
   }
 
-  Box _userBox;
-  final Logger _logger = getLogger('ParseAuthService');
-
   // Subjects
   final BehaviorSubject<User> _userSubject =
       BehaviorSubject<User>.seeded(User());
 
   @override
-  Observable<User> get user => _userSubject.stream;
+  Stream<User> get user => _userSubject.stream;
 
   @override
   Future<void> loadUser() async {
@@ -51,25 +53,57 @@ class ParseAuthService implements AuthService {
   @override
   Future<ServiceResponse> loginWithEmail(
       {@required String email, @required String password}) async {
-    final response = await api.login(ParseUser(email, password, email));
-    if (response.success) {
-      updateUser(User.fromParse(response.results.first));
-      return ServiceResponse(success: true);
-    } else {
-      return ServiceResponse.fromParseError(response.error);
+    final response = await api.mutate(
+      MutationOptions(
+        documentNode: gql(Login.mutation),
+        variables: {'email': email, 'password': password},
+      ),
+    );
+
+    if (response.hasException) {
+      return ServiceResponse(
+        success: false,
+        errorTitle: 'Opa :(',
+        errorMessage: 'Um erro inesperado ocorreu com o servidor.',
+      );
     }
+
+    final userJson = response.data['logIn']['viewer']['user'];
+    final sessionToken = response.data['logIn']['viewer']['sessionToken'];
+    api.updateSessionToken(sessionToken);
+
+    final user = GraphQLNode.parse<User>(userJson);
+    updateUser(user);
+
+    return ServiceResponse(success: true, results: [user]);
   }
 
   @override
   Future<ServiceResponse> createUserWithEmailAndPassword(
       {@required String email, @required String password}) async {
-    final response = await ParseUser.createUser(email, password, email).signUp();
-    if (response.success) {
-      updateUser(User.fromParse(response.results.first));
-      return ServiceResponse(success: true);
-    } else {
-      return ServiceResponse.fromParseError(response.error);
+    final response = await api.mutate(
+      MutationOptions(
+        documentNode: gql(SignUp.mutation),
+        variables: {'email': email, 'password': password},
+      ),
+    );
+
+    if (response.hasException) {
+      return ServiceResponse(
+        success: false,
+        errorTitle: 'Opa :(',
+        errorMessage: 'Um erro inesperado ocorreu com o servidor.',
+      );
     }
+
+    final userJson = response.data['signUp']['viewer']['user'];
+    final sessionToken = response.data['signUp']['viewer']['sessionToken'];
+    api.updateSessionToken(sessionToken);
+
+    final user = GraphQLNode.parse<User>(userJson);
+    updateUser(user);
+
+    return ServiceResponse(success: true, results: [user]);
   }
 
   @override
@@ -94,9 +128,9 @@ class ParseAuthService implements AuthService {
   void logout() async {
     final oldUser = _userSubject.value;
 
-    final _user = await ParseUser.currentUser() as ParseUser;
-    await _user.logout(deleteLocalUserData: true);
+    await api.mutate(MutationOptions(documentNode: gql(Logout.mutation)));
 
+    api.updateSessionToken(null);
     _userSubject.add(User.newAddress(User(), oldUser.address));
   }
 }

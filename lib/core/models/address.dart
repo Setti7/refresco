@@ -1,13 +1,12 @@
 import 'package:geocoder/geocoder.dart' as geocoder;
 import 'package:json_annotation/json_annotation.dart';
-import 'package:parse_server_sdk/parse_server_sdk.dart';
-import 'package:random_string/random_string.dart';
 import 'package:refresco/core/models/coordinate.dart';
 
-part 'generated/address.g.dart';
+part 'address.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Address {
+  @JsonKey(name: 'objectId')
   final String id;
   final String streetName;
   final int number;
@@ -76,37 +75,6 @@ class Address {
       ),
       postalCode: address.postalCode,
     );
-  }
-
-  factory Address.fromParse(ParseObject address) {
-    if (address == null) return Address();
-    return Address(
-      id: address.objectId,
-      streetName: address.get<String>('streetName'),
-      number: address.get<int>('number'),
-      city: address.get<String>('city'),
-      state: address.get<String>('state'),
-      district: address.get<String>('district'),
-      complement: address.get<String>('complement'),
-      country: address.get<String>('country'),
-      pointOfReference: address.get<String>('pointOfReference'),
-      coordinate:
-          Coordinate.fromParse(address.get<ParseGeoPoint>('coordinate')),
-      postalCode: address.get<String>('postalCode'),
-    );
-  }
-
-  static ParseObject toParse(Address address) {
-    return ParseObject('Store')
-      ..objectId = address.id ?? randomAlphaNumeric(10)
-      ..set('coordinate', Coordinate.toParse(address.coordinate))
-      ..set('streetName', address.streetName)
-      ..set('number', address.number)
-      ..set('city', address.city)
-      ..set('state', address.state)
-      ..set('district', address.district)
-      ..set('country', address.country)
-      ..set('postalCode', address.postalCode);
   }
 
   String get districtAndCity {

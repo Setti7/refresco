@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of '../address.dart';
+part of 'address.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
@@ -8,6 +8,7 @@ part of '../address.dart';
 
 Address _$AddressFromJson(Map json) {
   return Address(
+    id: json['objectId'] as String,
     streetName: json['streetName'] as String,
     number: json['number'] as int,
     city: json['city'] as String,
@@ -24,6 +25,7 @@ Address _$AddressFromJson(Map json) {
 }
 
 Map<String, dynamic> _$AddressToJson(Address instance) => <String, dynamic>{
+      'objectId': instance.id,
       'streetName': instance.streetName,
       'number': instance.number,
       'city': instance.city,
