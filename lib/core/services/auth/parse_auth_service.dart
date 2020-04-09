@@ -11,17 +11,16 @@ import 'package:refresco/core/services/api/mutations/login.dart';
 import 'package:refresco/core/services/api/mutations/logout.dart';
 import 'package:refresco/core/services/api/mutations/sign_up.dart';
 import 'package:refresco/core/services/auth/auth_service.dart';
+import 'package:refresco/locator.dart';
 import 'package:refresco/utils/logger.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ParseAuthService implements AuthService {
   final Logger _logger = getLogger('ParseAuthService');
-  GraphQLApi api = GraphQLApi();
+  GraphQLApi api = locator<GraphQLApi>();
   Box _userBox;
 
-  ParseAuthService({this.api}) {
-    api ??= GraphQLApi();
-
+  ParseAuthService() {
     loadUser().then((value) {
       user.listen((user) {
         _userBox.put('user', user.toJson());

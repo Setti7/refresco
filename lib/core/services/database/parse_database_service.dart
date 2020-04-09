@@ -10,15 +10,12 @@ import 'package:refresco/core/services/api/graphql_api.dart';
 import 'package:refresco/core/services/api/queries/get_close_stores.dart';
 import 'package:refresco/core/services/api/queries/get_store_gallons.dart';
 import 'package:refresco/core/services/database/database_service.dart';
+import 'package:refresco/locator.dart';
 import 'package:refresco/utils/logger.dart';
 
 class ParseDatabaseService implements DatabaseService {
   final Logger _logger = getLogger('ParseDatabaseService');
-  GraphQLApi api = GraphQLApi();
-
-  ParseDatabaseService({this.api}) {
-    api ??= GraphQLApi();
-  }
+  GraphQLApi api = locator<GraphQLApi>();
 
   @override
   Future<ServiceResponse> getStores(Address address) async {
@@ -37,15 +34,16 @@ class ParseDatabaseService implements DatabaseService {
       ),
     );
 
+    var stores = <Store>[];
+
     if (response.hasException) {
       return ServiceResponse(
         success: false,
         errorTitle: 'Opa :(',
         errorMessage: 'Um erro inesperado ocorreu com o servidor.',
+        results: stores
       );
     }
-
-    var stores = <Store>[];
 
     stores = (response.data['stores']['edges'] as List<dynamic>).map((node) {
       return GraphQLNode.parse<Store>(node['node']);
@@ -65,16 +63,15 @@ class ParseDatabaseService implements DatabaseService {
         },
       ),
     );
+    var gallons = <Gallon>[];
 
     if (response.hasException) {
       return ServiceResponse(
-        success: false,
-        errorTitle: 'Opa :(',
-        errorMessage: 'Um erro inesperado ocorreu com o servidor.',
-      );
+          success: false,
+          errorTitle: 'Opa :(',
+          errorMessage: 'Um erro inesperado ocorreu com o servidor.',
+          results: gallons);
     }
-
-    var gallons = <Gallon>[];
 
     gallons = (response.data['gallons']['edges'] as List<dynamic>).map((node) {
       return GraphQLNode.parse<Gallon>(node['node']);
