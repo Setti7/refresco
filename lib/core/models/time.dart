@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'generated/time.g.dart';
+part 'time.g.dart';
 
 @JsonSerializable()
 class Time {

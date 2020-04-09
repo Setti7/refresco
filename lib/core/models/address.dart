@@ -4,10 +4,11 @@ import 'package:parse_server_sdk/parse_server_sdk.dart';
 import 'package:random_string/random_string.dart';
 import 'package:refresco/core/models/coordinate.dart';
 
-part 'generated/address.g.dart';
+part 'address.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Address {
+  @JsonKey(name: 'objectId')
   final String id;
   final String streetName;
   final int number;

@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 
-part 'generated/coordinate.g.dart';
+part 'coordinate.g.dart';
 
 @JsonSerializable(nullable: false)
 class Coordinate {

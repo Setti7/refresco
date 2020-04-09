@@ -48,7 +48,7 @@ class BuyModel extends BaseModel {
       stores = response.results;
     } else {
       errorTitle = 'Opa :(';
-      errorMessage = response.message;
+      errorMessage = response.errorMessage;
     }
 
     setState(ViewState.idle);

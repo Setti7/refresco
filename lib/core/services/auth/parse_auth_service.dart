@@ -31,7 +31,7 @@ class ParseAuthService implements AuthService {
       BehaviorSubject<User>.seeded(User());
 
   @override
-  Observable<User> get user => _userSubject.stream;
+  Stream<User> get user => _userSubject.stream;
 
   @override
   Future<void> loadUser() async {

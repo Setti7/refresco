@@ -37,7 +37,7 @@ class StoreModel extends BaseModel {
       gallons = response.results;
     } else {
       errorTitle = 'Opa :(';
-      errorMessage = response.message;
+      errorMessage = response.errorMessage;
     }
 
     setState(ViewState.idle);

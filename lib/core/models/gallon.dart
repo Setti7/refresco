@@ -4,10 +4,11 @@ import 'package:random_string/random_string.dart';
 import 'package:refresco/core/enums/enums.dart';
 import 'package:refresco/core/models/store.dart';
 
-part 'generated/gallon.g.dart';
+part 'gallon.g.dart';
 
 @JsonSerializable(explicitToJson: true, nullable: false)
 class Gallon {
+  @JsonKey(name: 'objectId')
   final String id;
   final GallonType type;
   final int price;

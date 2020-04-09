@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:refresco/core/dataModels/service_response.dart';
 import 'package:refresco/core/models/user.dart';
-import 'package:rxdart/rxdart.dart';
 
 abstract class AuthService {
   AuthService();
@@ -12,7 +11,7 @@ abstract class AuthService {
   Future<void> loadUser();
 
   /// User observable
-  Observable<User> get user;
+  Stream<User> get user;
 
   /// Login with [email] and [password].
   Future<ServiceResponse> loginWithEmail(

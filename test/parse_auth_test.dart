@@ -45,7 +45,7 @@ void main() {
 
       verify(mockApi.login(any)).called(1);
       expect(response.results, isNull);
-      expect(response.message, null);
+      expect(response.errorMessage, null);
       expect(response.success, true);
     });
   });

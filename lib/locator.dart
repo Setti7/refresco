@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
+import 'package:refresco/core/services/api/graphql_api.dart';
 import 'package:refresco/core/services/auth/auth_service.dart';
 import 'package:refresco/core/services/auth/parse_auth_service.dart';
 import 'package:refresco/core/services/cart/cart_service.dart';
@@ -32,6 +33,7 @@ void setupLocator() {
   locator.registerLazySingleton<DatabaseService>(() => ParseDatabaseService());
   locator.registerLazySingleton<LocationService>(() => LocationService());
   locator.registerLazySingleton<CartService>(() => CartService());
+  locator.registerLazySingleton<GraphQLApi>(() => GraphQLApi());
 
   // View model factories
   locator.registerFactory<LocationSearchModel>(() => LocationSearchModel());
@@ -40,7 +42,8 @@ void setupLocator() {
   locator.registerFactory<BuyModel>(() => BuyModel());
   locator.registerFactory<StoreModel>(() => StoreModel());
   locator.registerFactory<PaymentMethodModel>(() => PaymentMethodModel());
-  locator.registerFactory<ChangeBottomSheetModel>(() => ChangeBottomSheetModel());
+  locator
+      .registerFactory<ChangeBottomSheetModel>(() => ChangeBottomSheetModel());
 
   // Widgets model factories
   locator.registerFactory<CartSheetModel>(() => CartSheetModel());

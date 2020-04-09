@@ -6,10 +6,11 @@ import 'package:random_string/random_string.dart';
 import 'package:refresco/core/models/address.dart';
 import 'package:refresco/core/models/operating_time.dart';
 
-part 'generated/store.g.dart';
+part 'store.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Store {
+  @JsonKey(name: 'objectId')
   final String id;
   final String name;
   final String description;
