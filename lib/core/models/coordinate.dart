@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:parse_server_sdk/parse_server_sdk.dart';
 
 part 'coordinate.g.dart';
 
@@ -12,17 +11,6 @@ class Coordinate {
 
   factory Coordinate.fromJson(dynamic json) => _$CoordinateFromJson(json);
 
-  factory Coordinate.fromParse(ParseGeoPoint geoPoint) {
-    if (geoPoint == null) return Coordinate(null, null);
-    return Coordinate(geoPoint.latitude, geoPoint.longitude);
-  }
-
-  static ParseGeoPoint toParse(Coordinate coordinate) {
-    return ParseGeoPoint(
-      latitude: coordinate.latitude,
-      longitude: coordinate.longitude,
-    );
-  }
 
   Map<String, dynamic> toJson() => _$CoordinateToJson(this);
 }

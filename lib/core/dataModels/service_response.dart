@@ -1,4 +1,3 @@
-import 'package:parse_server_sdk/parse_server_sdk.dart';
 
 class ServiceResponse {
   const ServiceResponse({
@@ -12,18 +11,6 @@ class ServiceResponse {
   final String errorMessage;
   final String errorTitle;
   final List results;
-
-  factory ServiceResponse.fromParseError(
-    ParseError parseError, {
-    List results,
-  }) {
-    return ServiceResponse(
-      success: false,
-      errorTitle: 'Opa :(',
-      errorMessage: _getParseErrorMessage(parseError.code),
-      results: results
-    );
-  }
 
   factory ServiceResponse.fromFirebaseError(String code, {List results}) {
     return ServiceResponse(
