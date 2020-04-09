@@ -57,31 +57,31 @@ void main() {
           completes);
     });
 
-//    test('login with invalid user', () {
-//      final userEmail = 'invalid@email.com';
-//      final userPassword = 'invalidPassword';
-//
-//      final mockResponse = QueryResult(
-//        data: null,
-//        exception:
-//            OperationException(graphqlErrors: [GraphQLError(raw: 'error')]),
-//      );
-//
-//      when(mockClient.mutate(any)).thenAnswer(
-//        (_) async => Future.value(mockResponse),
-//      );
-//
-//      expect(
-//          authService
-//              .createUserWithEmailAndPassword(
-//                  email: userEmail, password: userPassword)
-//              .then((response) {
-//            verify(mockClient.mutate(any)).called(1);
-//            expect(response.results, null);
-//            expect(response.errorMessage, isNotNull);
-//            expect(response.success, false);
-//          }),
-//          completes);
-//    });
+    test('login with invalid user', () {
+      final userEmail = 'invalid@email.com';
+      final userPassword = 'invalidPassword';
+
+      final mockResponse = QueryResult(
+        data: null,
+        exception:
+            OperationException(graphqlErrors: [GraphQLError(raw: 'error')]),
+      );
+
+      when(mockClient.mutate(any)).thenAnswer(
+        (_) async => Future.value(mockResponse),
+      );
+
+      expect(
+          authService
+              .createUserWithEmailAndPassword(
+                  email: userEmail, password: userPassword)
+              .then((response) {
+            verify(mockClient.mutate(any)).called(1);
+            expect(response.results, null);
+            expect(response.errorMessage, isNotNull);
+            expect(response.success, false);
+          }),
+          completes);
+    }, skip: 'currently failing (asynchronous gap)');
   });
 }
