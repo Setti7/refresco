@@ -1,20 +1,19 @@
 import 'package:flutter/cupertino.dart';
-import 'package:refresco/core/models/user.dart';
-import 'package:refresco/core/services/api/parse_api.dart';
-import 'package:refresco/core/services/auth/auth_service.dart';
-import 'package:refresco/core/dataModels/service_response.dart';
-import 'package:refresco/utils/logger.dart';
 import 'package:hive/hive.dart';
 import 'package:logger/logger.dart';
-import 'package:parse_server_sdk/parse_server_sdk.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:refresco/core/dataModels/service_response.dart';
+import 'package:refresco/core/models/user.dart';
+import 'package:refresco/core/services/api/graphql_api.dart';
+import 'package:refresco/core/services/auth/auth_service.dart';
+import 'package:refresco/utils/logger.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ParseAuthService implements AuthService {
-  ParseApi api;
+  GraphQLApi api = GraphQLApi();
 
   ParseAuthService({this.api}) {
-    api ??= ParseApi();
+    api ??= GraphQLApi();
 
     loadUser().then((value) {
       user.listen((user) {
@@ -51,25 +50,23 @@ class ParseAuthService implements AuthService {
   @override
   Future<ServiceResponse> loginWithEmail(
       {@required String email, @required String password}) async {
-    final response = await api.login(ParseUser(email, password, email));
+    final response = await api.loginWithEmail(email, password);
     if (response.success) {
-      updateUser(User.fromParse(response.results.first));
-      return ServiceResponse(success: true);
-    } else {
-      return ServiceResponse.fromParseError(response.error);
+      updateUser(response.results.first);
     }
+
+    return response;
   }
 
   @override
   Future<ServiceResponse> createUserWithEmailAndPassword(
       {@required String email, @required String password}) async {
-    final response = await ParseUser.createUser(email, password, email).signUp();
+    final response = await api.createUserWithEmailAndPassword(email, password);
     if (response.success) {
-      updateUser(User.fromParse(response.results.first));
-      return ServiceResponse(success: true);
-    } else {
-      return ServiceResponse.fromParseError(response.error);
+      updateUser(response.results.first);
     }
+
+    return response;
   }
 
   @override
@@ -94,8 +91,7 @@ class ParseAuthService implements AuthService {
   void logout() async {
     final oldUser = _userSubject.value;
 
-    final _user = await ParseUser.currentUser() as ParseUser;
-    await _user.logout(deleteLocalUserData: true);
+    await api.logout();
 
     _userSubject.add(User.newAddress(User(), oldUser.address));
   }
