@@ -38,7 +38,7 @@ dependencies:
   device_preview: ^0.4.3
   sliding_up_panel: ^1.0.1
   animations: ^1.0.0+5
-  get: ^1.12.0-dev
+  get: ^1.14.1-dev
   graphql: ^3.0.0
   gql_code_gen: ^0.1.5
 
