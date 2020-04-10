@@ -2,7 +2,7 @@ import 'package:graphql/client.dart';
 import 'package:refresco/core/dataModels/service_response.dart';
 import 'package:refresco/core/models/order.dart';
 import 'package:refresco/core/services/api/graphql_api.dart';
-import 'package:refresco/core/services/api/mutations/init_order.dart';
+import 'package:refresco/core/services/api/mutations/create_order.dart';
 import 'package:refresco/core/services/auth/auth_service.dart';
 import 'package:refresco/core/services/order/order_service.dart';
 import 'package:refresco/locator.dart';
@@ -12,11 +12,12 @@ import 'package:refresco/locator.dart';
 class ParseOrderService implements OrderService {
   GraphQLApi api = locator<GraphQLApi>();
 
-  Future<ServiceResponse> initOrder(Order order) async {
+  // Always returns null results.
+  Future<ServiceResponse> createOrder(Order order) async {
     final response = await api.mutate(
       MutationOptions(
-        documentNode: gql(InitOrder.mutation),
-        variables: InitOrder.builder(order),
+        documentNode: gql(CreateOrder.mutation),
+        variables: CreateOrder.builder(order),
       ),
     );
 
@@ -24,14 +25,10 @@ class ParseOrderService implements OrderService {
       return ServiceResponse(
         success: false,
         errorTitle: 'Opa :(',
-        errorMessage: 'Um erro inesperado ocorreu com o servidor.',
+        errorMessage: 'Um erro inesperado ocorreu.',
       );
     }
-    return ServiceResponse(
-        success: false,
-        errorTitle: 'Opa :(',
-        errorMessage: 'Um erro inesperado ocorreu com o servidor.',
-      );
+    return ServiceResponse(success: true);
   }
 
   Future<ServiceResponse> getPastOrders() async {}

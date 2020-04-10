@@ -9,7 +9,7 @@ import 'package:refresco/core/services/auth/auth_service.dart';
 abstract class OrderService {
 
   /// Initialize a new [Order] for the current [User].
-  Future<ServiceResponse> initOrder(Order order);
+  Future<ServiceResponse> createOrder(Order order);
 
   /// Get all past [Order]s for the current [User].
   ///

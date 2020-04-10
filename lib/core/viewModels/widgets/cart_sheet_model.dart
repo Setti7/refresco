@@ -1,17 +1,17 @@
+import 'package:flutter/animation.dart';
 import 'package:get/get.dart';
-import 'package:graphql/client.dart';
 import 'package:refresco/core/dataModels/cart.dart';
-import 'package:refresco/core/dataModels/service_response.dart';
 import 'package:refresco/core/enums/enums.dart';
 import 'package:refresco/core/models/order.dart';
 import 'package:refresco/core/models/payment_method.dart';
 import 'package:refresco/core/models/store.dart';
 import 'package:refresco/core/models/user.dart';
-import 'package:refresco/core/services/api/graphql_api.dart';
 import 'package:refresco/core/services/cart_service.dart';
 import 'package:refresco/core/services/order/order_service.dart';
 import 'package:refresco/core/viewModels/base_model.dart';
 import 'package:refresco/locator.dart';
+import 'package:refresco/ui/widgets/order_error_dialog.dart';
+import 'package:refresco/ui/widgets/order_success_dialog.dart';
 import 'package:refresco/utils/routing_constants.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -34,10 +34,9 @@ class CartSheetModel extends BaseModel {
 
   void toggleCart() {
     if (panelController.panelPosition > 0.98) {
-      // TODO: change curve
-      panelController.animatePanelToPosition(0, duration: animationDuration);
+      _closePanel();
     } else {
-      panelController.animatePanelToPosition(1, duration: animationDuration);
+      _openPanel();
     }
   }
 
@@ -45,8 +44,7 @@ class CartSheetModel extends BaseModel {
     if (panelController.isPanelClosed) {
       return true;
     } else {
-      await panelController.animatePanelToPosition(0,
-          duration: animationDuration);
+      await _closePanel();
       return false;
     }
   }
@@ -69,32 +67,41 @@ class CartSheetModel extends BaseModel {
   }
 
   void createOrder(Cart cart, User user) async {
-    /// TODO: validate user
+    /// TODO: validate order
     ///   1 - Check if user address
     ///   2 - Check if user is logged in (show popup to register/login)
     ///   3 - Check all user info is set (show popup to finish registration)
-
-//    if (user.id == null) throw Exception('User cannot be null');
-//    if (user.address == null) throw Exception('User address cannot be null');
-//    if (cart == null) throw Exception('Cart cannot be null');
-//    if (cart.store.id == null) throw Exception('Store cannot be null');
-//    if (cart.paymentMethod == null) throw Exception('PaymentMethod cannot be null');
-    if (cart.products == null) throw Exception('Products cannot be null');
-    if (cart.products.isEmpty == true) throw Exception('Products cannot be empty');
+    bool valid = true;
+    if (!user?.isValid ?? false) {
+      print('User is invalid');
+      valid = false;
+    }
+    if (!user?.address?.isValid ?? false) {
+      print('Address is invalid');
+      valid = false;
+    }
+    if (!user?.address?.coordinate?.isValid ?? false) {
+      print('Coordinates are invalid');
+      valid = false;
+    }
+    if (!valid) return;
 
     final order = Order.create(cart: cart, buyer: user);
 
-    final response = await orderService.initOrder(order);
+    final response = await orderService.createOrder(order);
 
     if (response.success) {
-      print('waht');
+      await Get.dialog(OrderSuccessDialog());
+      cartService.clearCart();
+      _closePanel();
     } else {
-      print('Error as expected...');
-      print(response.errorTitle);
-      print(response.errorMessage);
+      Get.dialog(OrderErrorDialog(
+        errorTitle: response.errorTitle,
+        errorMessage: response.errorMessage,
+      ));
     }
 
-    print(order.toJson());
+    setState(ViewState.idle);
   }
 
   double _interval(double lower, double upper, double progress) {
@@ -104,5 +111,19 @@ class CartSheetModel extends BaseModel {
     if (progress < lower) return 0.0;
 
     return ((progress - lower) / (upper - lower)).clamp(0.0, 1.0);
+  }
+
+  void _closePanel() async {
+    if (panelController.panelPosition > 0.98) {
+      await panelController.animatePanelToPosition(0,
+          duration: animationDuration, curve: Curves.ease);
+    }
+  }
+
+  void _openPanel() async {
+    if (panelController.panelPosition < 0.98) {
+      await panelController.animatePanelToPosition(1,
+          duration: animationDuration, curve: Curves.ease);
+    }
   }
 }

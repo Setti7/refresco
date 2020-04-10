@@ -19,6 +19,14 @@ class User {
     this.address,
   });
 
+  bool get isValid {
+    if (id == null) return false;
+    if (fullName == null) return false;
+    if (email == null) return false;
+    if (address == null) return false;
+    return true;
+  }
+
   bool get isAnonymous => id == null;
 
   factory User.newAddress(User user, Address newAddress) {

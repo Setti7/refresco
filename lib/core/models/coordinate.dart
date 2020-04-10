@@ -9,8 +9,13 @@ class Coordinate {
   final double latitude;
   final double longitude;
 
-  factory Coordinate.fromJson(dynamic json) => _$CoordinateFromJson(json);
+  bool get isValid {
+    if (latitude == null) return false;
+    if (longitude == null) return false;
+    return true;
+  }
 
+  factory Coordinate.fromJson(dynamic json) => _$CoordinateFromJson(json);
 
   Map<String, dynamic> toJson() => _$CoordinateToJson(this);
 }

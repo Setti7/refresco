@@ -77,6 +77,18 @@ class Address {
     );
   }
 
+  bool get isValid {
+    if (streetName == null) return false;
+    if (number == null) return false;
+    if (city == null) return false;
+    if (state == null) return false;
+    if (district == null) return false;
+    if (country == null) return false;
+    if (coordinate == null) return false;
+    if (postalCode == null) return false;
+    return true;
+  }
+
   String get districtAndCity {
     if (district == null) {
       return city;
