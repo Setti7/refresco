@@ -1,31 +1,28 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'gallon.dart';
+part of 'payment_method.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Gallon _$GallonFromJson(Map json) {
-  return Gallon(
+PaymentMethod _$PaymentMethodFromJson(Map json) {
+  return PaymentMethod(
     id: json['objectId'] as String,
-    type: _$enumDecodeNullable(_$GallonTypeEnumMap, json['type']),
-    price: json['price'] as int,
-    company: json['company'] as String,
-    store: json['store'] == null
-        ? null
-        : Store.fromJson((json['store'] as Map)?.map(
-            (k, e) => MapEntry(k as String, e),
-          )),
+    name: json['name'] as String,
+    imageUri: json['imageUri'] as String,
+    type: _$enumDecodeNullable(_$CardTypeEnumMap, json['type']),
+    change: json['change'] as int,
   );
 }
 
-Map<String, dynamic> _$GallonToJson(Gallon instance) => <String, dynamic>{
+Map<String, dynamic> _$PaymentMethodToJson(PaymentMethod instance) =>
+    <String, dynamic>{
       'objectId': instance.id,
-      'type': _$GallonTypeEnumMap[instance.type],
-      'price': instance.price,
-      'company': instance.company,
-      'store': instance.store?.toJson(),
+      'name': instance.name,
+      'type': _$CardTypeEnumMap[instance.type],
+      'imageUri': instance.imageUri,
+      'change': instance.change,
     };
 
 T _$enumDecode<T>(
@@ -60,7 +57,7 @@ T _$enumDecodeNullable<T>(
   return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
 }
 
-const _$GallonTypeEnumMap = {
-  GallonType.l20: 'l20',
-  GallonType.l10: 'l10',
+const _$CardTypeEnumMap = {
+  CardType.credit: 'credit',
+  CardType.debit: 'debit',
 };

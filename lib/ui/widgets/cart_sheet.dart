@@ -111,14 +111,14 @@ class CartSheet extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16.0, vertical: 24),
-                      child: model.paymentMethod == null
+                      child: cart.paymentMethod == null
                           ? Icon(
                               Icons.credit_card,
                               color: AppColors.primary,
                               size: AppShapes.iconSize,
                             )
                           : Image(
-                              image: model.paymentMethod.image,
+                              image: AssetImage(cart.paymentMethod.imageUri),
                               width: AppShapes.cardIconSize,
                             ),
                     ),
@@ -127,18 +127,18 @@ class CartSheet extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            model.paymentMethod == null
+                            cart.paymentMethod == null
                                 ? 'Forma de pagamento'
-                                : model.paymentMethod.name,
+                                : cart.paymentMethod.name,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: Theme.of(context).textTheme.headline6,
                           ),
                           SizedBox(height: 4),
                           Text(
-                            model.paymentMethod == null
+                            cart.paymentMethod == null
                                 ? 'Escolha uma forma'
-                                : model.paymentMethod.details(cart.totalPrice),
+                                : cart.paymentMethod.details(cart.totalPrice),
                             overflow: TextOverflow.ellipsis,
                             style: Theme.of(context).textTheme.subtitle1,
                           ),
@@ -161,7 +161,7 @@ class CartSheet extends StatelessWidget {
           SizedBox(height: 24),
           Center(
             child: RaisedButton(
-              onPressed: cart.products.isEmpty ? null : () {},
+              onPressed: cart.isValid ? () {} : null,
               child: Text('Finalizar pagamento'),
             ),
           ),

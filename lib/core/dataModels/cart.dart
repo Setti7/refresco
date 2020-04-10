@@ -1,25 +1,33 @@
 import 'package:flutter/foundation.dart';
-import 'package:refresco/core/dataModels/cart_item.dart';
 import 'package:refresco/core/models/gallon.dart';
+import 'package:refresco/core/models/order_item.dart';
+import 'package:refresco/core/models/payment_method.dart';
 import 'package:refresco/core/models/store.dart';
 
-// TODO:
-//  change this to Order class and add a filed called cart which is a list of
-//  products
-@immutable
 class Cart {
   final Store store;
-  final Set<CartItem> products;
+  final Set<OrderItem> products;
+  final PaymentMethod paymentMethod;
 
   Cart({
     @required this.products,
     @required this.store,
+    @required this.paymentMethod,
   });
 
-  factory Cart.empty() {
+  factory Cart.empty({PaymentMethod paymentMethod}) {
     return Cart(
-      products: <CartItem>{},
+      products: <OrderItem>{},
       store: null,
+      paymentMethod: paymentMethod,
+    );
+  }
+
+  Cart setPaymentMethod(PaymentMethod paymentMethod) {
+    return Cart(
+      store: store,
+      products: products,
+      paymentMethod: paymentMethod,
     );
   }
 
@@ -30,14 +38,14 @@ class Cart {
     );
 
     if (cartItem == null) {
-      cartItem = CartItem(
+      cartItem = OrderItem(
         product: gallon,
         amount: 1,
       );
     } else {
       products.remove(cartItem);
 
-      cartItem = CartItem(
+      cartItem = OrderItem(
         product: cartItem.product,
         amount: cartItem.amount + 1,
       );
@@ -45,10 +53,23 @@ class Cart {
 
     return Cart(
       store: store,
+      paymentMethod: paymentMethod,
       products: Set.from(
         products..add(cartItem),
       ),
     );
+  }
+
+  bool get isValid {
+    if (products.isEmpty) {
+      return false;
+    } else if (paymentMethod == null) {
+      return false;
+    } else if (paymentMethod.change != null &&
+        paymentMethod.change < totalPrice) {
+      return false;
+    }
+    return true;
   }
 
   int get totalItemAmount {

@@ -1,13 +1,16 @@
 import 'package:get/get.dart';
 import 'package:refresco/core/dataModels/cart.dart';
-import 'package:refresco/core/dataModels/payment_method.dart';
 import 'package:refresco/core/enums/enums.dart';
+import 'package:refresco/core/models/payment_method.dart';
 import 'package:refresco/core/models/store.dart';
+import 'package:refresco/core/services/cart/cart_service.dart';
 import 'package:refresco/core/viewModels/base_model.dart';
+import 'package:refresco/locator.dart';
 import 'package:refresco/utils/routing_constants.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class CartSheetModel extends BaseModel {
+  CartService cartService = locator<CartService>();
   Duration animationDuration = Duration(milliseconds: 300);
 
   // Controllers
@@ -15,7 +18,6 @@ class CartSheetModel extends BaseModel {
 
   double cartSheetScrollProgress = 0;
   double cartSheetOpacity = 1;
-  PaymentMethod paymentMethod;
 
   void sheetListener(double progress) {
     cartSheetScrollProgress = progress;
@@ -25,6 +27,7 @@ class CartSheetModel extends BaseModel {
 
   void toggleCart() {
     if (panelController.panelPosition > 0.98) {
+      // TODO: change curve
       panelController.animatePanelToPosition(0, duration: animationDuration);
     } else {
       panelController.animatePanelToPosition(1, duration: animationDuration);
@@ -35,7 +38,8 @@ class CartSheetModel extends BaseModel {
     if (panelController.isPanelClosed) {
       return true;
     } else {
-      await panelController.animatePanelToPosition(0, duration: animationDuration);
+      await panelController.animatePanelToPosition(0,
+          duration: animationDuration);
       return false;
     }
   }
@@ -45,16 +49,16 @@ class CartSheetModel extends BaseModel {
   }
 
   void selectPaymentMethod(Cart cart) async {
-    final _method = await Get.toNamed(
+    final _paymentMethod = await Get.toNamed(
       Router.PaymentMethodViewRoute,
       arguments: cart,
     ) as PaymentMethod;
 
-    if (_method == null) {
+    if (_paymentMethod == null) {
       return;
     }
 
-    paymentMethod = _method;
+    cartService.setPaymentMethod(_paymentMethod);
   }
 
   double _interval(double lower, double upper, double progress) {

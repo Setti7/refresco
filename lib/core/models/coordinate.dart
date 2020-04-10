@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'coordinate.g.dart';
 
-@JsonSerializable(nullable: false)
+@JsonSerializable()
 class Coordinate {
   const Coordinate(this.latitude, this.longitude);
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:refresco/core/dataModels/cart.dart';
-import 'package:refresco/core/dataModels/payment_method.dart';
+import 'package:refresco/core/models/payment_method.dart';
 import 'package:refresco/core/viewModels/views/payment_method_model.dart';
 import 'package:refresco/ui/theme.dart';
 import 'package:refresco/ui/views/base_view.dart';
@@ -58,7 +58,7 @@ class PaymentMethodView extends StatelessWidget {
                 style: AppFonts.normalPlainHeadline6Smaller,
               ),
               trailing: Image(
-                image: paymentMethod.image,
+                image: AssetImage(paymentMethod.imageUri),
                 width: AppShapes.cardIconSize,
               ),
             ),

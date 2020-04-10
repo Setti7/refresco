@@ -4,7 +4,7 @@ import 'package:refresco/core/models/store.dart';
 
 part 'gallon.g.dart';
 
-@JsonSerializable(explicitToJson: true, nullable: false)
+@JsonSerializable(explicitToJson: true)
 class Gallon {
   @JsonKey(name: 'objectId')
   final String id;
