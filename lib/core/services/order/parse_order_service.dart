@@ -16,15 +16,7 @@ class ParseOrderService implements OrderService {
     final response = await api.mutate(
       MutationOptions(
         documentNode: gql(InitOrder.mutation),
-        variables: {
-          'storeId': order.store.id,
-          'userId': order.buyer.id,
-          'address': order.address.toJson(),
-          'orderStatus': 'pending',
-          'paymentMethodId': order.paymentMethod.id,
-          'paymentMethodId': order.paymentMethod.id,
-          'products': order.products.map((p) => p.toJson()).toList(),
-        },
+        variables: InitOrder.builder(order),
       ),
     );
 
@@ -35,6 +27,11 @@ class ParseOrderService implements OrderService {
         errorMessage: 'Um erro inesperado ocorreu com o servidor.',
       );
     }
+    return ServiceResponse(
+        success: false,
+        errorTitle: 'Opa :(',
+        errorMessage: 'Um erro inesperado ocorreu com o servidor.',
+      );
   }
 
   Future<ServiceResponse> getPastOrders() async {}

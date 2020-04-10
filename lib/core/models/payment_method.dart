@@ -82,7 +82,7 @@ class PaymentMethod {
   static List<PaymentMethod> get methods => [
         PaymentMethod(
             name: 'Dinheiro',
-            type: null,
+            type: null, // TODO: change to .Money
             imageUri: 'assets/icons/money_icon_96.png'),
         PaymentMethod(
             name: 'Visa',

@@ -74,12 +74,13 @@ class CartSheetModel extends BaseModel {
     ///   2 - Check if user is logged in (show popup to register/login)
     ///   3 - Check all user info is set (show popup to finish registration)
 
-    if (user.id == null) throw Exception('User cannot be null');
-    if (user.address == null) throw Exception('User address cannot be null');
-    if (cart == null) throw Exception('Cart cannot be null');
-    if (cart.store.id == null) throw Exception('Store cannot be null');
-    if (cart.paymentMethod == null) throw Exception('PaymentMethod cannot be null');
+//    if (user.id == null) throw Exception('User cannot be null');
+//    if (user.address == null) throw Exception('User address cannot be null');
+//    if (cart == null) throw Exception('Cart cannot be null');
+//    if (cart.store.id == null) throw Exception('Store cannot be null');
+//    if (cart.paymentMethod == null) throw Exception('PaymentMethod cannot be null');
     if (cart.products == null) throw Exception('Products cannot be null');
+    if (cart.products.isEmpty == true) throw Exception('Products cannot be empty');
 
     final order = Order.create(cart: cart, buyer: user);
 
