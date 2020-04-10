@@ -22,7 +22,7 @@ class Order {
   final Address address;
   final PaymentMethod paymentMethod;
 
-  const Order._({
+  const Order({
     this.id,
     this.products,
     this.orderStatus,
@@ -33,7 +33,7 @@ class Order {
   });
 
   factory Order.create({@required Cart cart, @required User buyer}) {
-    return Order._(
+    return Order(
       products: cart.products,
       orderStatus: OrderStatus.pending,
       store: cart.store,

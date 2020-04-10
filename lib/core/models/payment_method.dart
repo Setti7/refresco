@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:refresco/core/dataModels/cart.dart';
 import 'package:refresco/core/enums/enums.dart';
+import 'package:refresco/core/models/order.dart';
 import 'package:refresco/ui/views/payment_method_view.dart';
 import 'package:refresco/ui/widgets/change_bottom_sheet.dart';
 import 'package:refresco/utils/money.dart';
@@ -19,6 +21,10 @@ part 'payment_method.g.dart';
 /// payment method was changed to money, the [PaymentMethod] should be updated
 /// immediately after, setting [change] to an appropriate value (no lower than
 /// the current cart price, and certainly not null).
+///
+/// TODO:
+/// remove change from [PaymentMethod] and put it as a standalone property
+/// of the [Cart] (and [Order], when it is converted).
 @JsonSerializable(explicitToJson: true)
 class PaymentMethod {
   @JsonKey(name: 'objectId')

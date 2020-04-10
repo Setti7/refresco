@@ -159,12 +159,15 @@ class CartSheet extends StatelessWidget {
             ),
           ),
           SizedBox(height: 24),
-          Center(
-            child: RaisedButton(
-              onPressed: cart.isValid ? () {} : null,
-              child: Text('Finalizar pagamento'),
-            ),
-          ),
+          Consumer<User>(builder: (context, user, child) {
+            return Center(
+              child: RaisedButton(
+                onPressed:
+                    cart.isValid ? () => model.createOrder(cart, user) : null,
+                child: Text('Finalizar pagamento'),
+              ),
+            );
+          }),
         ],
       ),
     );
