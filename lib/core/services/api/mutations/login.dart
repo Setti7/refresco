@@ -10,6 +10,9 @@ class Login {
           user {
             objectId
             email
+            fullName
+            phone
+            cpf
           }
         }
       }

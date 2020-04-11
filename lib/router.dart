@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:refresco/core/dataModels/cart.dart';
 import 'package:refresco/core/models/store.dart';
+import 'package:refresco/core/models/user.dart';
 import 'package:refresco/ui/views/address_view.dart';
 import 'package:refresco/ui/views/buy_view.dart';
 import 'package:refresco/ui/views/finish_registration_view.dart';
@@ -36,7 +37,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       SharedAxisTransitionType.horizontal,
     );
   } else if (routeName == Router.FinishRegistrationRoute) {
-    return _fadeThrough((context) => FinishRegistrationView());
+    return _fadeThrough(
+        (context) => FinishRegistrationView(settings.arguments as User));
   } else {
     _logger.e('Route "${settings.name}" not found.');
     return MaterialPageRoute(builder: (context) => BuyView());

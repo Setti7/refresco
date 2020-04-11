@@ -107,7 +107,7 @@ class FirebaseAuthService implements AuthService {
   }
 
   @override
-  void uploadUser() {
+  Future<ServiceResponse> uploadUser(User user) async {
     // TODO: implement uploadUser
   }
 }

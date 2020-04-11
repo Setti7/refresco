@@ -8,6 +8,10 @@ class Cart {
   final Store store;
   final Set<OrderItem> products;
   final PaymentMethod paymentMethod;
+  /// TODO:
+  /// Remove address from user and set it here, then, change the auth service
+  /// to always upload the user when it changes (remove the uploadUser method
+  /// and put its logic inside the updateUser).
 
   Cart({
     @required this.products,

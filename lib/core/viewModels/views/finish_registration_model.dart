@@ -5,6 +5,7 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:get/get.dart';
 import 'package:refresco/core/enums/enums.dart';
+import 'package:refresco/core/models/user.dart';
 import 'package:refresco/core/services/auth/auth_service.dart';
 import 'package:refresco/core/viewModels/base_model.dart';
 import 'package:refresco/locator.dart';
@@ -35,7 +36,7 @@ class FinishRegistrationModel extends BaseModel {
       if (cellphoneController.text.length == 14) {
         cellphoneController.updateMask('(00) 0000-00000',
             moveCursorToEnd: false);
-      } else {
+      } else if (cellphoneController.text.length >= 13) {
         cellphoneController.updateMask('(00) 00000-0000',
             moveCursorToEnd: false);
       }
@@ -100,14 +101,21 @@ class FinishRegistrationModel extends BaseModel {
       );
 
       authService.updateUser(newUser);
+      setState(ViewState.busy);
+      final response = await authService.uploadUser(newUser);
 
-      // Set currentStep to 0 we can pop the screen
-      currentStep = 0;
-      Get.back();
+      if (response.success) {
+        // Set currentStep to 0 we can pop the screen
+        currentStep = 0;
+        Get.back();
+      } else {
+        errorMessage = response.errorMessage;
+      }
     } else {
       currentStep = currentStep + 1;
-      setState(ViewState.idle);
     }
+
+    setState(ViewState.idle);
   }
 
   Future<bool> assesPop() async {
@@ -121,5 +129,11 @@ class FinishRegistrationModel extends BaseModel {
 
   void reset() {
     currentStep = 0;
+  }
+
+  void set user(User user) {
+    fullNameController.text = user.fullName ?? '';
+    cellphoneController.text = user.phone ?? '';
+    cpfController.text = user.cpf ?? '';
   }
 }

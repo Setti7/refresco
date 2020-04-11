@@ -121,7 +121,10 @@ class CartSheetModel extends BaseModel {
         button1: RaisedButton(
           child: Text('Ok'),
           onPressed: () async {
-            await Get.toNamed(Router.FinishRegistrationRoute);
+            await Get.toNamed(
+              Router.FinishRegistrationRoute,
+              arguments: updatedUser,
+            );
             Get.back();
           },
         ),

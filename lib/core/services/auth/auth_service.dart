@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:refresco/core/dataModels/service_response.dart';
+import 'package:refresco/core/models/address.dart';
 import 'package:refresco/core/models/user.dart';
 
 abstract class AuthService {
@@ -29,14 +30,13 @@ abstract class AuthService {
   ///
   /// If [force] is set to true, the passed [newUser] will completely overwrite
   /// the current user. Otherwise, the [newUser] will be merged with the current
-  /// user, using the current user's [address].
+  /// user, using the current user's [Address].
   void updateUser(User newUser, {bool force = false});
-
 
   /// Uploads the [User] to the backend.
   ///
-  /// Should be called whenever the user changes locally
-  void uploadUser();
+  /// Should be called whenever the user changes locally.
+  Future<ServiceResponse> uploadUser(User user);
 
   /// Get the current [User]].
   ///

@@ -10,6 +10,7 @@ import 'package:refresco/core/services/api/graphql_api.dart';
 import 'package:refresco/core/services/api/mutations/login.dart';
 import 'package:refresco/core/services/api/mutations/logout.dart';
 import 'package:refresco/core/services/api/mutations/sign_up.dart';
+import 'package:refresco/core/services/api/mutations/update_user.dart';
 import 'package:refresco/core/services/auth/auth_service.dart';
 import 'package:refresco/locator.dart';
 import 'package:refresco/utils/logger.dart';
@@ -107,17 +108,14 @@ class ParseAuthService implements AuthService {
 
   @override
   void updateUser(User newUser, {bool force = false}) {
-    if (force) {
-      _userSubject.add(newUser);
-      return;
+    var tempUser = newUser;
+    final currentUser = getUser();
+
+    if (!force && currentUser.address != null) {
+      tempUser = User.newAddress(newUser, currentUser.address);
     }
 
-    if (_userSubject.value.address == null) {
-      _userSubject.add(newUser);
-    } else {
-      final oldUser = _userSubject.value;
-      _userSubject.add(User.newAddress(newUser, oldUser.address));
-    }
+    _userSubject.add(tempUser);
   }
 
   @override
@@ -134,7 +132,21 @@ class ParseAuthService implements AuthService {
   }
 
   @override
-  void uploadUser() {
-    // TODO: implement uploadUser
+  Future<ServiceResponse> uploadUser(User user) async {
+    final response = await api.mutate(
+      MutationOptions(
+        documentNode: gql(UpdateUser.mutation),
+        variables: UpdateUser.builder(user),
+      ),
+    );
+
+    if (response.hasException) {
+      return ServiceResponse(
+        success: false,
+        errorTitle: 'Opa :(',
+        errorMessage: 'Um erro inesperado ocorreu com o servidor.',
+      );
+    }
+    return ServiceResponse(success: true);
   }
 }

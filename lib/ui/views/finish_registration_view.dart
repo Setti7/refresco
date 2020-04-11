@@ -1,6 +1,6 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_masked_text/flutter_masked_text.dart';
+import 'package:refresco/core/enums/enums.dart';
 import 'package:refresco/core/models/order.dart';
 import 'package:refresco/core/models/user.dart';
 import 'package:refresco/core/viewModels/views/finish_registration_model.dart';
@@ -10,15 +10,16 @@ import 'package:refresco/ui/views/base_view.dart';
 /// [FinishRegistrationView] is used to complete the [User] information that is
 /// missing for placing an [Order].
 ///
-/// Receiver a [User] instance to initialize the field to the values already
-/// used.
-///
-/// TODO:
-///   Pre-fill the fields with user info.
+/// Receives a [User] instance as parameter to initialize the fields values.
 class FinishRegistrationView extends StatelessWidget {
+  final User user;
+
+  const FinishRegistrationView(this.user);
+
   @override
   Widget build(BuildContext context) {
     return BaseView<FinishRegistrationModel>(
+      onModelReady: (model) => model.user = user,
       builder: (context, model, child) {
         return WillPopScope(
           onWillPop: model.assesPop,
@@ -58,11 +59,20 @@ class FinishRegistrationView extends StatelessWidget {
                             width: constraints.maxWidth),
                         color: Colors.white70,
                         child: FlatButton(
-                          padding: const EdgeInsets.symmetric(vertical: 24.0),
-                          onPressed: model.nextStep,
-                          child: Text(
-                            model.currentStep == 2 ? 'FINALIZAR' : 'CONTINUAR',
+                          padding: EdgeInsets.symmetric(
+                            vertical:
+                                model.state == ViewState.idle ? 24.0 : 16.0,
                           ),
+                          onPressed: model.state == ViewState.idle
+                              ? model.nextStep
+                              : () {},
+                          child: model.state == ViewState.idle
+                              ? Text(
+                                  model.currentStep == 2
+                                      ? 'FINALIZAR'
+                                      : 'CONTINUAR',
+                                )
+                              : CircularProgressIndicator(),
                         ),
                       );
                     },
