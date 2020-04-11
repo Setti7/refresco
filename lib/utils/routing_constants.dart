@@ -8,4 +8,6 @@ class Router {
   static String get StoreViewRoute => '/store';
 
   static String get PaymentMethodViewRoute => '/payment-method';
+
+  static String get FinishRegistrationRoute => '/finish-register';
 }

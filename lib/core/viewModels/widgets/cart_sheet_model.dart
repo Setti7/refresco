@@ -1,4 +1,5 @@
 import 'package:flutter/animation.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:refresco/core/dataModels/cart.dart';
 import 'package:refresco/core/enums/enums.dart';
@@ -6,6 +7,7 @@ import 'package:refresco/core/models/order.dart';
 import 'package:refresco/core/models/payment_method.dart';
 import 'package:refresco/core/models/store.dart';
 import 'package:refresco/core/models/user.dart';
+import 'package:refresco/core/services/auth/auth_service.dart';
 import 'package:refresco/core/services/cart_service.dart';
 import 'package:refresco/core/services/order/order_service.dart';
 import 'package:refresco/core/viewModels/base_model.dart';
@@ -18,6 +20,7 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 class CartSheetModel extends BaseModel {
   CartService cartService = locator<CartService>();
   OrderService orderService = locator<OrderService>();
+  AuthService authService = locator<AuthService>();
   Duration animationDuration = Duration(milliseconds: 300);
 
   // Controllers
@@ -67,23 +70,7 @@ class CartSheetModel extends BaseModel {
   }
 
   void createOrder(Cart cart, User user) async {
-    /// TODO: validate order
-    ///   1 - Check if user address
-    ///   2 - Check if user is logged in (show popup to register/login)
-    ///   3 - Check all user info is set (show popup to finish registration)
-    bool valid = true;
-    if (!user?.isValid ?? false) {
-      print('User is invalid');
-      valid = false;
-    }
-    if (!user?.address?.isValid ?? false) {
-      print('Address is invalid');
-      valid = false;
-    }
-    if (!user?.address?.coordinate?.isValid ?? false) {
-      print('Coordinates are invalid');
-      valid = false;
-    }
+    bool valid = await _validateOrder(cart, user);
     if (!valid) return;
 
     final order = Order.create(cart: cart, buyer: user);
@@ -102,6 +89,56 @@ class CartSheetModel extends BaseModel {
     }
 
     setState(ViewState.idle);
+  }
+
+  Future<bool> _validateOrder(Cart cart, User user) async {
+    /// TODO: validate order
+    ///   1 - Check user address
+    ///   2 - Check if user is logged in (show popup to register/login)
+    ///   3 - Check all user info is set (show popup to finish registration)
+    bool valid = true;
+    User updatedUser = user;
+
+    // Checking is user is valid
+    if (!user.isValid) {
+      if (user.isAnonymous) {
+        await Get.dialog(OrderErrorDialog(
+          errorTitle: 'Crie uma conta!',
+          errorMessage:
+              'Para poder fazer compras pelo nosso app, você deve estar registrado e logado antes.',
+          button1: RaisedButton(
+            child: Text('Criar conta'),
+            onPressed: () async => Get.offNamed(Router.LoginViewRoute),
+          ),
+        ));
+
+        updatedUser = authService.getUser();
+        valid = updatedUser.isValid;
+      } else {
+        await Get.dialog(OrderErrorDialog(
+          errorTitle: 'Termine sua conta',
+          errorMessage:
+              'Para poder fazer compras pelo nosso app, você tem que terminar seu registro.',
+          button1: RaisedButton(
+            child: Text('Ok'),
+            onPressed: () async => Get.offNamed(Router.FinishRegistrationRoute),
+          ),
+        ));
+
+        updatedUser = authService.getUser();
+        valid = updatedUser.isValid;
+      }
+    }
+
+    if (!user.address.isValid) {
+      Get.dialog(OrderErrorDialog(
+        errorTitle: 'O endereço escolhido é inválido',
+        errorMessage: 'Por favor, selecione ele denovo.',
+      ));
+      // TODO: set address to null
+      valid = false;
+    }
+    return valid;
   }
 
   double _interval(double lower, double upper, double progress) {

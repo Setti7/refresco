@@ -72,10 +72,9 @@ class ParseAuthService implements AuthService {
     final sessionToken = response.data['logIn']['viewer']['sessionToken'];
     api.updateSessionToken(sessionToken);
 
-    final user = GraphQLNode.parse<User>(userJson);
-    updateUser(user);
+    updateUser(GraphQLNode.parse<User>(userJson));
 
-    return ServiceResponse(success: true, results: [user]);
+    return ServiceResponse(success: true);
   }
 
   @override
@@ -100,10 +99,9 @@ class ParseAuthService implements AuthService {
     final sessionToken = response.data['signUp']['viewer']['sessionToken'];
     api.updateSessionToken(sessionToken);
 
-    final user = GraphQLNode.parse<User>(userJson);
-    updateUser(user);
+    updateUser(GraphQLNode.parse<User>(userJson));
 
-    return ServiceResponse(success: true, results: [user]);
+    return ServiceResponse(success: true);
   }
 
   @override

@@ -5,6 +5,7 @@ import 'package:refresco/core/dataModels/cart.dart';
 import 'package:refresco/core/models/store.dart';
 import 'package:refresco/ui/views/address_view.dart';
 import 'package:refresco/ui/views/buy_view.dart';
+import 'package:refresco/ui/views/finish_register_view.dart';
 import 'package:refresco/ui/views/login_view.dart';
 import 'package:refresco/ui/views/payment_method_view.dart';
 import 'package:refresco/ui/views/store_view.dart';
@@ -34,6 +35,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       (context) => PaymentMethodView(settings.arguments as Cart),
       SharedAxisTransitionType.horizontal,
     );
+  } else if (routeName == Router.FinishRegistrationRoute) {
+    return _fadeThrough((context) => FinishRegistrationView());
   } else {
     _logger.e('Route "${settings.name}" not found.');
     return MaterialPageRoute(builder: (context) => BuyView());

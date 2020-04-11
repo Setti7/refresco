@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:refresco/core/dataModels/service_response.dart';
 import 'package:refresco/core/enums/enums.dart';
+import 'package:refresco/core/models/user.dart';
 import 'package:refresco/core/services/auth/auth_service.dart';
 import 'package:refresco/core/viewModels/base_model.dart';
 import 'package:refresco/locator.dart';
@@ -24,12 +25,12 @@ class LoginModel extends BaseModel {
     setState(ViewState.idle);
   }
 
-  Future loginWithEmail() async {
-    if (!_validateFields()) return;
+  Future<void> loginWithEmail() async {
+    if (!_validateFields()) return null;
     setState(ViewState.busy);
     ServiceResponse response;
 
-    response = await _login(
+    response = await authService.loginWithEmail(
       email: emailController.text,
       password: passwordController.text,
     );
@@ -42,8 +43,8 @@ class LoginModel extends BaseModel {
     setState(ViewState.idle);
   }
 
-  Future createUser() async {
-    if (!_validateFields()) return;
+  Future<void> createUser() async {
+    if (!_validateFields()) return null;
     setState(ViewState.busy);
     ServiceResponse response;
 
@@ -87,13 +88,5 @@ class LoginModel extends BaseModel {
       }
     }
     return true;
-  }
-
-  Future<ServiceResponse> _login(
-      {@required String email, @required String password}) {
-    return authService.loginWithEmail(
-      email: email,
-      password: password,
-    );
   }
 }

@@ -85,6 +85,7 @@ class Address {
     if (district == null) return false;
     if (country == null) return false;
     if (coordinate == null) return false;
+    if (!coordinate.isValid) return false;
     if (postalCode == null) return false;
     return true;
   }

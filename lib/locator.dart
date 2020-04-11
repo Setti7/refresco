@@ -10,6 +10,7 @@ import 'package:refresco/core/services/order/order_service.dart';
 import 'package:refresco/core/services/order/parse_order_service.dart';
 import 'package:refresco/core/viewModels/views/address_model.dart';
 import 'package:refresco/core/viewModels/views/buy_model.dart';
+import 'package:refresco/core/viewModels/views/finish_registration_model.dart';
 import 'package:refresco/core/viewModels/views/location_search_model.dart';
 import 'package:refresco/core/viewModels/views/login_model.dart';
 import 'package:refresco/core/viewModels/views/payment_method_model.dart';
@@ -43,4 +44,6 @@ void setupLocator() {
   locator.registerFactory<CartSheetModel>(() => CartSheetModel());
   locator.registerFactory<CurrentLocationTileModel>(
       () => CurrentLocationTileModel());
+  locator.registerFactory<FinishRegistrationModel>(
+      () => FinishRegistrationModel());
 }

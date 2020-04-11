@@ -3,7 +3,21 @@ import 'package:refresco/core/enums/enums.dart';
 import 'package:refresco/core/viewModels/views/login_model.dart';
 import 'package:refresco/ui/theme.dart';
 import 'package:refresco/ui/views/base_view.dart';
+import 'package:refresco/core/models/user.dart';
+import 'package:refresco/ui/views/finish_register_view.dart';
 
+/// [LoginView] is used for the [User]s to login or to sign up.
+///
+/// When signing up, they have the option to finish later. If they chose this
+/// option, when doing any action that requires more info than [User.email],
+/// [User.id] and [User.address] an error should pop up, showing them that
+/// they need to finish their registration with a button to redirect to
+/// [FinishRegistrationView].
+///
+/// TODO:
+///   2 - Option to finish registration later
+///   3 - Redirect to [FinishRegistrationView] when clicking on the "Create
+///   account" button.
 class LoginView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

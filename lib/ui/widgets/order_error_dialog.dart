@@ -6,11 +6,30 @@ import 'package:refresco/ui/theme.dart';
 class OrderErrorDialog extends StatelessWidget {
   final String errorMessage;
   final String errorTitle;
+  final Widget button1;
+  final bool showBackButton;
 
-  const OrderErrorDialog({this.errorMessage, this.errorTitle});
+  const OrderErrorDialog({
+    this.errorMessage,
+    this.errorTitle,
+    this.button1,
+    this.showBackButton = true,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final buttonBar = ButtonBar(
+      children: <Widget>[
+        showBackButton
+            ? FlatButton(
+                child: Text('Voltar'),
+                onPressed: Get.back,
+              )
+            : Container(),
+        button1 ?? Container(),
+      ],
+    );
+
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: AppShapes.cardBorderRadius),
       child: Padding(
@@ -35,14 +54,7 @@ class OrderErrorDialog extends StatelessWidget {
               style: Theme.of(context).textTheme.subtitle1,
               textAlign: TextAlign.center,
             ),
-            ButtonBar(
-              children: <Widget>[
-                FlatButton(
-                  child: Text('Voltar'),
-                  onPressed: Get.back,
-                ),
-              ],
-            )
+            buttonBar
           ],
         ),
       ),

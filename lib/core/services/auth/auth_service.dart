@@ -10,28 +10,32 @@ abstract class AuthService {
   /// Should only be run at startup time.
   Future<void> loadUser();
 
-  /// User observable
+  /// [User] observable
   Stream<User> get user;
 
   /// Login with [email] and [password].
+  ///
+  /// [ServiceResponse.results] will always be null;
   Future<ServiceResponse> loginWithEmail(
       {@required String email, @required String password});
 
-  /// Create user with [email] and [password].
+  /// Create [User] with [email] and [password].
+  ///
+  /// [ServiceResponse.results] will always be null;
   Future<ServiceResponse> createUserWithEmailAndPassword(
       {@required String email, @required String password});
 
-  /// Updates the user.
+  /// Updates the [User].
   ///
-  /// If [force]] is set to true, the passed [newUser] will completely overwrite
+  /// If [force] is set to true, the passed [newUser] will completely overwrite
   /// the current user. Otherwise, the [newUser] will be merged with the current
   /// user, using the current user's [address].
   void updateUser(User newUser, {bool force = false});
 
-  /// Get the current user.
+  /// Get the current [User]].
   ///
-  /// WARNING: just use this value before updating the user, as it can change
-  /// while other operations are running.
+  /// WARNING: only use this value right after updating the user, as it can
+  /// change while other operations are running.
   User getUser();
 
   /// Sign user out, while maintaining the saved address.
