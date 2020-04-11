@@ -24,6 +24,7 @@ class ParseAuthService implements AuthService {
     loadUser().then((value) {
       user.listen((user) {
         _userBox.put('user', user.toJson());
+        // TODO: upload user to backend
       });
     });
   }
@@ -130,5 +131,10 @@ class ParseAuthService implements AuthService {
 
     api.updateSessionToken(null);
     _userSubject.add(User.newAddress(User(), oldUser.address));
+  }
+
+  @override
+  void uploadUser() {
+    // TODO: implement uploadUser
   }
 }

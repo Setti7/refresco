@@ -63,10 +63,11 @@ class CreateOrder {
 
   static Map<String, dynamic> builder(Order order) {
     final products = order.products.map((p) {
-      final objMap = p.toJson();
-      objMap['product'] = {'link': objMap['product']['objectId']};
-
-      return objMap;
+      final product = {
+        'amount': p.amount,
+        'product': {'link': p.product.id},
+      };
+      return product;
     }).toList();
 
     return {

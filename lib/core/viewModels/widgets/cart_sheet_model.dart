@@ -70,10 +70,8 @@ class CartSheetModel extends BaseModel {
   }
 
   void createOrder(Cart cart, User user) async {
-    bool valid = await _validateOrder(cart, user);
-    if (!valid) return;
-
-    final order = Order.create(cart: cart, buyer: user);
+    final order = await _validateAndCreateOrder(cart, user);
+    if (order == null) return null;
 
     final response = await orderService.createOrder(order);
 
@@ -91,46 +89,49 @@ class CartSheetModel extends BaseModel {
     setState(ViewState.idle);
   }
 
-  Future<bool> _validateOrder(Cart cart, User user) async {
-    /// TODO: validate order
-    ///   1 - Check user address
-    ///   2 - Check if user is logged in (show popup to register/login)
-    ///   3 - Check all user info is set (show popup to finish registration)
+  Future<Order> _validateAndCreateOrder(Cart cart, User user) async {
     bool valid = true;
     User updatedUser = user;
 
-    // Checking is user is valid
-    if (!user.isValid) {
-      if (user.isAnonymous) {
-        await Get.dialog(OrderErrorDialog(
-          errorTitle: 'Crie uma conta!',
-          errorMessage:
-              'Para poder fazer compras pelo nosso app, você deve estar registrado e logado antes.',
-          button1: RaisedButton(
-            child: Text('Criar conta'),
-            onPressed: () async => Get.offNamed(Router.LoginViewRoute),
-          ),
-        ));
+    // If user is anonymous he needs to log in
+    if (user.isAnonymous) {
+      await Get.dialog(OrderErrorDialog(
+        errorTitle: 'Crie uma conta!',
+        errorMessage:
+            'Para poder fazer compras pelo nosso app, você deve estar registrado e logado antes.',
+        button1: RaisedButton(
+          child: Text('Criar conta'),
+          onPressed: () async {
+            await Get.toNamed(Router.LoginViewRoute);
+            Get.back();
+          },
+        ),
+      ));
 
-        updatedUser = authService.getUser();
-        valid = updatedUser.isValid;
-      } else {
-        await Get.dialog(OrderErrorDialog(
-          errorTitle: 'Termine sua conta',
-          errorMessage:
-              'Para poder fazer compras pelo nosso app, você tem que terminar seu registro.',
-          button1: RaisedButton(
-            child: Text('Ok'),
-            onPressed: () async => Get.offNamed(Router.FinishRegistrationRoute),
-          ),
-        ));
-
-        updatedUser = authService.getUser();
-        valid = updatedUser.isValid;
-      }
+      updatedUser = authService.getUser();
+      valid = updatedUser.isValid;
     }
 
-    if (!user.address.isValid) {
+    // Checking is user is valid
+    if (!updatedUser.isValid) {
+      await Get.dialog(OrderErrorDialog(
+        errorTitle: 'Termine sua conta',
+        errorMessage:
+            'Para poder fazer compras pelo nosso app, você tem que terminar seu registro.',
+        button1: RaisedButton(
+          child: Text('Ok'),
+          onPressed: () async {
+            await Get.toNamed(Router.FinishRegistrationRoute);
+            Get.back();
+          },
+        ),
+      ));
+
+      updatedUser = authService.getUser();
+      valid = updatedUser.isValid;
+    }
+
+    if (!updatedUser.address.isValid) {
       Get.dialog(OrderErrorDialog(
         errorTitle: 'O endereço escolhido é inválido',
         errorMessage: 'Por favor, selecione ele denovo.',
@@ -138,7 +139,8 @@ class CartSheetModel extends BaseModel {
       // TODO: set address to null
       valid = false;
     }
-    return valid;
+    if (!valid) return null;
+    return Order.create(cart: cart, buyer: updatedUser);
   }
 
   double _interval(double lower, double upper, double progress) {

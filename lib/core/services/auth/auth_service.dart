@@ -32,6 +32,12 @@ abstract class AuthService {
   /// user, using the current user's [address].
   void updateUser(User newUser, {bool force = false});
 
+
+  /// Uploads the [User] to the backend.
+  ///
+  /// Should be called whenever the user changes locally
+  void uploadUser();
+
   /// Get the current [User]].
   ///
   /// WARNING: only use this value right after updating the user, as it can

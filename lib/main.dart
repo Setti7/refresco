@@ -41,15 +41,7 @@ class MyApp extends StatelessWidget {
         title: 'Refresco',
         onGenerateRoute: router.generateRoute,
         initialRoute: Router.BuyViewRoute,
-        theme: ThemeData(
-          primarySwatch: AppColors.primary,
-          scaffoldBackgroundColor: AppColors.scaffoldBackground,
-          accentColor: AppColors.accent,
-          buttonTheme: AppThemes.buttonTheme,
-          accentTextTheme: AppThemes.accentTextTheme,
-          inputDecorationTheme: AppThemes.inputDecorationTheme,
-          cardTheme: AppThemes.cardTheme,
-        ),
+        theme: AppThemes.themeData,
         home: BuyView(),
       ),
     );

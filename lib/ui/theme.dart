@@ -35,6 +35,16 @@ class AppColors {
 }
 
 class AppThemes {
+  static ThemeData get themeData => ThemeData(
+        primarySwatch: AppColors.primary,
+        scaffoldBackgroundColor: AppColors.scaffoldBackground,
+        accentColor: AppColors.accent,
+        buttonTheme: AppThemes.buttonTheme,
+        accentTextTheme: AppThemes.accentTextTheme,
+        inputDecorationTheme: AppThemes.inputDecorationTheme,
+        cardTheme: AppThemes.cardTheme,
+      );
+
   static ButtonThemeData get buttonTheme => ButtonThemeData(
         height: 48,
         textTheme: ButtonTextTheme.primary,

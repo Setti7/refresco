@@ -14,7 +14,6 @@ class OrderSuccessDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Icon(
-              // TODO: add animation
               Icons.check_circle_outline,
               color: Colors.green,
               size: 100,

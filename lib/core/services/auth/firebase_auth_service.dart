@@ -105,4 +105,9 @@ class FirebaseAuthService implements AuthService {
     FirebaseAuth.instance.signOut();
     _userSubject.add(User.newAddress(User(), oldUser.address));
   }
+
+  @override
+  void uploadUser() {
+    // TODO: implement uploadUser
+  }
 }

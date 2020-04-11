@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:refresco/core/enums/enums.dart';
+import 'package:refresco/core/models/order.dart';
 import 'package:refresco/core/viewModels/views/login_model.dart';
 import 'package:refresco/ui/theme.dart';
 import 'package:refresco/ui/views/base_view.dart';
 import 'package:refresco/core/models/user.dart';
-import 'package:refresco/ui/views/finish_register_view.dart';
+import 'package:refresco/ui/views/finish_registration_view.dart';
 
 /// [LoginView] is used for the [User]s to login or to sign up.
 ///
@@ -15,9 +16,10 @@ import 'package:refresco/ui/views/finish_register_view.dart';
 /// [FinishRegistrationView].
 ///
 /// TODO:
-///   2 - Option to finish registration later
-///   3 - Redirect to [FinishRegistrationView] when clicking on the "Create
-///   account" button.
+///  1 - Option to finish registration later
+///  2 - Redirect to [FinishRegistrationView] after filling the create account,
+///   with a button to "Finish later" (that should be hidden when
+///   [FinishRegistrationView] is called before placing an [Order]).
 class LoginView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
