@@ -81,7 +81,7 @@ class FinishRegistrationModel extends BaseModel {
     // Hide keyboard before animating
     if (keyboardVisible) {
       await SystemChannels.textInput.invokeMethod('TextInput.hide');
-//      await Future.delayed(kThemeAnimationDuration); TODO: need to maitain this delay with await above??
+      await Future.delayed(kThemeAnimationDuration);
     }
     errorMessage = null;
 
