@@ -32,13 +32,17 @@ class Order {
     this.paymentMethod,
   });
 
-  factory Order.create({@required Cart cart, @required User buyer}) {
+  factory Order.create({
+    @required Cart cart,
+    @required User buyer,
+    @required Address address,
+  }) {
     return Order(
       products: cart.products,
       orderStatus: OrderStatus.pending,
       store: cart.store,
       buyer: buyer,
-      address: buyer.address,
+      address: address,
       paymentMethod: cart.paymentMethod,
     );
   }

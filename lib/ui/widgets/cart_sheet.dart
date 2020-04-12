@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:refresco/core/dataModels/cart.dart';
+import 'package:refresco/core/models/address.dart';
 import 'package:refresco/core/models/user.dart';
 import 'package:refresco/core/viewModels/widgets/cart_sheet_model.dart';
 import 'package:refresco/ui/theme.dart';
@@ -159,15 +160,18 @@ class CartSheet extends StatelessWidget {
             ),
           ),
           SizedBox(height: 24),
-          Consumer<User>(builder: (context, user, child) {
-            return Center(
-              child: RaisedButton(
-                onPressed:
-                    cart.isValid ? () => model.createOrder(cart, user) : null,
-                child: Text('Finalizar pagamento'),
-              ),
-            );
-          }),
+          Consumer2<User, Address>(
+            builder: (context, user, address, child) {
+              return Center(
+                child: RaisedButton(
+                  onPressed: cart.isValid
+                      ? () => model.createOrder(cart, user, address)
+                      : null,
+                  child: Text('Finalizar pagamento'),
+                ),
+              );
+            },
+          ),
         ],
       ),
     );
@@ -196,7 +200,7 @@ class CartSheet extends StatelessWidget {
   }
 
   Widget _buildAddressTile() {
-    return Consumer<User>(builder: (context, user, child) {
+    return Consumer<Address>(builder: (context, address, child) {
       return Container(
         padding: const EdgeInsets.only(top: 8, left: 16, right: 16),
         color: Colors.white,
@@ -209,7 +213,7 @@ class CartSheet extends StatelessWidget {
             ),
             AddressTile(
               contentPadding: EdgeInsets.zero,
-              address: user.address,
+              address: address,
               onPressed: () => Get.toNamed(Router.AddressViewRoute),
             ),
           ],

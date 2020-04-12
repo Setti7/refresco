@@ -27,7 +27,7 @@ class CurrentLocationTile extends StatelessWidget {
         return Ink(
           color: Colors.white,
           child: ListTile(
-            onTap: model.selectAddress,
+            onTap: model.state == ViewState.busy ? null : model.selectAddress,
             title: Text(model.state == ViewState.busy
                 ? 'Procurando por sua localização'
                 : 'Localização atual'),

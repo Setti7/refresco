@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
+import 'package:refresco/core/models/address.dart';
 import 'package:refresco/core/models/user.dart';
 import 'package:refresco/core/services/auth/auth_service.dart';
 import 'package:refresco/locator.dart';
@@ -11,6 +12,7 @@ import 'package:refresco/utils/routing_constants.dart';
 
 import 'core/dataModels/cart.dart';
 import 'core/services/cart_service.dart';
+import 'core/services/location/location_service.dart';
 import 'ui/theme.dart';
 
 // TODO: use auto_resize_text
@@ -34,6 +36,9 @@ class MyApp extends StatelessWidget {
         StreamProvider<Cart>(
           create: (context) => locator<CartService>().cart,
           initialData: Cart.empty(),
+        ),
+        StreamProvider<Address>(
+          create: (context) => locator<LocationService>().address,
         )
       ],
       child: MaterialApp(

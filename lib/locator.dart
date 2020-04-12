@@ -5,7 +5,7 @@ import 'package:refresco/core/services/auth/parse_auth_service.dart';
 import 'package:refresco/core/services/cart_service.dart';
 import 'package:refresco/core/services/database/database_service.dart';
 import 'package:refresco/core/services/database/parse_database_service.dart';
-import 'package:refresco/core/services/location_service.dart';
+import 'package:refresco/core/services/location/location_service.dart';
 import 'package:refresco/core/services/order/order_service.dart';
 import 'package:refresco/core/services/order/parse_order_service.dart';
 import 'package:refresco/core/viewModels/views/address_model.dart';

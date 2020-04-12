@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:refresco/core/dataModels/cart.dart';
 import 'package:refresco/core/enums/enums.dart';
+import 'package:refresco/core/models/address.dart';
 import 'package:refresco/core/models/order.dart';
 import 'package:refresco/core/models/payment_method.dart';
 import 'package:refresco/core/models/store.dart';
@@ -69,8 +70,8 @@ class CartSheetModel extends BaseModel {
     cartService.setPaymentMethod(_paymentMethod);
   }
 
-  void createOrder(Cart cart, User user) async {
-    final order = await _validateAndCreateOrder(cart, user);
+  void createOrder(Cart cart, User user, Address address) async {
+    final order = await _validateAndCreateOrder(cart, user, address);
     if (order == null) return null;
 
     final response = await orderService.createOrder(order);
@@ -80,7 +81,7 @@ class CartSheetModel extends BaseModel {
       cartService.clearCart();
       _closePanel();
     } else {
-      Get.dialog(OrderErrorDialog(
+      await Get.dialog(OrderErrorDialog(
         errorTitle: response.errorTitle,
         errorMessage: response.errorMessage,
       ));
@@ -89,7 +90,8 @@ class CartSheetModel extends BaseModel {
     setState(ViewState.idle);
   }
 
-  Future<Order> _validateAndCreateOrder(Cart cart, User user) async {
+  Future<Order> _validateAndCreateOrder(
+      Cart cart, User user, Address address) async {
     bool valid = true;
     User updatedUser = user;
 
@@ -134,8 +136,8 @@ class CartSheetModel extends BaseModel {
       valid = updatedUser.isValid;
     }
 
-    if (!updatedUser.address.isValid) {
-      Get.dialog(OrderErrorDialog(
+    if (!address.isValid) {
+      await Get.dialog(OrderErrorDialog(
         errorTitle: 'O endereço escolhido é inválido',
         errorMessage: 'Por favor, selecione ele denovo.',
       ));
@@ -143,7 +145,7 @@ class CartSheetModel extends BaseModel {
       valid = false;
     }
     if (!valid) return null;
-    return Order.create(cart: cart, buyer: updatedUser);
+    return Order.create(cart: cart, buyer: updatedUser, address: address);
   }
 
   double _interval(double lower, double upper, double progress) {

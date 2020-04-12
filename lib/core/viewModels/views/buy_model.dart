@@ -8,6 +8,7 @@ import 'package:refresco/core/models/address.dart';
 import 'package:refresco/core/models/store.dart';
 import 'package:refresco/core/services/auth/auth_service.dart';
 import 'package:refresco/core/services/database/database_service.dart';
+import 'package:refresco/core/services/location/location_service.dart';
 import 'package:refresco/core/viewModels/base_model.dart';
 import 'package:refresco/locator.dart';
 import 'package:refresco/utils/logger.dart';
@@ -17,6 +18,7 @@ class BuyModel extends BaseModel {
 
   // Services
   AuthService authService = locator<AuthService>();
+  LocationService locationService = locator<LocationService>();
   DatabaseService dbService = locator<DatabaseService>();
 
   // Controllers
@@ -27,9 +29,9 @@ class BuyModel extends BaseModel {
   String errorTitle;
 
   BuyModel() {
-    authService.user.listen((user) {
-      logger.d('user changed: getting new stores');
-      getStores(address: user.address);
+    locationService.address.listen((address) {
+      logger.d('address changed: getting new stores');
+      getStores(address: address);
     });
   }
 

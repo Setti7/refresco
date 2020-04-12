@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:refresco/core/enums/enums.dart';
 import 'package:refresco/core/models/address.dart';
-import 'package:refresco/core/services/location_service.dart';
+import 'package:refresco/core/services/location/location_service.dart';
 import 'package:refresco/core/viewModels/base_model.dart';
 import 'package:refresco/locator.dart';
 
@@ -17,21 +17,21 @@ class AddressModel extends BaseModel {
   TextEditingController complementController = TextEditingController();
   TextEditingController pointOfReferenceController = TextEditingController();
 
-  set userAddress(Address userAddress) {
-    if (userAddress != null) {
-      showAddress = userAddress;
-      numberController.text = userAddress.number?.toString();
-      complementController.text = userAddress.complement;
-      pointOfReferenceController.text = userAddress.pointOfReference;
+  void setAddress(Address value) {
+    if (value != null) {
+      showAddress = value;
+      numberController.text = value.number?.toString();
+      complementController.text = value.complement;
+      pointOfReferenceController.text = value.pointOfReference;
     }
   }
 
-  void updateSelectedAddress(Address address) {
-    if (address == null) {
+  void updateSelectedAddress(Address value) {
+    if (value == null) {
       return;
     }
 
-    showAddress = address;
+    showAddress = value;
     numberController.clear();
     complementController.clear();
     pointOfReferenceController.clear();
@@ -45,15 +45,17 @@ class AddressModel extends BaseModel {
       errorMessage = 'Por favor, insira o número';
     } else {
       errorMessage = null;
-      locationService.updateUserAddress(
-        showAddress,
-        number: int.tryParse(numberController.text),
-        complement:
-            complementController.text == '' ? null : complementController.text,
-        pointOfReference: pointOfReferenceController.text == ''
-            ? null
-            : pointOfReferenceController.text,
+      final pointOfReference = pointOfReferenceController.text;
+      final complement = complementController.text;
+      final number = int.tryParse(numberController.text);
+
+      final updatedAddress = showAddress.clone(
+        number: number,
+        complement: complement == '' ? null : complement,
+        pointOfReference: pointOfReference == '' ? null : pointOfReference,
       );
+
+      locationService.updateAddress(updatedAddress);
       Get.back();
     }
 

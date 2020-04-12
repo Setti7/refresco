@@ -101,9 +101,9 @@ class FinishRegistrationView extends StatelessWidget {
 }
 
 class _StepOne extends StatelessWidget {
-  FinishRegistrationModel model;
+  final FinishRegistrationModel model;
 
-  _StepOne(this.model);
+  const _StepOne(this.model);
 
   @override
   Widget build(BuildContext context) {
@@ -128,9 +128,9 @@ class _StepOne extends StatelessWidget {
 }
 
 class _StepTwo extends StatelessWidget {
-  FinishRegistrationModel model;
+  final FinishRegistrationModel model;
 
-  _StepTwo(this.model);
+  const _StepTwo(this.model);
 
   @override
   Widget build(BuildContext context) {
@@ -156,9 +156,9 @@ class _StepTwo extends StatelessWidget {
 }
 
 class _StepThree extends StatelessWidget {
-  FinishRegistrationModel model;
+  final FinishRegistrationModel model;
 
-  _StepThree(this.model);
+  const _StepThree(this.model);
 
   @override
   Widget build(BuildContext context) {

@@ -6,7 +6,7 @@ import 'package:refresco/core/models/gallon.dart';
 import 'package:refresco/core/models/store.dart';
 import 'package:refresco/core/services/cart_service.dart';
 import 'package:refresco/core/services/database/database_service.dart';
-import 'package:refresco/core/services/location_service.dart';
+import 'package:refresco/core/services/location/location_service.dart';
 import 'package:refresco/core/viewModels/base_model.dart';
 import 'package:refresco/locator.dart';
 import 'package:refresco/ui/widgets/add_to_cart_error_dialog.dart';

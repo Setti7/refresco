@@ -80,8 +80,8 @@ class FinishRegistrationModel extends BaseModel {
 
     // Hide keyboard before animating
     if (keyboardVisible) {
-      SystemChannels.textInput.invokeMethod('TextInput.hide');
-      await Future.delayed(kThemeAnimationDuration);
+      await SystemChannels.textInput.invokeMethod('TextInput.hide');
+//      await Future.delayed(kThemeAnimationDuration); TODO: need to maitain this delay with await above??
     }
     errorMessage = null;
 
@@ -100,9 +100,8 @@ class FinishRegistrationModel extends BaseModel {
         cpf: cpfController.text,
       );
 
-      authService.updateUser(newUser);
       setState(ViewState.busy);
-      final response = await authService.uploadUser(newUser);
+      final response = await authService.updateUser(newUser);
 
       if (response.success) {
         // Set currentStep to 0 we can pop the screen
@@ -131,9 +130,9 @@ class FinishRegistrationModel extends BaseModel {
     currentStep = 0;
   }
 
-  void set user(User user) {
-    fullNameController.text = user.fullName ?? '';
-    cellphoneController.text = user.phone ?? '';
-    cpfController.text = user.cpf ?? '';
+  set user(User value) {
+    fullNameController.text = value.fullName ?? '';
+    cellphoneController.text = value.phone ?? '';
+    cpfController.text = value.cpf ?? '';
   }
 }

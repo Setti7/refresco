@@ -12,7 +12,6 @@ class User {
   final String email;
   final String phone;
   final String cpf;
-  final Address address;
 
   User({
     this.id,
@@ -20,7 +19,6 @@ class User {
     this.email,
     this.phone,
     this.cpf,
-    this.address,
   });
 
   bool get isValid {
@@ -29,22 +27,10 @@ class User {
     if (email == null) return false;
     if (phone == null) return false;
     if (cpf == null) return false;
-    if (address == null) return false;
     return true;
   }
 
   bool get isAnonymous => id == null;
-
-  factory User.newAddress(User user, Address newAddress) {
-    return User(
-      id: user.id,
-      fullName: user.fullName,
-      email: user.email,
-      phone: user.phone,
-      cpf: user.cpf,
-      address: newAddress,
-    );
-  }
 
   User clone({
     String id,
@@ -52,7 +38,6 @@ class User {
     String email,
     String phone,
     String cpf,
-    Address address,
   }) {
     return User(
       id: id ?? this.id,

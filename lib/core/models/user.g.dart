@@ -13,11 +13,6 @@ User _$UserFromJson(Map json) {
     email: json['email'] as String,
     phone: json['phone'] as String,
     cpf: json['cpf'] as String,
-    address: json['address'] == null
-        ? null
-        : Address.fromJson((json['address'] as Map)?.map(
-            (k, e) => MapEntry(k as String, e),
-          )),
   );
 }
 
@@ -27,5 +22,4 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'email': instance.email,
       'phone': instance.phone,
       'cpf': instance.cpf,
-      'address': instance.address?.toJson(),
     };

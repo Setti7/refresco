@@ -31,7 +31,11 @@ class ParseOrderService implements OrderService {
     return ServiceResponse(success: true);
   }
 
-  Future<ServiceResponse> getPastOrders() async {}
+  Future<ServiceResponse> getPastOrders() async {
+    return null;
+  }
 
-  Stream<ServiceResponse> subscribeToOngoingOrders() {}
+  Stream<ServiceResponse> subscribeToOngoingOrders() {
+    return null;
+  }
 }
