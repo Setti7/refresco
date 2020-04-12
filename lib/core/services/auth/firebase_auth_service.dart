@@ -108,6 +108,6 @@ class FirebaseAuthService implements AuthService {
 
   @override
   Future<ServiceResponse> uploadUser(User user) async {
-    // TODO: implement uploadUser
+    throw UnimplementedError();
   }
 }

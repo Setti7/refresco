@@ -23,7 +23,7 @@ part 'payment_method.g.dart';
 /// the current cart price, and certainly not null).
 ///
 /// TODO:
-/// remove change from [PaymentMethod] and put it as a standalone property
+/// Remove change from [PaymentMethod] and put it as a standalone property
 /// of the [Cart] (and [Order], when it is converted).
 @JsonSerializable(explicitToJson: true)
 class PaymentMethod {

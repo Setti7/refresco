@@ -22,10 +22,12 @@ class ParseAuthService implements AuthService {
   Box _userBox;
 
   ParseAuthService() {
+    /// TODO:
+    /// Remove this listener. Instead, rely on updateUser to save and upload
+    /// the user when it is called.
     loadUser().then((value) {
       user.listen((user) {
         _userBox.put('user', user.toJson());
-        // TODO: upload user to backend
       });
     });
   }
