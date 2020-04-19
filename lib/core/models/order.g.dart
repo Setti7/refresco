@@ -9,7 +9,7 @@ part of 'order.dart';
 Order _$OrderFromJson(Map json) {
   return Order(
     id: json['objectId'] as String,
-    products: (json['products'] as List)
+    orderItems: (json['orderItems'] as List)
         ?.map((e) => e == null
             ? null
             : OrderItem.fromJson((e as Map)?.map(
@@ -43,7 +43,7 @@ Order _$OrderFromJson(Map json) {
 
 Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
       'objectId': instance.id,
-      'products': instance.products?.map((e) => e?.toJson())?.toList(),
+      'orderItems': instance.orderItems?.map((e) => e?.toJson())?.toList(),
       'orderStatus': _$OrderStatusEnumMap[instance.orderStatus],
       'store': instance.store?.toJson(),
       'buyer': instance.buyer?.toJson(),

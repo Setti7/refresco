@@ -96,9 +96,9 @@ class CartSheetModel extends BaseModel {
     ///   1- Need to verify with the backend if the store is within 10km of the
     /// specified address
     ///   2- The validation should be done on the server. In a custom Cloud Code
-    /// function that receives the address, products, paymentMethod and change.
+    /// function that receives the address, orderItems, paymentMethod and change.
     /// The buyer should be inferred by who made the request, the orderStatus
-    /// will be pending and the store is inferred by the products.
+    /// will be pending and the store is inferred by the orderItems.
 
     bool valid = true;
     User updatedUser = user;

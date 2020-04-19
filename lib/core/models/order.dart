@@ -15,7 +15,7 @@ class Order {
   @JsonKey(name: 'objectId')
   final String id;
 
-  final Set<OrderItem> products;
+  final Set<OrderItem> orderItems;
   final OrderStatus orderStatus;
   final Store store;
   final User buyer;
@@ -24,7 +24,7 @@ class Order {
 
   const Order({
     this.id,
-    this.products,
+    this.orderItems,
     this.orderStatus,
     this.store,
     this.buyer,
@@ -38,7 +38,7 @@ class Order {
     @required Address address,
   }) {
     return Order(
-      products: cart.products,
+      orderItems: cart.orderItems,
       orderStatus: OrderStatus.pending,
       store: cart.store,
       buyer: buyer,

@@ -58,7 +58,7 @@ class BuyView extends StatelessWidget {
               ),
               Consumer<Cart>(
                 builder: (context, cart, child) {
-                  return cart.products.isNotEmpty
+                  return cart.orderItems.isNotEmpty
                       ? CartSheet(cart)
                       : Container();
                 },

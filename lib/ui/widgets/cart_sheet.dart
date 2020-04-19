@@ -73,7 +73,7 @@ class CartSheet extends StatelessWidget {
                   _buildAddressTile(),
                   SizedBox(height: 8),
                   _buildStore(),
-                  _buildProductList(context, model),
+                  _buildOrderItemsList(context, model),
                   _buildPaymentDetails(context),
                   SizedBox(height: 8),
                   _buildPayment(context, model),
@@ -229,7 +229,7 @@ class CartSheet extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          cart.products.isEmpty ? Container() : Divider(),
+          cart.orderItems.isEmpty ? Container() : Divider(),
           SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -309,7 +309,7 @@ class CartSheet extends StatelessWidget {
     );
   }
 
-  Widget _buildProductList(BuildContext context, CartSheetModel model) {
+  Widget _buildOrderItemsList(BuildContext context, CartSheetModel model) {
     final children = <Widget>[];
 
     children.add(
@@ -330,7 +330,7 @@ class CartSheet extends StatelessWidget {
       ),
     );
 
-    cart.products.forEach((orderItem) {
+    cart.orderItems.forEach((orderItem) {
       children.add(
         Padding(
           padding: const EdgeInsets.all(16.0),
