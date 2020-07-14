@@ -12,6 +12,7 @@ import 'package:refresco/utils/routing_constants.dart';
 
 import 'core/dataModels/cart.dart';
 import 'core/services/cart_service.dart';
+import 'core/services/local_storage_service.dart';
 import 'core/services/location/location_service.dart';
 import 'ui/theme.dart';
 
@@ -45,7 +46,19 @@ class MyApp extends StatelessWidget {
         onGenerateRoute: router.generateRoute,
         initialRoute: Router.BuyViewRoute,
         theme: AppThemes.themeData,
-        home: BuyView(),
+        home: FutureBuilder(
+          future: locator<LocalStorageService>().loadData(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Scaffold(
+                body: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            }
+            return BuyView();
+          },
+        ),
       ),
     );
   }

@@ -1,7 +1,9 @@
 import 'package:graphql/client.dart';
+import 'package:hive/hive.dart';
 
 class GraphQLApi {
   GraphQLClient client;
+  Box _box;
   final String _uri = 'http://192.168.15.14:1337/graphql';
   final _headers = {
     'X-Parse-Application-Id': '9UBUIZ0VeTdGe6YfwEg7KBbL8LSoM8ONAMQyLKzw',
@@ -25,6 +27,7 @@ class GraphQLApi {
       _headers['X-Parse-Session-Token'] = sessionToken;
     }
 
+    _saveSession(sessionToken);
     client = _createGraphQlClient();
   }
 
@@ -34,5 +37,14 @@ class GraphQLApi {
 
   Future<QueryResult> mutate(MutationOptions options) {
     return client.mutate(options);
+  }
+
+  void init(Box data) {
+    _box = data;
+    updateSessionToken(_box.get('session'));
+  }
+
+  Future<void> _saveSession(String sessionToken) async {
+    await _box.put('session', sessionToken);
   }
 }
