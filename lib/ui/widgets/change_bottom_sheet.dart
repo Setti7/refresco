@@ -34,8 +34,7 @@ class _ChangeBottomSheetState extends State<ChangeBottomSheet>
       model.cart = widget.cart;
       model.controller = controller;
     }, builder: (context, model, child) {
-      return Padding(
-        padding: MediaQuery.of(context).viewInsets,
+      return SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 16.0,

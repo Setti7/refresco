@@ -15,8 +15,6 @@ import 'core/services/cart_service.dart';
 import 'core/services/location/location_service.dart';
 import 'ui/theme.dart';
 
-// TODO: use auto_resize_text
-
 void main() {
   Logger.level = Level.debug;
   WidgetsFlutterBinding.ensureInitialized();

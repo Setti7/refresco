@@ -122,8 +122,9 @@ class CartSheetModel extends BaseModel {
       valid = updatedUser.isValid;
     }
 
-    // Checking is user is valid
-    if (!updatedUser.isValid) {
+    // Checking is user is valid but is not anonymous. If he is anonymous it means he
+    // skipped the last part
+    if (!updatedUser.isValid && !updatedUser.isAnonymous) {
       await Get.dialog(OrderErrorDialog(
         errorTitle: 'Termine sua conta',
         errorMessage:

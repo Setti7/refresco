@@ -22,24 +22,30 @@ class CreateOrder {
       $change: Int!
     ) {
       initOrder(
-        store: $store
-        address: {
-          streetName: $streetName
-          number: $number
-          city: $city
-          state: $state
-          district: $district
-          country: $country
-          pointOfReference: $pointOfReference
-          complement: $complement
-          coordinate: { latitude: $latitude, longitude: $longitude }
-          postalCode: $postalCode
+        input: {
+          fields: {
+            store: $store
+            address: {
+              streetName: $streetName
+              number: $number
+              city: $city
+              state: $state
+              district: $district
+              country: $country
+              pointOfReference: $pointOfReference
+              complement: $complement
+              coordinate: { latitude: $latitude, longitude: $longitude }
+              postalCode: $postalCode
+            }
+            paymentMethod: $paymentMethod
+            orderItems: $orderItems
+            change: $change
+          }
         }
-        paymentMethod: $paymentMethod
-        orderItems: $orderItems
-        change: $change
       ) {
-        objectId
+        order {
+          objectId
+        }
       }
     }
   ''';
@@ -68,8 +74,13 @@ class CreateOrder {
 
       'orderItems': orderItems,
       'store': order.store.id,
-      'paymentMethod': 'UOZrC98GJE', // TODO: add payment methods in database
-      'change': order.paymentMethod.change
+
+      /// TODO:
+      ///  for now, payment methods don't actually work, it always use visa credit card with
+      ///  no change (the change is actually set, but it does not mean anything, because it's not
+      ///  used anywhere)
+      'paymentMethod': 'UOZrC98GJE',
+      'change': order.paymentMethod.change ?? 0
     };
   }
 }

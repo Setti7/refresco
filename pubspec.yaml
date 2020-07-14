@@ -38,7 +38,7 @@ dependencies:
   device_preview: ^0.4.3
   sliding_up_panel: ^1.0.1
   animations: ^1.0.0+5
-  get: 1.13.3-beta
+  get: ^3.3.0
   graphql: ^3.0.0
   gql_code_gen: ^0.1.5
   flutter_masked_text: ^0.8.0
