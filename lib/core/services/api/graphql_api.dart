@@ -4,7 +4,7 @@ import 'package:hive/hive.dart';
 class GraphQLApi {
   GraphQLClient client;
   Box _box;
-  final String _uri = 'http://192.168.15.14:1337/graphql';
+  final String _uri = 'http://192.168.15.17:1337/graphql';
   final _headers = {
     'X-Parse-Application-Id': '9UBUIZ0VeTdGe6YfwEg7KBbL8LSoM8ONAMQyLKzw',
   };

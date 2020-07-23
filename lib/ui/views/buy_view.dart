@@ -25,11 +25,9 @@ class BuyView extends StatelessWidget {
             actions: <Widget>[
               Consumer<User>(builder: (context, user, child) {
                 return IconButton(
-                  icon: Icon(
-                      user.isAnonymous ? Icons.vpn_key : Icons.exit_to_app),
-                  onPressed: user.isAnonymous
-                      ? () => Get.toNamed(Router.LoginViewRoute)
-                      : model.logout,
+                  icon: Icon(user.isAnonymous ? Icons.vpn_key : Icons.exit_to_app),
+                  onPressed:
+                      user.isAnonymous ? () => Get.toNamed(Router.LoginViewRoute) : model.logout,
                 );
               }),
             ],
@@ -46,8 +44,7 @@ class BuyView extends StatelessWidget {
                         Consumer<Address>(builder: (context, address, child) {
                           return AddressTile(
                             address: address,
-                            onPressed: () =>
-                                Get.toNamed(Router.AddressViewRoute),
+                            onPressed: () => Get.toNamed(Router.AddressViewRoute),
                           );
                         }),
                       ],
@@ -58,9 +55,7 @@ class BuyView extends StatelessWidget {
               ),
               Consumer<Cart>(
                 builder: (context, cart, child) {
-                  return cart.orderItems.isNotEmpty
-                      ? CartSheet(cart)
-                      : Container();
+                  return cart.orderItems.isNotEmpty ? CartSheet(cart) : Container();
                 },
               ),
             ],
@@ -86,8 +81,7 @@ class BuyView extends StatelessWidget {
           itemBuilder: (context, index) {
             if (index == 0) {
               return Padding(
-                padding: const EdgeInsets.only(
-                    left: 16.0, right: 16.0, top: 32, bottom: 8),
+                padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 32, bottom: 8),
                 child: Text(
                   'As mais próximas:',
                   style: AppFonts.boldPlainHeadline6,
@@ -137,13 +131,47 @@ class BuyView extends StatelessWidget {
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Text(
-            'Não há nenhuma loja na sua área :(',
-            style: Theme.of(context).textTheme.headline6,
+          Image.asset(
+            'assets/images/undraw/no_close_stores.png',
+          ),
+          SizedBox(height: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              children: <Widget>[
+                Text(
+                  'Defina o endereço de entrega!',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 16),
+          RaisedButton(
+            onPressed: () => Get.toNamed(Router.AddressViewRoute),
+            child: Text(
+              'ESCOLHA UM ENDEREÇO',
+            ),
           ),
         ],
       ),
     );
   }
+
+//  Widget _buildEmpty(BuildContext context) {
+//    return Center(
+//      child: Column(
+//        mainAxisSize: MainAxisSize.min,
+//        children: <Widget>[
+//          Text(
+//            'Não há nenhuma loja na sua área :(',
+//            style: Theme.of(context).textTheme.headline6,
+//          ),
+//        ],
+//      ),
+//    );
+//  }
 }
