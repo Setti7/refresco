@@ -21,8 +21,8 @@ Agora, vá para o repositório do app, e entre no arquivo
 "http://192.168.15.17:1337/graphql", pelo ip printado no console no passo anterior do end point
 graphql.
 
-depois, execute o comando `flutter run` no terminal, com seu smartphone android conectado ao pc
-para instalar o apk.
+Para instalar as dependencias do app, execute o comando `flutter pub get` e depois, execute o
+comando `flutter run` no terminal, com seu smartphone android conectado ao pc para instalar o apk.
 
 Pronto! Agora quando abrir o app, eles estará conectado. Para criar lojas e produtos vá no
 dashboard pelo navegador.
