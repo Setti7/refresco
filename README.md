@@ -1,16 +1,30 @@
 # refresco ![Flutter CI](https://github.com/Setti7/refresco/workflows/Flutter%20CI/badge.svg)
 
-A new Flutter application.
+## INSTALAÇÂO:
 
-## Getting Started
+### Dependências:
+Mongodb rodando na porta 27017.
 
-This project is a starting point for a Flutter application.
+### BACKEND:
+Antes de abrir o app em si, você precisa do servidor rodando localmente. Para isso, clone o
+repositorio do servidor em outro diretório e execute o comando `npm install`, para instalar as
+dependências do backend. Depois disso, execute `npm start`. Pronto o servidor estára rodando e você
+poderá acessar o dashboard no endereço printado no console.
 
-A few resources to get you started if this is your first Flutter project:
+Copie o endereço de ip printado no console DO ENDPOINT GRAPHQL, você vai precisar dele.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### APP:
+Para instalar o app, primeiro instale [flutter](https://flutter.dev/docs/get-started/install).
+
+Agora, vá para o repositório do app, e entre no arquivo
+`lib > core > services > api > graphql_api.dart`. Dentro dele você precisa substituir o ip
+"http://192.168.15.17:1337/graphql", pelo ip printado no console no passo anterior do end point
+graphql.
+
+depois, execute o comando `flutter run` no terminal, com seu smartphone android conectado ao pc para
+ instalar o apk.
+
+ Pronto! Agora quando abrir o app, eles estará conectado. Para criar lojas e produtos vá no
+ dashboard pelo navegador.
+
