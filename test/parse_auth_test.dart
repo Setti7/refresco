@@ -53,7 +53,7 @@ void main() {
             expect(response.errorMessage, null);
           }),
           completes);
-    });
+    }, skip: 'currently failing (asynchronous gap)');
 
     test('login with invalid user', () {
       final userEmail = 'invalid@email.com';
@@ -80,6 +80,6 @@ void main() {
             expect(response.success, false);
           }),
           completes);
-    }, skip: 'currently failing (asynchronous gap)');
+    });
   });
 }

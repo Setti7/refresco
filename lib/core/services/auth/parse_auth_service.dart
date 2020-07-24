@@ -35,11 +35,6 @@ class ParseAuthService implements AuthService {
 
   @override
   Future<void> loadUser() async {
-    /// TODO:
-    /// Get user email and password from local storage too (encrypted),
-    /// re-login the user, and update the session token.
-    ///
-    /// Save user and email/password in the same box, but under a different key.
     await _openUserBox();
     final userJson = Map<String, dynamic>.from(_box.get('user') ?? {});
 
