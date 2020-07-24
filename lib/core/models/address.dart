@@ -33,8 +33,7 @@ class Address {
     this.postalCode,
   });
 
-  factory Address.copy(
-    Address address, {
+  Address clone({
     String id,
     String streetName,
     int number,
@@ -48,17 +47,17 @@ class Address {
     String postalCode,
   }) {
     return Address(
-      id: id ?? address?.id,
-      streetName: streetName ?? address?.streetName,
-      number: number ?? address?.number,
-      city: city ?? address?.city,
-      state: state ?? address?.state,
-      district: district ?? address?.district,
-      complement: complement ?? address?.complement,
-      country: country ?? address?.country,
-      pointOfReference: pointOfReference ?? address?.pointOfReference,
-      coordinate: coordinate ?? address?.coordinate,
-      postalCode: postalCode ?? address?.postalCode,
+      id: id ?? this.id,
+      streetName: streetName ?? this.streetName,
+      number: number ?? this.number,
+      city: city ?? this.city,
+      state: state ?? this.state,
+      district: district ?? this.district,
+      complement: complement ?? this.complement,
+      country: country ?? this.country,
+      pointOfReference: pointOfReference ?? this.pointOfReference,
+      coordinate: coordinate ?? this.coordinate,
+      postalCode: postalCode ?? this.postalCode,
     );
   }
 
@@ -75,6 +74,19 @@ class Address {
       ),
       postalCode: address.postalCode,
     );
+  }
+
+  bool get isValid {
+    if (streetName == null) return false;
+    if (number == null) return false;
+    if (city == null) return false;
+    if (state == null) return false;
+    if (district == null) return false;
+    if (country == null) return false;
+    if (coordinate == null) return false;
+    if (!coordinate.isValid) return false;
+    if (postalCode == null) return false;
+    return true;
   }
 
   String get districtAndCity {

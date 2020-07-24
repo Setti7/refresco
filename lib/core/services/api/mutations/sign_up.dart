@@ -18,6 +18,9 @@ class SignUp {
           user {
             objectId
             email
+            fullName
+            phone
+            cpf
           }
         }
       }

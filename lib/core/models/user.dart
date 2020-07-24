@@ -10,23 +10,41 @@ class User {
   final String id;
   final String fullName;
   final String email;
-  final Address address;
+  final String phone;
+  final String cpf;
 
   User({
     this.id,
     this.fullName,
     this.email,
-    this.address,
+    this.phone,
+    this.cpf,
   });
+
+  bool get isValid {
+    if (id == null) return false;
+    if (fullName == null) return false;
+    if (email == null) return false;
+    if (phone == null) return false;
+    if (cpf == null) return false;
+    return true;
+  }
 
   bool get isAnonymous => id == null;
 
-  factory User.newAddress(User user, Address newAddress) {
+  User clone({
+    String id,
+    String fullName,
+    String email,
+    String phone,
+    String cpf,
+  }) {
     return User(
-      id: user.id,
-      fullName: user.fullName,
-      email: user.email,
-      address: newAddress,
+      id: id ?? this.id,
+      fullName: fullName ?? this.fullName,
+      email: email ?? this.email,
+      phone: phone ?? this.phone,
+      cpf: cpf ?? this.cpf,
     );
   }
 

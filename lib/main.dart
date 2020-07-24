@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
+import 'package:refresco/core/models/address.dart';
 import 'package:refresco/core/models/user.dart';
 import 'package:refresco/core/services/auth/auth_service.dart';
 import 'package:refresco/locator.dart';
@@ -10,10 +11,10 @@ import 'package:refresco/ui/views/buy_view.dart';
 import 'package:refresco/utils/routing_constants.dart';
 
 import 'core/dataModels/cart.dart';
-import 'core/services/cart/cart_service.dart';
+import 'core/services/cart_service.dart';
+import 'core/services/local_storage_service.dart';
+import 'core/services/location/location_service.dart';
 import 'ui/theme.dart';
-
-// TODO: use auto_resize_text
 
 void main() {
   Logger.level = Level.debug;
@@ -34,6 +35,9 @@ class MyApp extends StatelessWidget {
         StreamProvider<Cart>(
           create: (context) => locator<CartService>().cart,
           initialData: Cart.empty(),
+        ),
+        StreamProvider<Address>(
+          create: (context) => locator<LocationService>().address,
         )
       ],
       child: MaterialApp(
@@ -41,16 +45,20 @@ class MyApp extends StatelessWidget {
         title: 'Refresco',
         onGenerateRoute: router.generateRoute,
         initialRoute: Router.BuyViewRoute,
-        theme: ThemeData(
-          primarySwatch: AppColors.primary,
-          scaffoldBackgroundColor: AppColors.scaffoldBackground,
-          accentColor: AppColors.accent,
-          buttonTheme: AppThemes.buttonTheme,
-          accentTextTheme: AppThemes.accentTextTheme,
-          inputDecorationTheme: AppThemes.inputDecorationTheme,
-          cardTheme: AppThemes.cardTheme,
+        theme: AppThemes.themeData,
+        home: FutureBuilder(
+          future: locator<LocalStorageService>().loadData(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Scaffold(
+                body: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            }
+            return BuyView();
+          },
         ),
-        home: BuyView(),
       ),
     );
   }

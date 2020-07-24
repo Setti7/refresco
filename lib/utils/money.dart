@@ -1,5 +1,9 @@
 class MoneyUtils {
   static String intMoneyAsString(int value) {
+    if (value == 0) {
+      return '0';
+    }
+
     final valueString = value.toString();
     final decimal = valueString.substring(valueString.length - 2);
     final integer = valueString.substring(0, valueString.length - 2);

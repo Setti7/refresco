@@ -3,6 +3,7 @@ import 'package:graphql/client.dart';
 import 'package:hive/hive.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:pedantic/pedantic.dart';
 import 'package:refresco/core/dataModels/graphql_node.dart';
 import 'package:refresco/core/dataModels/service_response.dart';
 import 'package:refresco/core/models/user.dart';
@@ -10,6 +11,7 @@ import 'package:refresco/core/services/api/graphql_api.dart';
 import 'package:refresco/core/services/api/mutations/login.dart';
 import 'package:refresco/core/services/api/mutations/logout.dart';
 import 'package:refresco/core/services/api/mutations/sign_up.dart';
+import 'package:refresco/core/services/api/mutations/update_user.dart';
 import 'package:refresco/core/services/auth/auth_service.dart';
 import 'package:refresco/locator.dart';
 import 'package:refresco/utils/logger.dart';
@@ -18,14 +20,10 @@ import 'package:rxdart/rxdart.dart';
 class ParseAuthService implements AuthService {
   final Logger _logger = getLogger('ParseAuthService');
   GraphQLApi api = locator<GraphQLApi>();
-  Box _userBox;
+  Box _box;
 
   ParseAuthService() {
-    loadUser().then((value) {
-      user.listen((user) {
-        _userBox.put('user', user.toJson());
-      });
-    });
+    loadUser();
   }
 
   // Subjects
@@ -37,17 +35,21 @@ class ParseAuthService implements AuthService {
 
   @override
   Future<void> loadUser() async {
+    await _openUserBox();
+    final userJson = Map<String, dynamic>.from(_box.get('user') ?? {});
+
+    if (userJson.isNotEmpty) {
+      final _user = User.fromJson(userJson);
+      unawaited(updateUser(_user));
+      _logger.d('user loaded');
+    }
+  }
+
+  Future<void> _openUserBox() async {
     final dir = await getApplicationDocumentsDirectory();
     Hive.init(dir.path + '/hive');
 
-    _userBox = await Hive.openBox('userBox');
-
-    final userJson = Map<String, dynamic>.from(_userBox.get('user') ?? {});
-    if (userJson.isNotEmpty) {
-      final _user = User.fromJson(userJson);
-      _userSubject.add(_user);
-      _logger.d('user loaded');
-    }
+    _box = await Hive.openBox('userBox');
   }
 
   @override
@@ -72,10 +74,9 @@ class ParseAuthService implements AuthService {
     final sessionToken = response.data['logIn']['viewer']['sessionToken'];
     api.updateSessionToken(sessionToken);
 
-    final user = GraphQLNode.parse<User>(userJson);
-    updateUser(user);
+    unawaited(updateUser(GraphQLNode.parse<User>(userJson)));
 
-    return ServiceResponse(success: true, results: [user]);
+    return ServiceResponse(success: true);
   }
 
   @override
@@ -100,25 +101,43 @@ class ParseAuthService implements AuthService {
     final sessionToken = response.data['signUp']['viewer']['sessionToken'];
     api.updateSessionToken(sessionToken);
 
-    final user = GraphQLNode.parse<User>(userJson);
-    updateUser(user);
+    unawaited(updateUser(GraphQLNode.parse<User>(userJson)));
 
-    return ServiceResponse(success: true, results: [user]);
+    return ServiceResponse(success: true);
   }
 
   @override
-  void updateUser(User newUser, {bool force = false}) {
-    if (force) {
-      _userSubject.add(newUser);
-      return;
+  Future<ServiceResponse> updateUser(User newUser) async {
+    _userSubject.add(newUser);
+
+    // Saving user locally
+    await _saveUser(newUser);
+
+    // Saving user remotely
+    final response = await api.mutate(
+      MutationOptions(
+        documentNode: gql(UpdateUser.mutation),
+        variables: UpdateUser.builder(newUser),
+      ),
+    );
+
+    if (response.hasException) {
+      return ServiceResponse(
+        success: false,
+        errorTitle: 'Opa :(',
+        errorMessage: 'Um erro inesperado ocorreu com o servidor.',
+      );
     }
 
-    if (_userSubject.value.address == null) {
-      _userSubject.add(newUser);
-    } else {
-      final oldUser = _userSubject.value;
-      _userSubject.add(User.newAddress(newUser, oldUser.address));
+    return ServiceResponse(success: true);
+  }
+
+  void _saveUser(User user) async {
+    if (_box == null || !_box.isOpen) {
+      await _openUserBox();
     }
+
+    await _box.put('user', user.toJson());
   }
 
   @override
@@ -126,11 +145,9 @@ class ParseAuthService implements AuthService {
 
   @override
   void logout() async {
-    final oldUser = _userSubject.value;
-
     await api.mutate(MutationOptions(documentNode: gql(Logout.mutation)));
-
     api.updateSessionToken(null);
-    _userSubject.add(User.newAddress(User(), oldUser.address));
+
+    _userSubject.add(User());
   }
 }

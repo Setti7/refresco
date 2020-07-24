@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:refresco/core/dataModels/cart.dart';
 import 'package:refresco/core/enums/enums.dart';
+import 'package:refresco/core/models/address.dart';
 import 'package:refresco/core/models/store.dart';
-import 'package:refresco/core/models/user.dart';
 import 'package:refresco/core/viewModels/views/store_model.dart';
 import 'package:refresco/ui/theme.dart';
 import 'package:refresco/ui/views/base_view.dart';
@@ -66,63 +66,61 @@ class _StoreViewState extends State<StoreView>
   }
 
   Widget _buildStoreHeader(BuildContext context, StoreModel model) {
-    return Consumer<User>(
-      builder: (context, user, child) {
-        return Container(
-          color: Colors.white,
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+    return Container(
+      color: Colors.white,
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Expanded(
-                          child: Text(
-                            widget.store.name,
-                            style: Theme.of(context).textTheme.headline5,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Text(widget.store.rating == null
-                                ? 'Novo!'
-                                : widget.store.rating.toStringAsFixed(1)),
-                            Icon(widget.store.getStarIcon(),
-                                color: Colors.yellow, size: 20),
-                          ],
-                        )
-                      ],
+                    Expanded(
+                      child: Text(
+                        widget.store.name,
+                        style: Theme.of(context).textTheme.headline5,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                    SizedBox(height: 8),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        Text(
-                          'Entrega em ${widget.store.minDeliveryTime}-${widget.store.maxDeliveryTime} min',
-                          style: Theme.of(context).textTheme.caption,
-                        ),
-                        Text(
-                          model.getFormattedDistanceFromUser(
-                              user.address, widget.store.address),
-                          style: Theme.of(context).textTheme.caption,
-                        ),
+                        Text(widget.store.rating == null
+                            ? 'Novo!'
+                            : widget.store.rating.toStringAsFixed(1)),
+                        Icon(widget.store.getStarIcon(),
+                            color: Colors.yellow, size: 20),
                       ],
-                    ),
+                    )
                   ],
                 ),
-              ),
-              Divider(),
-              _buildTabBar(model),
-            ],
+                SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      'Entrega em ${widget.store.minDeliveryTime}-${widget.store.maxDeliveryTime} min',
+                      style: Theme.of(context).textTheme.caption,
+                    ),
+                    Consumer<Address>(builder: (context, address, child) {
+                      return Text(
+                        model.getFormattedDistanceFromUser(
+                            address, widget.store.address),
+                        style: Theme.of(context).textTheme.caption,
+                      );
+                    }),
+                  ],
+                ),
+              ],
+            ),
           ),
-        );
-      },
+          Divider(),
+          _buildTabBar(model),
+        ],
+      ),
     );
   }
 

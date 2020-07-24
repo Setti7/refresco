@@ -1,9 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:refresco/core/enums/enums.dart';
+import 'package:refresco/core/models/order.dart';
 import 'package:refresco/core/viewModels/views/login_model.dart';
 import 'package:refresco/ui/theme.dart';
 import 'package:refresco/ui/views/base_view.dart';
+import 'package:refresco/core/models/user.dart';
+import 'package:refresco/ui/views/finish_registration_view.dart';
 
+/// [LoginView] is used for the [User]s to login or to sign up.
+///
+/// When signing up, they have the option to finish later. If they chose this
+/// option, when doing any action that requires more info than [User.email],
+/// [User.id] and [User.address] an error should pop up, showing them that
+/// they need to finish their registration with a button to redirect to
+/// [FinishRegistrationView].
+///
+/// TODO:
+///  1 - Option to finish registration later
+///  2 - Redirect to [FinishRegistrationView] after filling the create account,
+///   with a button to "Finish later" (that should be hidden when
+///   [FinishRegistrationView] is called before placing an [Order]).
 class LoginView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:refresco/core/dataModels/cart.dart';
+import 'package:refresco/core/models/address.dart';
 import 'package:refresco/core/models/user.dart';
 import 'package:refresco/core/viewModels/widgets/cart_sheet_model.dart';
 import 'package:refresco/ui/theme.dart';
@@ -72,7 +73,7 @@ class CartSheet extends StatelessWidget {
                   _buildAddressTile(),
                   SizedBox(height: 8),
                   _buildStore(),
-                  _buildProductList(context, model),
+                  _buildOrderItemsList(context, model),
                   _buildPaymentDetails(context),
                   SizedBox(height: 8),
                   _buildPayment(context, model),
@@ -111,14 +112,14 @@ class CartSheet extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16.0, vertical: 24),
-                      child: model.paymentMethod == null
+                      child: cart.paymentMethod == null
                           ? Icon(
                               Icons.credit_card,
                               color: AppColors.primary,
                               size: AppShapes.iconSize,
                             )
                           : Image(
-                              image: model.paymentMethod.image,
+                              image: AssetImage(cart.paymentMethod.imageUri),
                               width: AppShapes.cardIconSize,
                             ),
                     ),
@@ -127,18 +128,18 @@ class CartSheet extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            model.paymentMethod == null
+                            cart.paymentMethod == null
                                 ? 'Forma de pagamento'
-                                : model.paymentMethod.name,
+                                : cart.paymentMethod.name,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: Theme.of(context).textTheme.headline6,
                           ),
                           SizedBox(height: 4),
                           Text(
-                            model.paymentMethod == null
+                            cart.paymentMethod == null
                                 ? 'Escolha uma forma'
-                                : model.paymentMethod.details(cart.totalPrice),
+                                : cart.paymentMethod.details(cart.totalPrice),
                             overflow: TextOverflow.ellipsis,
                             style: Theme.of(context).textTheme.subtitle1,
                           ),
@@ -159,11 +160,17 @@ class CartSheet extends StatelessWidget {
             ),
           ),
           SizedBox(height: 24),
-          Center(
-            child: RaisedButton(
-              onPressed: cart.products.isEmpty ? null : () {},
-              child: Text('Finalizar pagamento'),
-            ),
+          Consumer2<User, Address>(
+            builder: (context, user, address, child) {
+              return Center(
+                child: RaisedButton(
+                  onPressed: cart.isValid
+                      ? () => model.createOrder(cart, user, address)
+                      : null,
+                  child: Text('Finalizar pagamento'),
+                ),
+              );
+            },
           ),
         ],
       ),
@@ -193,7 +200,7 @@ class CartSheet extends StatelessWidget {
   }
 
   Widget _buildAddressTile() {
-    return Consumer<User>(builder: (context, user, child) {
+    return Consumer<Address>(builder: (context, address, child) {
       return Container(
         padding: const EdgeInsets.only(top: 8, left: 16, right: 16),
         color: Colors.white,
@@ -206,7 +213,7 @@ class CartSheet extends StatelessWidget {
             ),
             AddressTile(
               contentPadding: EdgeInsets.zero,
-              address: user.address,
+              address: address,
               onPressed: () => Get.toNamed(Router.AddressViewRoute),
             ),
           ],
@@ -222,7 +229,7 @@ class CartSheet extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          cart.products.isEmpty ? Container() : Divider(),
+          cart.orderItems.isEmpty ? Container() : Divider(),
           SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -302,7 +309,7 @@ class CartSheet extends StatelessWidget {
     );
   }
 
-  Widget _buildProductList(BuildContext context, CartSheetModel model) {
+  Widget _buildOrderItemsList(BuildContext context, CartSheetModel model) {
     final children = <Widget>[];
 
     children.add(
@@ -323,7 +330,7 @@ class CartSheet extends StatelessWidget {
       ),
     );
 
-    cart.products.forEach((orderItem) {
+    cart.orderItems.forEach((orderItem) {
       children.add(
         Padding(
           padding: const EdgeInsets.all(16.0),

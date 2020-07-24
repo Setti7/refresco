@@ -5,11 +5,13 @@ import 'package:refresco/core/viewModels/widgets/change_bottom_sheet_model.dart'
 import 'package:refresco/ui/theme.dart';
 import 'package:refresco/ui/views/base_view.dart';
 
-/// Bottom sheet to set the change needed for this purchase, if the user
-/// selected to pay with money.
+/// [ChangeBottomSheet] is used to set the change needed for this purchase,
+/// if the user selected to pay with money.
 ///
 /// Will return the amount the user will pay in cash as [int] if the user set a
 /// value and confirmed it, otherwise, will return null.
+///
+/// The user is not allowed to set a value lower than the cart's full price.
 class ChangeBottomSheet extends StatefulWidget {
   final Cart cart;
 
@@ -32,8 +34,7 @@ class _ChangeBottomSheetState extends State<ChangeBottomSheet>
       model.cart = widget.cart;
       model.controller = controller;
     }, builder: (context, model, child) {
-      return Padding(
-        padding: MediaQuery.of(context).viewInsets,
+      return SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 16.0,

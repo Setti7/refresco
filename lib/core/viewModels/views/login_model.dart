@@ -24,12 +24,12 @@ class LoginModel extends BaseModel {
     setState(ViewState.idle);
   }
 
-  Future loginWithEmail() async {
-    if (!_validateFields()) return;
+  Future<void> loginWithEmail() async {
+    if (!_validateFields()) return null;
     setState(ViewState.busy);
     ServiceResponse response;
 
-    response = await _login(
+    response = await authService.loginWithEmail(
       email: emailController.text,
       password: passwordController.text,
     );
@@ -42,8 +42,8 @@ class LoginModel extends BaseModel {
     setState(ViewState.idle);
   }
 
-  Future createUser() async {
-    if (!_validateFields()) return;
+  Future<void> createUser() async {
+    if (!_validateFields()) return null;
     setState(ViewState.busy);
     ServiceResponse response;
 
@@ -87,13 +87,5 @@ class LoginModel extends BaseModel {
       }
     }
     return true;
-  }
-
-  Future<ServiceResponse> _login(
-      {@required String email, @required String password}) {
-    return authService.loginWithEmail(
-      email: email,
-      password: password,
-    );
   }
 }

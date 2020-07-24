@@ -1,13 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:refresco/core/models/user.dart';
-import 'package:refresco/core/services/auth/auth_service.dart';
-import 'package:refresco/core/dataModels/service_response.dart';
-import 'package:refresco/utils/logger.dart';
 import 'package:hive/hive.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:pedantic/pedantic.dart';
+import 'package:refresco/core/dataModels/service_response.dart';
+import 'package:refresco/core/models/user.dart';
+import 'package:refresco/core/services/auth/auth_service.dart';
+import 'package:refresco/utils/logger.dart';
 import 'package:rxdart/rxdart.dart';
 
 class FirebaseAuthService implements AuthService {
@@ -55,7 +56,7 @@ class FirebaseAuthService implements AuthService {
         email: email,
         password: password,
       );
-      updateUser(User.fromFirebase(authResult.user));
+      unawaited(updateUser(User.fromFirebase(authResult.user)));
     } on PlatformException catch (e) {
       return ServiceResponse.fromFirebaseError(e.code);
     }
@@ -73,7 +74,7 @@ class FirebaseAuthService implements AuthService {
         email: email,
         password: password,
       );
-      updateUser(User.fromFirebase(authResult.user));
+      unawaited(updateUser(User.fromFirebase(authResult.user)));
     } on PlatformException catch (e) {
       return ServiceResponse.fromFirebaseError(e.code);
     }
@@ -82,18 +83,9 @@ class FirebaseAuthService implements AuthService {
   }
 
   @override
-  void updateUser(User newUser, {bool force = false}) {
-    if (force) {
-      _userSubject.add(newUser);
-      return;
-    }
-
-    if (_userSubject.value.address == null) {
-      _userSubject.add(newUser);
-    } else {
-      final oldUser = _userSubject.value;
-      _userSubject.add(User.newAddress(newUser, oldUser.address));
-    }
+  Future<ServiceResponse> updateUser(User newUser) async {
+    _userSubject.add(newUser);
+    throw UnimplementedError();
   }
 
   @override
@@ -101,8 +93,7 @@ class FirebaseAuthService implements AuthService {
 
   @override
   void logout() {
-    final oldUser = _userSubject.value;
     FirebaseAuth.instance.signOut();
-    _userSubject.add(User.newAddress(User(), oldUser.address));
+    _userSubject.add(User());
   }
 }

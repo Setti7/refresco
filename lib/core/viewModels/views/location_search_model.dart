@@ -10,18 +10,20 @@ class LocationSearchModel extends BaseModel {
   final BehaviorSubject<List<Address>> _addressesSubject =
       BehaviorSubject<List<Address>>();
 
-  Stream<List<Address>> get addressesObservable =>
-      _addressesSubject.stream;
+  Stream<List<Address>> get addressesObservable => _addressesSubject.stream;
 
   void updateQuery(String query) async {
+    // TODO: add error handling here and inside the service method
     if (query == '' || query == null) {
       _addressesSubject.add(null);
       return;
     }
 
-    final addresses =
-        await _locationService.findAddressesFromQuery(query);
-    _addressesSubject.add(addresses);
+    final response = await _locationService.findAddressesFromQuery(query);
+
+    if (response.success) {
+      _addressesSubject.add(response.results);
+    }
   }
 
   @override

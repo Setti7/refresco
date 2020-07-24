@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:refresco/core/models/address.dart';
-import 'package:refresco/core/models/user.dart';
 import 'package:refresco/core/viewModels/views/address_model.dart';
 import 'package:refresco/ui/delegates/location_search_delegate.dart';
 import 'package:refresco/ui/theme.dart';
@@ -10,11 +9,9 @@ import 'package:refresco/ui/views/base_view.dart';
 class AddressView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<User>(builder: (context, user, child) {
+    return Consumer<Address>(builder: (context, address, child) {
       return BaseView<AddressModel>(
-        onModelReady: (model) {
-          model.userAddress = user.address;
-        },
+        onModelReady: (model) => model.setAddress(address),
         builder: (context, model, child) {
           return Scaffold(
             bottomNavigationBar: Padding(
@@ -38,7 +35,8 @@ class AddressView extends StatelessWidget {
             appBar: AppBar(title: Text('Endereço de entrega')),
             body: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
                 child: Column(
                   children: <Widget>[
                     _buildAddressField(context, model),

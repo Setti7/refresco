@@ -1,5 +1,6 @@
 import 'package:refresco/core/dataModels/cart.dart';
 import 'package:refresco/core/models/gallon.dart';
+import 'package:refresco/core/models/payment_method.dart';
 import 'package:refresco/core/models/store.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -21,6 +22,12 @@ class CartService {
   }
 
   void clearCart() {
-    _cartSubject.add(Cart.empty());
+    final currentCart = _cartSubject.value;
+    _cartSubject.add(Cart.empty(paymentMethod: currentCart.paymentMethod));
+  }
+
+  void setPaymentMethod(PaymentMethod paymentMethod) {
+    final currentCart = _cartSubject.value;
+    _cartSubject.add(currentCart.setPaymentMethod(paymentMethod));
   }
 }

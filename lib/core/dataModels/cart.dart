@@ -1,65 +1,88 @@
 import 'package:flutter/foundation.dart';
-import 'package:refresco/core/dataModels/cart_item.dart';
 import 'package:refresco/core/models/gallon.dart';
+import 'package:refresco/core/models/order_item.dart';
+import 'package:refresco/core/models/payment_method.dart';
 import 'package:refresco/core/models/store.dart';
 
-// TODO:
-//  change this to Order class and add a filed called cart which is a list of
-//  products
-@immutable
+/// TODO:
+/// Save cart locally after every change, so state is persisted after restarts.
 class Cart {
   final Store store;
-  final Set<CartItem> products;
+  final Set<OrderItem> orderItems;
+  final PaymentMethod paymentMethod;
 
   Cart({
-    @required this.products,
+    @required this.orderItems,
     @required this.store,
+    @required this.paymentMethod,
   });
 
-  factory Cart.empty() {
+  factory Cart.empty({PaymentMethod paymentMethod}) {
     return Cart(
-      products: <CartItem>{},
+      orderItems: <OrderItem>{},
       store: null,
+      paymentMethod: paymentMethod,
+    );
+  }
+
+  Cart setPaymentMethod(PaymentMethod paymentMethod) {
+    return Cart(
+      store: store,
+      orderItems: orderItems,
+      paymentMethod: paymentMethod,
     );
   }
 
   Cart add(Gallon gallon, Store store) {
-    var cartItem = products.firstWhere(
+    var _orderItem = orderItems.firstWhere(
       (item) => item.product.id == gallon.id,
       orElse: () => null,
     );
 
-    if (cartItem == null) {
-      cartItem = CartItem(
+    if (_orderItem == null) {
+      _orderItem = OrderItem(
         product: gallon,
         amount: 1,
       );
     } else {
-      products.remove(cartItem);
+      orderItems.remove(_orderItem);
 
-      cartItem = CartItem(
-        product: cartItem.product,
-        amount: cartItem.amount + 1,
+      _orderItem = OrderItem(
+        product: _orderItem.product,
+        amount: _orderItem.amount + 1,
       );
     }
 
     return Cart(
       store: store,
-      products: Set.from(
-        products..add(cartItem),
+      paymentMethod: paymentMethod,
+      orderItems: Set.from(
+        orderItems..add(_orderItem),
       ),
     );
   }
 
+  bool get isValid {
+    if (orderItems.isEmpty) {
+      return false;
+    } else if (paymentMethod == null) {
+      return false;
+    } else if (paymentMethod.change != null &&
+        paymentMethod.change < totalPrice) {
+      return false;
+    }
+    return true;
+  }
+
   int get totalItemAmount {
-    return products.fold(0, (previousValue, cartItem) {
-      return previousValue + cartItem.amount;
+    return orderItems.fold(0, (previousValue, orderItem) {
+      return previousValue + orderItem.amount;
     });
   }
 
   int get totalPrice {
-    return products.fold(0, (previousValue, cartItem) {
-      return previousValue + (cartItem.product.price * cartItem.amount);
+    return orderItems.fold(0, (previousValue, orderItem) {
+      return previousValue + (orderItem.product.price * orderItem.amount);
     });
   }
 

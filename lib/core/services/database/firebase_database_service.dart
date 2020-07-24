@@ -47,7 +47,6 @@ class FirebaseDatabaseService implements DatabaseService {
 
   @override
   Future<ServiceResponse> getGallons(Store store, GallonType gallonType) {
-    // TODO: implement getGallons
     throw UnimplementedError();
   }
 }
